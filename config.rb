@@ -5,8 +5,6 @@ Encoding.default_internal = Encoding::UTF_8
 # Blog settings
 ###
 
-Time.zone = "UTC"
-
 ###
 # Compass
 ###
@@ -40,6 +38,14 @@ Time.zone = "UTC"
 ###
 # Helpers
 ###
+helpers do
+  def default_keywords_helper
+    "pgtune"
+  end
+  def default_description_helper
+    "pgtune"
+  end
+end
 
 # Automatic image dimensions on image_tag helper
 # activate :automatic_image_sizes

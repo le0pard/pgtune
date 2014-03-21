@@ -1,0 +1,16 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Alexey Vasiliev -- developer -- https://twitter.com/leopard_me
+
+# THANKS
+
+    Anna Rotar -- design -- https://twitter.com/Ste4any
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3
+    jQuery, Modernizr
+    Ruby, SASS

@@ -1,0 +1,2 @@
+//= require modernizr
+//= require jquery
