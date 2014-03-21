@@ -1,5 +1,4 @@
 source 'http://rubygems.org'
-source 'http://rails-assets.org'
 
 gem 'middleman'
 # EXTENSIONS
@@ -22,7 +21,3 @@ gem 'erubis'
 gem 'multi_json'
 gem 'nokogiri'
 gem 'mini_magick'
-
-# rails-assets
-gem 'rails-assets-modernizr'
-gem 'rails-assets-jquery'

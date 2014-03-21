@@ -1,6 +1,5 @@
 GEM
   remote: http://rubygems.org/
-  remote: http://rails-assets.org/
   specs:
     actionpack (3.2.17)
       activemodel (= 3.2.17)
@@ -112,8 +111,6 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rails-assets-jquery (2.1.0)
-    rails-assets-modernizr (2.7.1)
     rb-fsevent (0.9.4)
     rb-inotify (0.9.3)
       ffi (>= 0.5.0)
@@ -161,8 +158,6 @@ DEPENDENCIES
   nokogiri
   oily_png
   oj
-  rails-assets-jquery
-  rails-assets-modernizr
   redcarpet
   sass
   therubyracer
