@@ -1,10 +1,157 @@
 ---
-title: Welcome to Middleman
+title: PGTune - Tune PostgreSQL config
 ---
+<div class="row">
+  <div class="large-12 columns">
+    <!-- Navigation -->
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <!-- Title Area -->
+        <li class="name">
+          <h1><%= link_to "PGTune", "/" %></h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
+      </ul>
 
-<div class="welcome">
-  <h1>Middleman is Watching</h1>
-  <p class="doc">
-    <%= link_to "Read Online Documentation", "http://middlemanapp.com/" %>
-  </p><!-- .doc -->
-</div><!-- .welcome -->
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+          <li>
+            <a href="#">Right Button Active</a>
+          </li>
+          <li>
+            <a href="#">Right Button Active</a>
+          </li>
+        </ul>
+      </section>
+
+    </nav>
+    <!-- End Navigation -->
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns">
+    <div class="row" data-equalizer>
+
+      <div class="large-6 columns" data-equalizer-watch>
+        <form id="pgTuneForm" action="/">
+          <!-- os type begin -->
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="pgtOsTypeValue">OS Type
+                <span class="right">
+                  <span data-tooltip class="has-tip" title="Select type of operation system, where working PostgreSQL database">what is this?</span>
+                </span>
+              </label>
+              <select id="pgtOsTypeValue">
+                <option value="linux">Linux/OS X</option>
+                <option value="win">Windows</option>
+              </select>
+            </div>
+          </div>
+          <!-- os type end -->
+          <!-- db type begin -->
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="pgtDbTypeValue">DB Type
+                <span class="right">
+                  <span data-tooltip class="has-tip" title="For what type of application used PostgreSQL">what is this?</span>
+                </span>
+              </label>
+              <select id="pgtDbTypeValue">
+                <option value="web">Web applications</option>
+                <option value="oltp">Online transaction processing systems</option>
+                <option value="dw">Data warehouses</option>
+                <option value="desktop">Desktop applications</option>
+                <option value="mixed">Mixed type of applications</option>
+              </select>
+            </div>
+          </div>
+          <!-- db type end -->
+          <!-- memory begin -->
+          <div class="row">
+            <div class="large-12 columns">
+              <div class="row collapse">
+                <label for="pgtTotalMemValue">Total Memory
+                  <span class="right">
+                    <span data-tooltip class="has-tip" title="How many memory can use PostgreSQL on server">what is this?</span>
+                  </span>
+                </label>
+                <div class="small-9 columns">
+                  <input id="pgtTotalMemValue" type="number" placeholder="Memory size, what can use PostgreSQL (required)" required="required" min="1" max="999" step="1" pattern="[0-9]{1,3}" />
+                </div>
+                <div class="small-3 columns">
+                  <select id="pgtTotalMemMeasValue">
+                    <option value="tb">TB</option>
+                    <option value="gb" selected="selected">GB</option>
+                    <option value="mb">MB</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- memory end -->
+          <!-- connections begin -->
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="pgtConnectionsValue">Number of Connections
+                <span class="right">
+                  <span data-tooltip class="has-tip" title="Maximum number of connection for PostgreSQL clients">what is this?</span>
+                </span>
+              </label>
+              <input id="pgtConnectionsValue" type="number" placeholder="Number of Connections (optional)" min="1" max="999" step="1" pattern="[0-9]{1,3}" />
+            </div>
+          </div>
+          <!-- end begin -->
+
+          <div class="row">
+            <div class="large-12 columns">
+              <input type="submit" class="button expand" value="Generate" />
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="large-6 columns" data-equalizer-watch>
+        <div class="row">
+          <div class="large-12 columns">
+            <pre>
+              <code class="language-ini">
+maintenance_work_mem = 128MB
+effective_cache_size = 1536MB
+work_mem = 6656kB
+wal_buffers = 4MB
+shared_buffers = 512MB
+max_connections = 300
+              </code>
+            </pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <!-- Footer -->
+
+<footer class="row">
+  <div class="large-12 columns">
+    <hr>
+    <div class="row">
+      <div class="large-6 columns">
+        <p>© Copyright no one at all. Go to town.</p>
+      </div>
+      <div class="large-6 columns">
+        <ul class="inline-list right">
+          <li><a href="#">Link 1</a></li>
+          <li><a href="#">Link 2</a></li>
+          <li><a href="#">Link 3</a></li>
+          <li><a href="#">Link 4</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
