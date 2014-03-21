@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 source 'http://rails-assets.org'
 
-gem "middleman"
+gem 'middleman'
 # EXTENSIONS
-gem "middleman-livereload"
+gem 'middleman-livereload'
 gem 'middleman-favicon-maker', '>= 3.5' # Generate favicon files in various sizes from a base image
 gem 'middleman-minify-html' # min html
 gem 'middleman-deploy' # Deploy site
