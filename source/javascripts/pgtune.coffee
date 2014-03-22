@@ -1,5 +1,6 @@
 class Pgtune
   constructor: (@form, @codeOut, @oldPgkernel) ->
+    # submit form with data
     @form.submit @_generateConfigForm
     # appcache
     @_initAppcache()
