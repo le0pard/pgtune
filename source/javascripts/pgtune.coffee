@@ -42,7 +42,7 @@ class Pgtune
     constForSize = @constSize['GB'] unless constForSize?
     memInSize = parseInt($('#pgtTotalMemValue').val(), 10)
     # validate
-    if memInSize < 1 or memInSize > 999
+    if memInSize < 1 or memInSize > 9999
       memInSize = 2
       $('#pgtTotalMemValue').val(memInSize)
     @totalMemory = parseInt(memInSize, 10) * constForSize
@@ -58,7 +58,7 @@ class Pgtune
     # Allow overriding the maximum connections
     gConfig['max_connections'] = parseInt($('#pgtConnectionsValue').val(), 10) if $('#pgtConnectionsValue').val().length
     # validate
-    if gConfig['max_connections'] < 1 or gConfig['max_connections'] > 999
+    if gConfig['max_connections'] < 1 or gConfig['max_connections'] > 9999
       gConfig['max_connections'] = @conByType[@dbType]
 
     memoryInKB = @totalMemory / @constSize['KB']
