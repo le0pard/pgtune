@@ -91,98 +91,101 @@ title: PGTune
 
       <div class="large-6 columns" data-equalizer-watch>
         <form id="pgTuneForm" action="/">
-          <!-- os type begin -->
-          <div class="row">
-            <div class="large-12 columns">
-              <label for="pgtOsTypeValue">OS Type
-                <span class="right">
-                  <span data-tooltip class="has-tip" title="Select type of operation system, where working PostgreSQL database">what is this?</span>
-                </span>
-              </label>
-              <select id="pgtOsTypeValue">
-                <option value="linux">Linux/OS X</option>
-                <option value="windows">Windows</option>
-              </select>
-            </div>
-          </div>
-          <!-- os type end -->
-          <!-- db type begin -->
-          <div class="row">
-            <div class="large-12 columns">
-              <label for="pgtDbTypeValue">DB Type
-                <span class="right">
-                  <span data-tooltip class="has-tip" title="For what type of application used PostgreSQL">what is this?</span>
-                </span>
-              </label>
-              <select id="pgtDbTypeValue">
-                <option value="web">Web applications</option>
-                <option value="oltp">Online transaction processing systems</option>
-                <option value="dw">Data warehouses</option>
-                <option value="desktop">Desktop applications</option>
-                <option value="mixed">Mixed type of applications</option>
-              </select>
-            </div>
-          </div>
-          <!-- db type end -->
-          <!-- memory begin -->
-          <div class="row">
-            <div class="large-12 columns">
-              <div class="row collapse">
-                <label for="pgtTotalMemValue">Total Memory
+          <fieldset class="radius">
+            <!-- os type begin -->
+            <div class="row">
+              <div class="large-12 columns">
+                <label for="pgtOsTypeValue">OS Type
                   <span class="right">
-                    <span data-tooltip class="has-tip" title="How many memory can use PostgreSQL on server">what is this?</span>
+                    <span data-tooltip class="has-tip" title="Select type of operation system, where working PostgreSQL database">what is this?</span>
                   </span>
                 </label>
-                <div class="small-10 columns">
-                  <input id="pgtTotalMemValue" type="number" placeholder="Memory size, what can use PostgreSQL (required)" autofocus="autofocus" required="required" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
-                </div>
-                <div class="small-2 columns">
-                  <select id="pgtTotalMemMeasValue">
-                    <option value="TB">TB</option>
-                    <option value="GB" selected="selected">GB</option>
-                    <option value="MB">MB</option>
-                  </select>
+                <select class="radius" id="pgtOsTypeValue">
+                  <option value="linux">Linux/OS X</option>
+                  <option value="windows">Windows</option>
+                </select>
+              </div>
+            </div>
+            <!-- os type end -->
+            <!-- db type begin -->
+            <div class="row">
+              <div class="large-12 columns">
+                <label for="pgtDbTypeValue">DB Type
+                  <span class="right">
+                    <span data-tooltip class="has-tip" title="For what type of application used PostgreSQL">what is this?</span>
+                  </span>
+                </label>
+                <select class="radius" id="pgtDbTypeValue">
+                  <option value="web">Web applications</option>
+                  <option value="oltp">Online transaction processing systems</option>
+                  <option value="dw">Data warehouses</option>
+                  <option value="desktop">Desktop applications</option>
+                  <option value="mixed">Mixed type of applications</option>
+                </select>
+              </div>
+            </div>
+            <!-- db type end -->
+            <!-- memory begin -->
+            <div class="row">
+              <div class="large-12 columns">
+                <div class="row collapse">
+                  <label for="pgtTotalMemValue">Total Memory
+                    <span class="right">
+                      <span data-tooltip class="has-tip" title="How many memory can use PostgreSQL on server">what is this?</span>
+                    </span>
+                  </label>
+                  <div class="small-10 columns">
+                    <input class="radius-left" id="pgtTotalMemValue" type="number" placeholder="Memory size, what can use PostgreSQL (required)" autofocus="autofocus" required="required" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
+                  </div>
+                  <div class="small-2 columns">
+                    <select class="radius-right" id="pgtTotalMemMeasValue">
+                      <option value="TB">TB</option>
+                      <option value="GB" selected="selected">GB</option>
+                      <option value="MB">MB</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- memory end -->
-          <!-- connections begin -->
-          <div class="row">
-            <div class="large-12 columns">
-              <label for="pgtConnectionsValue">Number of Connections
-                <span class="right">
-                  <span data-tooltip class="has-tip" title="Maximum number of connection for PostgreSQL clients">what is this?</span>
-                </span>
-              </label>
-              <input id="pgtConnectionsValue" type="number" placeholder="Number of Connections (optional)" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
+            <!-- memory end -->
+            <!-- connections begin -->
+            <div class="row">
+              <div class="large-12 columns">
+                <label for="pgtConnectionsValue">Number of Connections
+                  <span class="right">
+                    <span data-tooltip class="has-tip" title="Maximum number of connection for PostgreSQL clients">what is this?</span>
+                  </span>
+                </label>
+                <input class="radius" id="pgtConnectionsValue" type="number" placeholder="Number of Connections (optional)" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
+              </div>
             </div>
-          </div>
-          <!-- end begin -->
+            <!-- end begin -->
 
-          <div class="row">
-            <div class="large-12 columns">
-              <input id="pgTuneButton" type="submit" class="button expand" value="Generate" />
+            <div class="row">
+              <div class="large-12 columns">
+                <input id="pgTuneButton" type="submit" class="button expand radius" value="Generate" />
+              </div>
             </div>
-          </div>
-
+          </fieldset>
         </form>
       </div>
 
       <div class="large-6 columns" data-equalizer-watch>
-        <p>PostgreSQL settings (add/modify this settings in <kbd>postgresql.conf</kbd> and restart database):</p>
-        <div class="row">
-          <div class="large-12 columns">
-            <pre><code id="postgresConfigOut" class="language-ini">Set "Total Memory" size and
-click "Generate" button</code></pre>
-          </div>
-        </div>
-        <div id="oldPostgresBlock">
-          <hr />
-          <p><span class="success label label-for-kernel">NOTICE:</span> For PostgreSQL &lt; 9.4 you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in <kbd>/etc/sysctl.conf</kbd>):</p>
+        <div class="col-address">
+          <p>PostgreSQL settings (add/modify this settings in <kbd>postgresql.conf</kbd> and restart database):</p>
           <div class="row">
             <div class="large-12 columns">
-              <pre><code id="postgresOldkernelOut" class="language-ini"></code></pre>
+              <pre><code id="postgresConfigOut" class="language-ini">Set "Total Memory" size and
+  click "Generate" button</code></pre>
+            </div>
+          </div>
+          <div id="oldPostgresBlock">
+            <hr />
+            <p><span class="success label label-for-kernel">NOTICE:</span> For PostgreSQL &lt; 9.4 you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in <kbd>/etc/sysctl.conf</kbd>):</p>
+            <div class="row">
+              <div class="large-12 columns">
+                <pre><code id="postgresOldkernelOut" class="language-ini"></code></pre>
+              </div>
             </div>
           </div>
         </div>
