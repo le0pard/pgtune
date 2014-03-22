@@ -147,18 +147,18 @@ title: PGTune - Tuning PostgreSQL config
       </div>
 
       <div class="large-6 columns" data-equalizer-watch>
+        <p>PostgreSQL config options (add/modify this settings in postgresql.conf):</p>
         <div class="row">
           <div class="large-12 columns">
-            <pre>
-              <code class="language-ini">
-maintenance_work_mem = 128MB
-effective_cache_size = 1536MB
-work_mem = 6656kB
-wal_buffers = 4MB
-shared_buffers = 512MB
-max_connections = 300
-              </code>
-            </pre>
+            <pre><code id="postgresConfigOut" class="language-ini">Enter memory size and click "Generate" button</code></pre>
+          </div>
+        </div>
+        <div id="oldPostgresBlock">
+          <p>For PostgreSQL &lt; 9.4 you also should modify shmmax and shmall for kernel:</p>
+          <div class="row">
+            <div class="large-12 columns">
+              <pre><code id="postgresOldkernelOut" class="language-ini"></code></pre>
+            </div>
           </div>
         </div>
       </div>
