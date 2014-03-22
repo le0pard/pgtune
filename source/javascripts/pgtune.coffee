@@ -203,3 +203,8 @@ class Pgtune
 $ ->
   if $('#pgTuneForm').length and $('#postgresConfigOut').length and $('#postgresOldkernelOut').length
     new Pgtune($('#pgTuneForm'), $('#postgresConfigOut'), $('#postgresOldkernelOut'))
+  # AddThis buttons
+  if $('#socialSharingBlock').is(":visible")
+    window.addthis_config =
+      data_track_addressbar:true
+    $.getScript "http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-527012705413f0b7"
