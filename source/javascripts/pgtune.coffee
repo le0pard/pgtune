@@ -2,6 +2,10 @@ class Pgtune
   constructor: (@form, @codeOut, @oldPgkernel) ->
     # submit form with data
     @form.submit @_generateConfigForm
+    # on tab submit form ("Next" button on mobile keyboard)
+    if Modernizr.touch
+      $('#pgtTotalMemValue').on 'keydown', @_mobileNextButton
+      $('#pgtConnectionsValue').on 'keydown', @_mobileNextButton
     # appcache
     @_initAppcache()
     # init foundation
@@ -27,6 +31,10 @@ class Pgtune
   _generateConfigForm: (event) =>
     event.preventDefault()
     @_generateConfig()
+
+  # mobile next button
+  _mobileNextButton: (e) =>
+    @form.submit() if e.which? and e.which is 9
 
   # generate config
   _generateConfig: =>
