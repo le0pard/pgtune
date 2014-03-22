@@ -18,7 +18,7 @@ Encoding.default_internal = Encoding::UTF_8
 # Page options, layouts, aliases and proxies
 ###
 
-page "/manifest.text", proxy: "/pages/manifest.text", layout: false
+page "/manifest.appcache", proxy: "/pages/manifest.appcache", layout: false
 
 # Per-page layout changes:
 #
