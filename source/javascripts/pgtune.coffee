@@ -1,6 +1,8 @@
 class Pgtune
   constructor: (@form, @codeOut, @oldPgkernel) ->
     @form.submit @_generateConfigForm
+    # appcache
+    @_initAppcache()
     # init foundation
     $(document).foundation()
     # constants
@@ -171,6 +173,16 @@ class Pgtune
   # not size values
   _notSizeValues: =>
     ['max_connections', 'checkpoint_segments', 'checkpoint_completion_target', 'default_statistics_target', '# WARNING']
+
+  # appcache
+  _initAppcache: =>
+    return unless Modernizr.applicationcache is true
+    window.applicationCache.addEventListener 'updateready', @_appCacheUpdated, false
+  # new assets available
+  _appCacheUpdated: (e) =>
+    return unless window.applicationCache.status is window.applicationCache.UPDATEREADY
+    window.applicationCache.swapCache()
+    window.location.reload() if confirm('A new version of this app is available. Load it?')
 
 $ ->
   if $('#pgTuneForm').length and $('#postgresConfigOut').length and $('#postgresOldkernelOut').length
