@@ -42,10 +42,10 @@ page "/manifest.appcache", proxy: "/pages/manifest.appcache", layout: false
 ###
 helpers do
   def default_keywords_helper
-    "pgtune"
+    "pgtune, postgresql, postgres, tuning, config, configuration, free, open source"
   end
   def default_description_helper
-    "pgtune"
+    "PGTune - Tuning PostgreSQL config by your hardware"
   end
 end
 

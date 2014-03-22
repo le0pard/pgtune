@@ -31,13 +31,21 @@ class Pgtune
   # generate config
   _generateConfig: =>
     @osType = $('#pgtOsTypeValue').val()
+    @osType = 'linux' if jQuery.inArray(@osType, ['linux', 'windows']) is -1
 
     @dbType = $('#pgtDbTypeValue').val()
-    @dbType = 'mixed' unless @conByType[@dbType]?
+    unless @conByType[@dbType]?
+      @dbType = 'mixed'
+      $('#pgtDbTypeValue').val(@dbType)
 
     constForSize = @constSize[$('#pgtTotalMemMeasValue').val()]
     constForSize = @constSize['GB'] unless constForSize?
-    @totalMemory = parseInt($('#pgtTotalMemValue').val(), 10) * constForSize
+    memInSize = parseInt($('#pgtTotalMemValue').val(), 10)
+    # validate
+    if memInSize < 1 or memInSize > 999
+      memInSize = 2
+      $('#pgtTotalMemValue').val(memInSize)
+    @totalMemory = parseInt(memInSize, 10) * constForSize
 
     @_postgresSettings()
     @_kernelSettings()
@@ -49,8 +57,14 @@ class Pgtune
       max_connections: @conByType[@dbType]
     # Allow overriding the maximum connections
     gConfig['max_connections'] = parseInt($('#pgtConnectionsValue').val(), 10) if $('#pgtConnectionsValue').val().length
+    # validate
+    if gConfig['max_connections'] < 1 or gConfig['max_connections'] > 999
+      gConfig['max_connections'] = @conByType[@dbType]
 
     memoryInKB = @totalMemory / @constSize['KB']
+
+    # messages in config
+    infoMsg = ""
 
     # this tool not being optimal for low memory systems
     if @totalMemory >= (256 * @constSize['MB'])
@@ -94,7 +108,7 @@ class Pgtune
         gConfig['maintenance_work_mem'] = Math.floor(2 * @constSize['GB'] / @constSize['KB'])
 
     else
-      gConfig['# WARNING'] = "\n# this tool not being optimal \n# for low memory systems"
+      infoMsg = "# WARNING\n# this tool not being optimal \n# for low memory systems\n"
 
     # checkpoint_segments
     gConfig['checkpoint_segments'] = {
@@ -115,14 +129,15 @@ class Pgtune
     # wal_buffers
     # Follow auto-tuning guideline for wal_buffers added in 9.1, where it's
     # set to 3% of shared_buffers up to a maximum of 16MB.
-    gConfig['wal_buffers'] = Math.floor(3 * gConfig['shared_buffers'] / 100)
-    if gConfig['wal_buffers'] > (16 * @constSize['MB'] / @constSize['KB'])
-      gConfig['wal_buffers'] = Math.floor(16 * @constSize['MB'] / @constSize['KB'])
-    # It's nice of wal_buffers is an even 16MB if it's near that number.  Since
-    # that is a common case on Windows, where shared_buffers is clipped to 512MB,
-    # round upwards in that situation
-    if (14 * @constSize['MB'] / @constSize['KB']) < gConfig['wal_buffers'] < (16 * @constSize['MB'] / @constSize['KB'])
-      gConfig['wal_buffers'] = Math.floor(16 * @constSize['MB'] / @constSize['KB'])
+    if gConfig['shared_buffers']?
+      gConfig['wal_buffers'] = Math.floor(3 * gConfig['shared_buffers'] / 100)
+      if gConfig['wal_buffers'] > (16 * @constSize['MB'] / @constSize['KB'])
+        gConfig['wal_buffers'] = Math.floor(16 * @constSize['MB'] / @constSize['KB'])
+      # It's nice of wal_buffers is an even 16MB if it's near that number.  Since
+      # that is a common case on Windows, where shared_buffers is clipped to 512MB,
+      # round upwards in that situation
+      if (14 * @constSize['MB'] / @constSize['KB']) < gConfig['wal_buffers'] < (16 * @constSize['MB'] / @constSize['KB'])
+        gConfig['wal_buffers'] = Math.floor(16 * @constSize['MB'] / @constSize['KB'])
     # default_statistics_target
     gConfig['default_statistics_target'] = {
       web: 100,
@@ -133,7 +148,7 @@ class Pgtune
     }[@dbType]
 
     arrayConfig = ("#{key} = #{@_formatedValue(key, value)}" for key, value of gConfig)
-    @codeOut.text(arrayConfig.join("\n"))
+    @codeOut.text("#{infoMsg}#{arrayConfig.join("\n")}")
 
   # postgresql kernel
   _kernelSettings: =>
@@ -173,7 +188,7 @@ class Pgtune
     return "#{value}#{unit}"
   # not size values
   _notSizeValues: =>
-    ['max_connections', 'checkpoint_segments', 'checkpoint_completion_target', 'default_statistics_target', '# WARNING']
+    ['max_connections', 'checkpoint_segments', 'checkpoint_completion_target', 'default_statistics_target']
 
   # appcache
   _initAppcache: =>
