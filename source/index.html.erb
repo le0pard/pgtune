@@ -158,7 +158,7 @@ click "Generate" button</code></pre>
           </div>
         </div>
         <div id="oldPostgresBlock">
-          <h5>NOTICE: For PostgreSQL &lt; 9.4 you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">shmmax and shmall for kernel</a>:</h5>
+          <p><span class="success label label-for-kernel">NOTICE:</span> For PostgreSQL &lt; 9.4 you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in /etc/sysctl.conf):</p>
           <div class="row">
             <div class="large-12 columns">
               <pre><code id="postgresOldkernelOut" class="language-ini"></code></pre>
