@@ -215,5 +215,8 @@ $ ->
   # AddThis buttons
   if $('#socialSharingBlock').is(":visible")
     window.addthis_config =
-      data_track_addressbar:true
-    $.getScript "http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-527012705413f0b7"
+      data_track_addressbar: true
+    window.addthis_share =
+      title: "PgTune"
+      description: "Tuning PostgreSQL config by your hardware"
+    $.getScript "http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-532ed3f46ffc37ab"
