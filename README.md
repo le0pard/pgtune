@@ -1,6 +1,6 @@
 # [PgTune](http://pgtune.leopard.in.ua/)
 
-Tuning PostgreSQL config by your hardware.
+Tuning PostgreSQL config by your hardware. Based on original [pgtune](http://pgfoundry.org/projects/pgtune/).
 
 Main calculation logic [here](https://github.com/le0pard/pgtune/blob/master/source/javascripts/pgtune.coffee).
 
