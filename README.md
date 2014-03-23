@@ -1,4 +1,4 @@
-# [PGTune](http://pgtune.leopard.in.ua/)
+# [PgTune](http://pgtune.leopard.in.ua/)
 
 Tuning PostgreSQL config by your hardware.
 
