@@ -56,15 +56,16 @@ code
 
 .hero-title,
 .small-hero-title
-  padding-top: 5px
+  padding-top: 30px
   color: #ff8800
   text-shadow: 0px 2px 2px rgba(12, 12, 11, 0.93)
-  font-size: 4rem
+  font-size: 4.8rem
   text-align: center
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif
 
 .small-hero-title
-  font-size: 2.5rem
+  padding-top: 5px
+  font-size: 4rem
 
 .hero-subtitle
   color: #f8ba73
@@ -74,6 +75,9 @@ code
   color: #e7ebf3
   text-align: center
 
+.hero-last-block
+  padding-bottom: 20px
+
 .label-for-info
   @include label($padding: 5px, $text-size: 1rem,$bg: #7a8798, $radius: 3px)
   margin-bottom: 0
@@ -82,7 +86,7 @@ code
   padding-top: 15px
 
 .calculator-block
-  margin: 30px 0
+  margin: 55px 0
   padding-bottom: 110px
   .calculator
     border: 1px solid #333942
@@ -104,13 +108,15 @@ code
     .form-submit-block
       text-align: center
       .calculator-button
-        @include button(rem-calc(16), #e37f09, true, true, false, false)
+        @include button(rem-calc(16), #e37f09, true, false, false, false)
         font-size: 1.5rem
         -moz-box-shadow: inset 0px 1px 0px 0px #fce2c1
         -webkit-box-shadow: inset 0px 1px 0px 0px #fce2c1
         box-shadow: inset 0px 1px 0px 0px #fce2c1
         color: #ffffff
         text-shadow: 1px 1px 0px #cc9f52
+        padding-right: 4rem
+        padding-left: 4rem
 
 .footer-box
   position: relative
@@ -129,3 +135,32 @@ code
     color: #565c65
     text-align: center
     padding-top: 10px
+
+
+
+
+
+
+@media #{$small-only}
+  .calculator-block
+    margin: 20px 0
+    .calculator-button
+      @include button(rem-calc(16), #e37f09, true, true, false, false)
+      font-size: 1.5rem
+      -moz-box-shadow: inset 0px 1px 0px 0px #fce2c1
+      -webkit-box-shadow: inset 0px 1px 0px 0px #fce2c1
+      box-shadow: inset 0px 1px 0px 0px #fce2c1
+      color: #ffffff
+      text-shadow: 1px 1px 0px #cc9f52
+
+@media #{$medium-only}
+  .calculator-block
+    margin: 20px 0
+    .calculator-button
+      @include button(rem-calc(16), #e37f09, true, true, false, false)
+      font-size: 1.5rem
+      -moz-box-shadow: inset 0px 1px 0px 0px #fce2c1
+      -webkit-box-shadow: inset 0px 1px 0px 0px #fce2c1
+      box-shadow: inset 0px 1px 0px 0px #fce2c1
+      color: #ffffff
+      text-shadow: 1px 1px 0px #cc9f52
