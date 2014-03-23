@@ -1,224 +1,189 @@
 ---
-title: PGTune
+title: PgTune
 ---
-<div class="row">
-  <div class="large-12 columns">
-    <!-- Navigation -->
-    <nav class="top-bar" data-topbar>
-      <ul class="title-area">
-        <!-- Title Area -->
-        <li class="name">
-          <h1><%= link_to "PGTune", "/" %></h1>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
-      </ul>
+<div class="wrapper">
 
-      <section class="top-bar-section">
-        <!-- Right Nav Section -->
-        <ul class="right">
-          <li>
-            <a href="http://postgresql.leopard.in.ua">PostgreSQL book (Russian)</a>
-          </li>
-          <li>
-            <a href="http://leopard.in.ua">My Blog</a>
-          </li>
-          <li>
-            <a href="https://github.com/le0pard/pgtune">Source Code</a>
-          </li>
-        </ul>
-      </section>
-
-    </nav>
-    <!-- End Navigation -->
-  </div>
-</div>
-
-
-
-<div class="row">
-
-  <div class="large-12 columns show-for-large-up">
+  <div class="hero-block">
     <div class="row">
-      <div class="small-4 large-4 columns">
-        <img src="http://placehold.it/500x350&text=[img]">
-      </div>
-      <div class="small-8 large-8 columns">
-        <p class="main-description">
-          PGTune is calculate configuration for PostgreSQL based on the maximum performance for a given hardware configuration.
-        </p>
-        <p class="main-description">
-          It isn't a panacea for the optimization settings of PostgreSQL. Many settings depend not only on the hardware configuration, but also on the size of the database, the number of clients and the complexity of queries, so that optimally configure the database can only be given all these parameters.
-        </p>
-        <p class="main-description">
-          Working in offline and as mobile app.
-        </p>
+      <div class="large-12 columns">
+
+        <div class="row">
+          <div class="large-6 large-centered columns">
+            <h1 class="hero-title show-for-large-up">
+              <%=image_tag "postgres.png", alt: "PgTune", title: "PgTune" %> PgTune
+            </h1>
+            <h1 class="small-hero-title hide-for-large-up">
+              <%=image_tag "postgres.png", alt: "PgTune", title: "PgTune" %> PgTune
+            </h1>
+          </div>
+        </div>
+
+        <div class="row show-for-large-up">
+          <div class="large-10 large-centered columns">
+            <h2 class="hero-subtitle">Configuration calculator for PostgreSQL</h2>
+          </div>
+        </div>
+
+        <div class="row show-for-large-up">
+          <div class="large-12 large-centered columns">
+            <p class="hero-text">PGTune calculate configuration for PostgreSQL based on the maximum performance for a given hardware configuration. It isn't a panacea for the optimization settings of PostgreSQL. Many settings depend not only on the hardware configuration, but also on the size of the database, the number of clients and the complexity of queries, so that optimally configure the database can only be given all these parameters.</p>
+            <p class="hero-text">Working in offline and as mobile app.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <div class="small-12 columns hide-for-large-up">
+  <div class="calculator-block">
     <div class="row">
-      <div class="small-4 large-4 columns">
-        <img src="http://placehold.it/500x350&text=[img]">
-      </div>
-      <div class="small-8 large-8 columns">
-        <p class="main-description">
-          PGTune is configure PostgreSQL based on the maximum performance for a given hardware configuration.
-        </p>
-        <p class="main-description hide-for-medium-only hide-for-small-only">
-          It isn't a panacea for the optimization settings of PostgreSQL. Many settings depend not only on the hardware configuration, but also on the size of the database, the number of clients and the complexity of queries, so that optimally configure the database can only be given all these parameters.
-        </p>
-        <p class="main-description hide-for-small-only">
-          Working in offline and as mobile app.
-        </p>
-      </div>
-    </div>
-  </div>
+      <div class="large-12 columns calculator">
+        <div class="row calculator-row" data-equalizer>
 
-</div>
-
-
-<div class="row">
-  <div class="large-12 columns">
-    <hr />
-  </div>
-</div>
-
-
-<div class="row">
-  <div class="large-12 columns">
-    <div class="row" data-equalizer>
-
-      <div class="large-6 columns" data-equalizer-watch>
-        <form id="pgTuneForm" action="/">
-          <fieldset class="radius">
-            <!-- os type begin -->
-            <div class="row">
-              <div class="large-12 columns">
-                <label for="pgtOsTypeValue">OS Type
-                  <span class="right">
-                    <span data-tooltip class="has-tip" title="Select type of operation system, where working PostgreSQL database">what is this?</span>
-                  </span>
-                </label>
-                <select class="radius" id="pgtOsTypeValue">
-                  <option value="linux">Linux/OS X</option>
-                  <option value="windows">Windows</option>
-                </select>
-              </div>
-            </div>
-            <!-- os type end -->
-            <!-- db type begin -->
-            <div class="row">
-              <div class="large-12 columns">
-                <label for="pgtDbTypeValue">DB Type
-                  <span class="right">
-                    <span data-tooltip class="has-tip" title="For what type of application used PostgreSQL">what is this?</span>
-                  </span>
-                </label>
-                <select class="radius" id="pgtDbTypeValue">
-                  <option value="web">Web applications</option>
-                  <option value="oltp">Online transaction processing systems</option>
-                  <option value="dw">Data warehouses</option>
-                  <option value="desktop">Desktop applications</option>
-                  <option value="mixed">Mixed type of applications</option>
-                </select>
-              </div>
-            </div>
-            <!-- db type end -->
-            <!-- memory begin -->
-            <div class="row">
-              <div class="large-12 columns">
-                <div class="row collapse">
-                  <label for="pgtTotalMemValue">Total Memory
+          <div class="large-6 columns" data-equalizer-watch>
+            <h3 class="calculator-title">Parameters of your system</h3>
+            <form id="pgTuneForm" action="/">
+              <!-- os type begin -->
+              <div class="row">
+                <div class="large-12 columns">
+                  <label for="pgtOsTypeValue">OS Type
                     <span class="right">
-                      <span data-tooltip class="has-tip" title="How many memory can use PostgreSQL on server">what is this?</span>
+                      <span data-tooltip class="has-tip" title="Select type of operation system, where working PostgreSQL database">what is this?</span>
                     </span>
                   </label>
-                  <div class="small-10 columns">
-                    <input class="radius-left" id="pgtTotalMemValue" type="number" placeholder="Memory size, what can use PostgreSQL (required)" autofocus="autofocus" required="required" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
+                  <select class="radius" id="pgtOsTypeValue">
+                    <option value="linux">Linux/OS X</option>
+                    <option value="windows">Windows</option>
+                  </select>
+                </div>
+              </div>
+              <!-- os type end -->
+              <!-- db type begin -->
+              <div class="row">
+                <div class="large-12 columns">
+                  <label for="pgtDbTypeValue">DB Type
+                    <span class="right">
+                      <span data-tooltip class="has-tip" title="For what type of application used PostgreSQL">what is this?</span>
+                    </span>
+                  </label>
+                  <select class="radius" id="pgtDbTypeValue">
+                    <option value="web">Web applications</option>
+                    <option value="oltp">Online transaction processing systems</option>
+                    <option value="dw">Data warehouses</option>
+                    <option value="desktop">Desktop applications</option>
+                    <option value="mixed">Mixed type of applications</option>
+                  </select>
+                </div>
+              </div>
+              <!-- db type end -->
+              <!-- memory begin -->
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="row collapse">
+                    <label for="pgtTotalMemValue">Total Memory
+                      <span class="right">
+                        <span data-tooltip class="has-tip" title="How many memory can use PostgreSQL on server">what is this?</span>
+                      </span>
+                    </label>
+                    <div class="small-10 columns">
+                      <input class="radius-left" id="pgtTotalMemValue" type="number" placeholder="Memory size, what can use PostgreSQL (required)" autofocus="autofocus" required="required" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
+                    </div>
+                    <div class="small-2 columns">
+                      <select class="radius-right" id="pgtTotalMemMeasValue">
+                        <option value="TB">TB</option>
+                        <option value="GB" selected="selected">GB</option>
+                        <option value="MB">MB</option>
+                      </select>
+                    </div>
                   </div>
-                  <div class="small-2 columns">
-                    <select class="radius-right" id="pgtTotalMemMeasValue">
-                      <option value="TB">TB</option>
-                      <option value="GB" selected="selected">GB</option>
-                      <option value="MB">MB</option>
-                    </select>
+                </div>
+              </div>
+              <!-- memory end -->
+              <!-- connections begin -->
+              <div class="row">
+                <div class="large-12 columns">
+                  <label for="pgtConnectionsValue">Number of Connections
+                    <span class="right">
+                      <span data-tooltip class="has-tip" title="Maximum number of connection for PostgreSQL clients">what is this?</span>
+                    </span>
+                  </label>
+                  <input class="radius" id="pgtConnectionsValue" type="number" placeholder="Number of Connections (optional)" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
+                </div>
+              </div>
+              <!-- end begin -->
+
+              <div class="row">
+                <div class="large-12 columns form-submit-block">
+                  <input id="pgTuneButton" type="submit" class="calculator-button" value="Generate" />
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="large-6 columns" data-equalizer-watch>
+            <div class="settings-result-block">
+              <p>PostgreSQL settings (add/modify this settings in <kbd>postgresql.conf</kbd> and restart database):</p>
+              <div class="row">
+                <div class="large-12 columns">
+                  <span class="clearHintForUser label-for-kernel">Set &quot;Total Memory&quot; for PostgreSQL and click &quot;Generate&quot; button</div>
+                  <pre><code id="postgresConfigOut" class="language-ini"></code></pre>
+                </div>
+              </div>
+              <div id="oldPostgresBlock">
+                <p><span class="label-for-kernel">NOTICE:</span> For PostgreSQL &lt; 9.4 you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in <kbd>/etc/sysctl.conf</kbd>):</p>
+                <div class="row">
+                  <div class="large-12 columns">
+                    <pre><code id="postgresOldkernelOut" class="language-ini"></code></pre>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- memory end -->
-            <!-- connections begin -->
-            <div class="row">
-              <div class="large-12 columns">
-                <label for="pgtConnectionsValue">Number of Connections
-                  <span class="right">
-                    <span data-tooltip class="has-tip" title="Maximum number of connection for PostgreSQL clients">what is this?</span>
-                  </span>
-                </label>
-                <input class="radius" id="pgtConnectionsValue" type="number" placeholder="Number of Connections (optional)" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
-              </div>
-            </div>
-            <!-- end begin -->
-
-            <div class="row">
-              <div class="large-12 columns">
-                <input id="pgTuneButton" type="submit" class="button expand radius" value="Generate" />
-              </div>
-            </div>
-          </fieldset>
-        </form>
-      </div>
-
-      <div class="large-6 columns" data-equalizer-watch>
-        <div class="col-address">
-          <p>PostgreSQL settings (add/modify this settings in <kbd>postgresql.conf</kbd> and restart database):</p>
-          <div class="row">
-            <div class="large-12 columns">
-              <pre><code id="postgresConfigOut" class="language-ini">Set "Total Memory" size and
-  click "Generate" button</code></pre>
-            </div>
           </div>
-          <div id="oldPostgresBlock">
-            <hr />
-            <p><span class="success label label-for-kernel">NOTICE:</span> For PostgreSQL &lt; 9.4 you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in <kbd>/etc/sysctl.conf</kbd>):</p>
-            <div class="row">
-              <div class="large-12 columns">
-                <pre><code id="postgresOldkernelOut" class="language-ini"></code></pre>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
-
     </div>
   </div>
-</div>
 
-<!-- Footer -->
+</div> <!-- wrapper -->
 
-<footer class="row">
-  <div class="large-12 columns">
-    <hr>
+<footer class="footer-box">
+  <!-- Footer -->
+  <div class="footer-first-box">
     <div class="row">
-      <div class="small-6 large-4 columns">
-        <p>&copy; Copyright <a href="https://twitter.com/leopard_me">Alexey Vasiliev aka leopard</a>.</p>
-      </div>
-      <div id="socialSharingBlock" class="large-4 columns show-for-large-up">
-        <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style " style="padding: 0">
-          <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-          <a class="addthis_button_tweet"></a>
-          <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+      <div class="large-12 columns">
+        <div class="row">
+          <div class="small-8 small-centered large-8 large-uncentered columns">
+            <ul class="inline-list footer-links">
+              <li><a href="http://postgresql.leopard.in.ua">PostgreSQL book (Russian)</a></li>
+              <li><a href="http://leopard.in.ua">My Blog</a></li>
+              <li><a href="https://github.com/le0pard/pgtune">Source code</a></li>
+            </ul>
+          </div>
+          <div id="socialSharingBlock" class="large-4 columns show-for-large-up">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style " style="padding-top: 10px">
+              <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+              <a class="addthis_button_tweet"></a>
+              <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+            </div>
+            <!-- AddThis Button END -->
+          </div>
         </div>
-        <!-- AddThis Button END -->
-      </div>
-      <div class="small-6 large-4 columns">
-        <ul class="inline-list right">
-          <li><a href="http://postgresql.leopard.in.ua">PostgreSQL book (Russian)</a></li>
-          <li><a href="http://leopard.in.ua">My Blog</a></li>
-        </ul>
       </div>
     </div>
   </div>
+
+  <div class="footer-second-box">
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="row">
+          <div class="small-8 small-centered large-8 large-centered columns">
+            <p>&copy; Copyright Alexey Vasiliev aka leopard</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </footer>

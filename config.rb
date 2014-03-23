@@ -1,6 +1,8 @@
 # encoding: utf-8
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
+
+Time.zone = "Kyiv"
 ###
 # Blog settings
 ###
@@ -45,7 +47,7 @@ helpers do
     "pgtune, postgresql, postgres, tuning, config, configuration, free, open source"
   end
   def default_description_helper
-    "PGTune - Tuning PostgreSQL config by your hardware"
+    "PgTune - Tuning PostgreSQL config by your hardware"
   end
 end
 

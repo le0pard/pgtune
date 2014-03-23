@@ -30,6 +30,7 @@ class Pgtune
   # on submit
   _generateConfigForm: (event) =>
     event.preventDefault()
+    $('span.clearHintForUser').remove()
     @_generateConfig()
 
   # mobile next button
