@@ -1,16 +1,18 @@
 # humanstxt.org/
 # The humans responsible & technology colophon
 
-# TEAM
+/* TEAM */
+  Developer: Alexey Vasiliev
+  Contact: leopard_ne [at] inbox.ru
+  Twitter: @leopard_me
 
-    Alexey Vasiliev -- developer -- https://twitter.com/leopard_me
+  Web designer: Anna Rotar
+  Twitter: @Ste4any
 
-# THANKS
-
-    Anna Rotar -- design -- https://twitter.com/Ste4any
-
-# TECHNOLOGY COLOPHON
-
-    HTML5, CSS3
-    jQuery, Modernizr
-    Ruby, SASS
+/* SITE */
+  Language: English
+  Standards: HTML5, CSS3
+  Doctype: HTML5
+  Components: Modernizr, jQuery, Foundation
+  IDE: Sublime Text, Photoshop
+  Source: https://github.com/le0pard/pgtune
