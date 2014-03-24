@@ -38,9 +38,9 @@ title: PgTune
   <div class="calculator-block">
     <div class="row">
       <div class="small-12 large-10 large-offset-1 columns calculator">
-        <div class="row calculator-row" data-equalizer>
+        <div class="row calculator-row">
 
-          <div class="large-6 medium-6 columns" data-equalizer-watch>
+          <div class="large-6 medium-6 columns">
             <h3 class="calculator-title">Parameters of your system</h3>
             <form id="pgTuneForm" action="/">
               <!-- os type begin -->
@@ -120,7 +120,7 @@ title: PgTune
             </form>
           </div>
 
-          <div class="large-6 medium-6 columns" data-equalizer-watch>
+          <div class="large-6 medium-6 columns">
             <div class="settings-result-block">
               <p>PostgreSQL settings (add/modify this settings in <kbd>postgresql.conf</kbd> and restart database):</p>
               <div class="row">
@@ -133,7 +133,7 @@ title: PgTune
                 <p><span class="label-for-info">NOTICE:</span> For PostgreSQL &lt; 9.3 you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in <kbd>/etc/sysctl.conf</kbd>):</p>
                 <div class="row">
                   <div class="large-12 columns">
-                    <pre><code id="postgresOldkernelOut" class="language-ini"></code></pre>
+                    <pre class="last-code-block"><code id="postgresOldkernelOut" class="language-ini"></code></pre>
                   </div>
                 </div>
               </div>
