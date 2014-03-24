@@ -5,7 +5,6 @@
 //= require ./vendors/foundation/foundation
 //= require ./vendors/foundation/foundation.tooltip
 //= require ./vendors/foundation/foundation.topbar
-//= require ./vendors/foundation/foundation.equalizer
 
 //= require ./vendors/highlight/highlight.pack
 
