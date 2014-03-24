@@ -160,9 +160,6 @@ class Pgtune
       desktop: 100,
       mixed: 100
     }[@dbType]
-    # web app synchronous_commit off
-    if 'web' is @dbType
-      gConfig['synchronous_commit'] = "'off'"
 
     arrayConfig = ("#{key} = #{@_formatedValue(key, value)}" for key, value of gConfig)
     @codeOut.text("#{infoMsg}#{arrayConfig.join("\n")}")
