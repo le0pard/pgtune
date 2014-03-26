@@ -89,8 +89,9 @@ class Pgtune
       if 'windows' is @osType and gConfig['shared_buffers'] > (512 * @constSize['MB'] / @constSize['KB'])
         gConfig['shared_buffers'] = (512 * @constSize['MB'] / @constSize['KB'])
       # and not more, whan 8GB for linux
-      else if 'windows' isnt @osType and gConfig['shared_buffers'] > (8 * @constSize['GB'] / @constSize['KB'])
-        gConfig['shared_buffers'] = (8 * @constSize['GB'] / @constSize['KB'])
+      # not true right now for new versions
+      #else if 'windows' isnt @osType and gConfig['shared_buffers'] > (8 * @constSize['GB'] / @constSize['KB'])
+      #  gConfig['shared_buffers'] = (8 * @constSize['GB'] / @constSize['KB'])
       # effective_cache_size
       gConfig['effective_cache_size'] = {
         web: Math.floor(memoryInKB * 3 / 4),
