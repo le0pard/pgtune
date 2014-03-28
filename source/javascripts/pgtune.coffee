@@ -8,8 +8,6 @@ class Pgtune
       $('#pgtConnectionsValue').on 'keydown', @_mobileNextButton
     # appcache
     @_initAppcache()
-    # init foundation
-    $(document).foundation()
     # constants
     @constSize =
       KB: 1024
@@ -26,6 +24,11 @@ class Pgtune
       dw: 20
       desktop: 5
       mixed: 100
+    # init foundation
+    try
+      $(document).foundation()
+    catch e
+      console.warn "Too old browser :(" if console.warn?
 
   # on submit
   _generateConfigForm: (event) =>
