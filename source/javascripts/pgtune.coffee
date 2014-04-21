@@ -217,7 +217,6 @@ class Pgtune
   # new assets available
   _appCacheUpdated: (e) =>
     return unless window.applicationCache.status is window.applicationCache.UPDATEREADY
-    window.applicationCache.swapCache()
     window.location.reload() if confirm('A new version of this app is available. Load it?')
 
 $ ->
