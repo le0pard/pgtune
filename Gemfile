@@ -7,7 +7,7 @@ gem 'middleman-minify-html' # min html
 gem 'middleman-deploy' # Deploy site
 # css
 gem 'sprockets', '2.8.0'
-gem 'sass'
+gem 'sass', '~> 3.3.0'
 gem 'compass'
 # UTILS
 gem 'oily_png'     # faster PNG

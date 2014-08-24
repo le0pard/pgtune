@@ -6,7 +6,7 @@ Tuning PostgreSQL config by your hardware. Based on original [pgtune](http://pgf
 
 ## Development
 
-Main calculation logic [here](https://github.com/le0pard/pgtune/blob/master/source/javascripts/pgtune.coffee).
+[Main calculation logic](https://github.com/le0pard/pgtune/blob/master/source/javascripts/pgtune.coffee).
 Web app build on top of [middleman](http://middlemanapp.com/). To start it in development mode, you need install ruby and run in terminal:
 
 ```bash
