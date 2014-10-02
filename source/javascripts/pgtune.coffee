@@ -229,3 +229,5 @@ $ ->
     window.addthis_share =
       title: "PgTune"
       description: "Tuning PostgreSQL config by your hardware"
+      templates:
+        twitter: 'check out {{title}} on {{url}} (via @leopard_me)'
