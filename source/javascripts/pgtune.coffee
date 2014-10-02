@@ -222,12 +222,3 @@ class Pgtune
 $ ->
   if $('#pgTuneForm').length and $('#postgresConfigOut').length and $('#postgresOldkernelOut').length
     new Pgtune($('#pgTuneForm'), $('#postgresConfigOut'), $('#postgresOldkernelOut'))
-  # AddThis buttons
-  if $('#socialSharingBlock').is(":visible")
-    window.addthis_config =
-      data_track_addressbar: true
-    window.addthis_share =
-      title: "PgTune"
-      description: "Tuning PostgreSQL config by your hardware"
-      templates:
-        twitter: 'check out {{title}} on {{url}} (via @leopard_me)'
