@@ -229,4 +229,3 @@ $ ->
     window.addthis_share =
       title: "PgTune"
       description: "Tuning PostgreSQL config by your hardware"
-    $.getScript "http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-527012705413f0b7"
