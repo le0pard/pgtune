@@ -1,9 +1,9 @@
 //= require ./vendors/modernizr
-//= require ./vendors/jquery-2.1.1.min
-//= require ./vendors/fastclick
+//= require jquery
+//= require fastclick
 
-//= require ./vendors/foundation/foundation
-//= require ./vendors/foundation/foundation.tooltip
+//= require foundation/foundation
+//= require foundation/foundation.tooltip
 
 //= require ./vendors/highlight/highlight.pack
 
