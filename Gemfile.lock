@@ -130,8 +130,8 @@ GEM
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
-    rails-assets-fastclick (1.0.3)
-    rails-assets-jquery (2.1.3)
+    rails-assets-fastclick (1.0.6)
+    rails-assets-jquery (2.1.4)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.7)
@@ -194,8 +194,8 @@ DEPENDENCIES
   nokogiri
   oily_png
   oj
-  rails-assets-fastclick (= 1.0.3)!
-  rails-assets-jquery (= 2.1.3)!
+  rails-assets-fastclick (= 1.0.6)!
+  rails-assets-jquery (= 2.1.4)!
   redcarpet
   sass (>= 3.3.0)
   therubyracer
