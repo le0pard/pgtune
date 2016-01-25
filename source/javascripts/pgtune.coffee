@@ -42,6 +42,7 @@ class Pgtune
 
   # generate config
   _generateConfig: =>
+    @dbVersion = parseFloat($('#pgtDbVersionValue').val())
     @osType = $('#pgtOsTypeValue').val()
     @osType = 'linux' if jQuery.inArray(@osType, ['linux', 'windows']) is -1
 
@@ -128,14 +129,23 @@ class Pgtune
     else
       infoMsg = "# WARNING\n# this tool not being optimal \n# for low memory systems\n"
 
-    # checkpoint_segments
-    gConfig['checkpoint_segments'] = {
-      web: 32,
-      oltp: 64,
-      dw: 128,
-      desktop: 3,
-      mixed: 32
-    }[@dbType]
+    if @dbVersion < 9.5
+      # checkpoint_segments
+      gConfig['checkpoint_segments'] = {
+        web: 32,
+        oltp: 64,
+        dw: 128,
+        desktop: 3,
+        mixed: 32
+      }[@dbType]
+    else
+      gConfig['max_wal_size'] = {
+        web: (1024 * @constSize['MB'] / @constSize['KB']),
+        oltp: (2048 * @constSize['MB'] / @constSize['KB']),
+        dw: (4096 * @constSize['MB'] / @constSize['KB']),
+        desktop: (100 * @constSize['MB'] / @constSize['KB']),
+        mixed: (1024 * @constSize['MB'] / @constSize['KB'])
+      }[@dbType]
     # checkpoint_completion_target
     gConfig['checkpoint_completion_target'] = {
       web: 0.7,
@@ -170,8 +180,10 @@ class Pgtune
 
   # postgresql kernel
   _kernelSettings: =>
-    if 'windows' is @osType
-      $('#oldPostgresBlock').hide()
+    kernelBlockEl = $('#oldPostgresBlock')
+
+    if 'windows' is @osType or @dbVersion > 9.3
+      kernelBlockEl.hide()
     else
       shmall = Math.floor(@totalMemory / 8192)
       gConfig = """
@@ -179,7 +191,9 @@ class Pgtune
   kernel.shmall=#{shmall}
   """
       @oldPgkernel.text(gConfig)
-      $('#oldPostgresBlock').show()
+
+      kernelBlockEl.find('.pg_version').text(@dbVersion)
+      kernelBlockEl.show()
 
   # highlight code
   _hightlightCode: =>

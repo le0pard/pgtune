@@ -46,6 +46,22 @@ title: PgTune
           <div class="large-6 medium-6 columns">
             <h3 class="calculator-title">Parameters of your system</h3>
             <form id="pgTuneForm" action="/">
+              <!-- db version begin -->
+              <div class="row">
+                <div class="large-12 columns">
+                  <label for="pgtDbVersionValue">DB Version
+                    <span class="right">
+                      <span data-tooltip class="has-tip" title="PostgreSQL version">what is this?</span>
+                    </span>
+                  </label>
+                  <select class="radius" id="pgtDbVersionValue">
+                    <% ["9.5", "9.4", "9.3", "9.2", "9.1", "9.0"].each do |v| %>
+                      <option value="<%= v %>"><%= v %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+              <!-- db version end -->
               <!-- os type begin -->
               <div class="row">
                 <div class="large-12 columns">
@@ -133,7 +149,7 @@ title: PgTune
                 </div>
               </div>
               <div id="oldPostgresBlock">
-                <p><span class="label-for-info">NOTICE:</span> For PostgreSQL &lt; 9.3 you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in <kbd>/etc/sysctl.conf</kbd>):</p>
+                <p><span class="label-for-info">NOTICE:</span> For PostgreSQL <span class="pg_version">9.3</span> you also should modify <a href="http://www.postgresql.org/docs/devel/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in <kbd>/etc/sysctl.conf</kbd>):</p>
                 <div class="row">
                   <div class="large-12 columns">
                     <pre class="last-code-block"><code id="postgresOldkernelOut" class="language-ini"></code></pre>
