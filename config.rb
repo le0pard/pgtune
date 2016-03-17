@@ -67,7 +67,7 @@ end
 set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
 set :images_dir, 'images'
-set :markdown_engine, :redcarpet
+set :markdown_engine, :kramdown
 set :markdown, filter_html: false, fenced_code_blocks: true, smartypants: true
 set :encoding, 'utf-8'
 

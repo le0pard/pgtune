@@ -139,12 +139,19 @@ class Pgtune
         mixed: 32
       }[@dbType]
     else
-      gConfig['max_wal_size'] = {
+      gConfig['min_wal_size'] = {
         web: (1024 * @constSize['MB'] / @constSize['KB']),
         oltp: (2048 * @constSize['MB'] / @constSize['KB']),
         dw: (4096 * @constSize['MB'] / @constSize['KB']),
         desktop: (100 * @constSize['MB'] / @constSize['KB']),
         mixed: (1024 * @constSize['MB'] / @constSize['KB'])
+      }[@dbType]
+      gConfig['max_wal_size'] = {
+        web: (2048 * @constSize['MB'] / @constSize['KB']),
+        oltp: (4096 * @constSize['MB'] / @constSize['KB']),
+        dw: (8192 * @constSize['MB'] / @constSize['KB']),
+        desktop: (100 * @constSize['MB'] / @constSize['KB']),
+        mixed: (2048 * @constSize['MB'] / @constSize['KB'])
       }[@dbType]
     # checkpoint_completion_target
     gConfig['checkpoint_completion_target'] = {
@@ -222,7 +229,7 @@ class Pgtune
   _notSizeValues: =>
     ['max_connections', 'checkpoint_segments',
     'checkpoint_completion_target', 'default_statistics_target',
-    'synchronous_commit', 'random_page_cost', 'seq_page_cost']
+    'random_page_cost', 'seq_page_cost']
 
   # appcache
   _initAppcache: =>
