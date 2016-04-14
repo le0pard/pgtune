@@ -126,8 +126,10 @@ class Pgtune
       if gConfig['maintenance_work_mem'] > (2 * @constSize['GB'] / @constSize['KB'])
         gConfig['maintenance_work_mem'] = Math.floor(2 * @constSize['GB'] / @constSize['KB'])
 
+      if @totalMemory >= (100 * @constSize['GB']) # such setting can be even bad for very high memory systems, need show warnings
+        infoMsg = "# WARNING\n# this tool not being optimal \n# for very high memory systems\n\n"
     else
-      infoMsg = "# WARNING\n# this tool not being optimal \n# for low memory systems\n"
+      infoMsg = "# WARNING\n# this tool not being optimal \n# for low memory systems\n\n"
 
     if @dbVersion < 9.5
       # checkpoint_segments
