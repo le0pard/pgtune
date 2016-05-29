@@ -17,7 +17,7 @@ end
 gem 'foundation-rails', '~> 5.5', require: false
 # UTILS
 gem 'oily_png'     # faster PNG
-gem 'therubyracer' # faster ExecJS
+gem 'mini_racer' # faster ExecJS
 gem 'oj'           # faster JSON
 gem 'kramdown', '>= 1.9.0'    # faster ExecJS
 gem 'builder'      # XML builder
