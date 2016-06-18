@@ -28,7 +28,7 @@ class Pgtune
     try
       $(document).foundation()
     catch e
-      console.warn "Too old browser :(" if console.warn?
+      console.warn "Too old browser with error: #{e}" if console.warn?
 
   # on submit
   _generateConfigForm: (event) =>
