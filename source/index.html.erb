@@ -13,10 +13,16 @@ title: PgTune
         <div class="row">
           <div class="large-8 large-centered columns">
             <h1 class="hero-title show-for-large-up">
-              <%=image_tag "postgres.png", alt: "PgTune", title: "PgTune" %> PgTune
+              <%=image_tag "postgres.png", alt: "PgTune", title: "PgTune", data: {
+                hidpi:  {src: asset_path(:images, "postgres@2x.png")},
+                lowdpi: {src: asset_path(:images, "postgres.png")}
+              } %> PgTune
             </h1>
             <h1 class="small-hero-title hide-for-large-up">
-              <%=image_tag "postgres.png", alt: "PgTune", title: "PgTune" %> PgTune
+              <%=image_tag "postgres.png", alt: "PgTune", title: "PgTune", data: {
+                hidpi:  {src: asset_path(:images, "postgres@2x.png")},
+                lowdpi: {src: asset_path(:images, "postgres.png")}
+              } %> PgTune
             </h1>
           </div>
         </div>
