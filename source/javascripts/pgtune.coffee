@@ -79,6 +79,17 @@ class Pgtune
     # messages in config
     infoMsg = ""
 
+    # setting message
+    settingsInfo = [
+      ["DB Version", @dbVersion],
+      ["OS Type", @osType],
+      ["DB Type", @dbType],
+      ["Total Memory (RAM)", "#{$('#pgtTotalMemValue').val()} #{$('#pgtTotalMemMeasValue').val()}"],
+      ["Number of Connections", gConfig['max_connections']]
+    ]
+
+    settingsInfo = settingsInfo.map((setting) => "# #{setting[0]}: #{setting[1]}")
+
     # this tool not being optimal for low memory systems
     if @totalMemory >= (256 * @constSize['MB'])
       # shared_buffers
@@ -127,9 +138,9 @@ class Pgtune
         gConfig['maintenance_work_mem'] = Math.floor(2 * @constSize['GB'] / @constSize['KB'])
 
       if @totalMemory >= (100 * @constSize['GB']) # such setting can be even bad for very high memory systems, need show warnings
-        infoMsg = "# WARNING\n# this tool not being optimal \n# for very high memory systems\n\n"
+        infoMsg = "# WARNING\n# this tool not being optimal \n# for very high memory systems\n"
     else
-      infoMsg = "# WARNING\n# this tool not being optimal \n# for low memory systems\n\n"
+      infoMsg = "# WARNING\n# this tool not being optimal \n# for low memory systems\n"
 
     if @dbVersion < 9.5
       # checkpoint_segments
@@ -185,7 +196,7 @@ class Pgtune
     }[@dbType]
 
     arrayConfig = ("#{key} = #{@_formatedValue(key, value)}" for key, value of gConfig)
-    @codeOut.text("#{infoMsg}#{arrayConfig.join("\n")}")
+    @codeOut.text("#{infoMsg}#{settingsInfo.join("\n")}\n\n#{arrayConfig.join("\n")}")
 
   # postgresql kernel
   _kernelSettings: =>
