@@ -153,6 +153,14 @@ title: PgTune
                   <pre><code id="postgresConfigOut" class="language-ini"></code></pre>
                 </div>
               </div>
+              <div class="settings-alter-system-block">
+                <p>Or you can use <kbd>ALTER SYSTEM SET</kbd> command:</p>
+                <div class="row">
+                  <div class="large-12 columns">
+                    <pre><code id="postgresAlterSystemOut" class="language-sql"></code></pre>
+                  </div>
+                </div>
+              </div>
               <div id="oldPostgresBlock">
                 <p><span class="label-for-info">NOTICE:</span> For PostgreSQL <span class="pg_version">9.3</span> you also should modify <a href="https://www.postgresql.org/docs/current/static/kernel-resources.html" target="_blank">kernel resources</a> (add this in <kbd>/etc/sysctl.conf</kbd>):</p>
                 <div class="row">

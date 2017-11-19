@@ -1,5 +1,5 @@
 class Pgtune
-  constructor: (@form, @codeOut, @oldPgkernel) ->
+  constructor: (@form, @codeOut, @alterSystemOut, @oldPgkernel) ->
     # submit form with data
     @form.submit @_generateConfigForm
     # on tab submit form ("Next" button on mobile keyboard)
@@ -198,6 +198,15 @@ class Pgtune
     arrayConfig = ("#{key} = #{@_formatedValue(key, value)}" for key, value of gConfig)
     @codeOut.text("#{infoMsg}#{settingsInfo.join("\n")}\n\n#{arrayConfig.join("\n")}")
 
+    if @dbVersion >= 9.4
+      @alterSystemOut.text("#{arrayConfig.map((conf) =>
+        "ALTER SYSTEM SET\n  #{conf};"
+      ).join("\n")}")
+      $('.settings-alter-system-block').show()
+    else
+      @alterSystemOut.text('')
+      $('.settings-alter-system-block').hide()
+
   # postgresql kernel
   _kernelSettings: =>
     kernelBlockEl = $('#oldPostgresBlock')
@@ -254,7 +263,4 @@ class Pgtune
     window.location.reload() if confirm('A new version of this app is available. Load it?')
 
 
-# init
-$ ->
-  if $('#pgTuneForm').length and $('#postgresConfigOut').length and $('#postgresOldkernelOut').length
-    new Pgtune($('#pgTuneForm'), $('#postgresConfigOut'), $('#postgresOldkernelOut'))
+$ -> new Pgtune($('#pgTuneForm'), $('#postgresConfigOut'), $('#postgresAlterSystemOut'), $('#postgresOldkernelOut'))
