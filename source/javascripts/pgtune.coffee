@@ -199,8 +199,8 @@ class Pgtune
     @codeOut.text("#{infoMsg}#{settingsInfo.join("\n")}\n\n#{arrayConfig.join("\n")}")
 
     if @dbVersion >= 9.4
-      @alterSystemOut.text("#{arrayConfig.map((conf) =>
-        "ALTER SYSTEM SET\n  #{conf};"
+      @alterSystemOut.text("#{Object.keys(gConfig).map((confKey) =>
+        "ALTER SYSTEM SET\n #{confKey} = '#{@_formatedValue(confKey, gConfig[confKey])}';"
       ).join("\n")}")
       $('.settings-alter-system-block').show()
     else
