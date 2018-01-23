@@ -194,6 +194,11 @@ class Pgtune
       desktop: 100,
       mixed: 100
     }[@dbType]
+    # hard drive type
+    gConfig['random_page_cost'] = {
+      ssd: '1.1',
+      hdd: '4'
+    }[$('#pgtHarddriveValue').val()]
 
     arrayConfig = ("#{key} = #{@_formatedValue(key, value)}" for key, value of gConfig)
     @codeOut.text("#{infoMsg}#{settingsInfo.join("\n")}\n\n#{arrayConfig.join("\n")}")
