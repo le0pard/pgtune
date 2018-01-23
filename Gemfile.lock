@@ -22,11 +22,11 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    autoprefixer-rails (7.1.6)
+    autoprefixer-rails (7.2.5)
       execjs
-    backports (3.10.3)
+    backports (3.11.0)
     builder (3.2.3)
-    chunky_png (1.3.8)
+    chunky_png (1.3.10)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
@@ -36,12 +36,12 @@ GEM
     concurrent-ruby (1.0.5)
     contracts (0.13.0)
     crass (1.0.3)
-    docile (1.1.5)
+    docile (1.2.0)
     dotenv (2.2.1)
     erubis (2.7.0)
     execjs (2.7.0)
     fast_blank (1.0.0)
-    fastimage (2.1.0)
+    fastimage (2.1.1)
     favicon_maker (1.3.1)
       docile (~> 1.1)
     ffi (1.9.18)
@@ -53,10 +53,10 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashie (3.5.6)
+    hashie (3.5.7)
     htmlcompressor (0.2.0)
     i18n (0.7.0)
-    kramdown (1.15.0)
+    kramdown (1.16.2)
     libv8 (3.16.14.19)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -117,8 +117,8 @@ GEM
       sprockets (>= 3.0)
     mini_magick (4.8.0)
     mini_portile2 (2.3.0)
-    minitest (5.10.3)
-    multi_json (1.12.2)
+    minitest (5.11.1)
+    multi_json (1.13.1)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (4.2.0)
@@ -126,14 +126,14 @@ GEM
       mini_portile2 (~> 2.3.0)
     oily_png (1.2.1)
       chunky_png (~> 1.3.7)
-    oj (3.3.9)
+    oj (3.3.10)
     padrino-helpers (0.13.3.4)
       i18n (~> 0.6, >= 0.6.7)
       padrino-support (= 0.13.3.4)
       tilt (>= 1.4.1, < 3)
     padrino-support (0.13.3.4)
       activesupport (>= 3.1)
-    parallel (1.12.0)
+    parallel (1.12.1)
     ptools (1.3.5)
     public_suffix (3.0.1)
     rack (2.0.3)
@@ -200,4 +200,4 @@ DEPENDENCIES
   tzinfo
 
 BUNDLED WITH
-   1.15.4
+   1.16.1
