@@ -197,8 +197,23 @@ class Pgtune
     # hard drive type
     gConfig['random_page_cost'] = {
       ssd: '1.1',
-      hdd: '4'
+      hdd: '4',
+      san: '1.1'
     }[$('#pgtHarddriveValue').val()]
+    gConfig['effective_io_concurrency'] = {
+      ssd: '200',
+      hdd: '2',
+      san: '300'
+    }[$('#pgtHarddriveValue').val()]
+    # cpu
+    if @dbVersion >= 9.5
+      cpuNum = parseInt($('#pgtCPUValue').val(), 10) || 1
+      if cpuNum > 1
+        gConfig['max_worker_processes'] = cpuNum
+        if @dbVersion >= 9.6
+          gConfig['max_parallel_workers_per_gather'] = Math.ceil(cpuNum / 2)
+        if @dbVersion >= 10
+          gConfig['max_parallel_workers'] = cpuNum
 
     arrayConfig = ("#{key} = #{@_formatedValue(key, value)}" for key, value of gConfig)
     @codeOut.text("#{infoMsg}#{settingsInfo.join("\n")}\n\n#{arrayConfig.join("\n")}")
@@ -256,7 +271,9 @@ class Pgtune
   _notSizeValues: =>
     ['max_connections', 'checkpoint_segments',
     'checkpoint_completion_target', 'default_statistics_target',
-    'random_page_cost', 'seq_page_cost']
+    'random_page_cost', 'seq_page_cost',
+    'max_worker_processes', 'max_parallel_workers_per_gather',
+    'max_parallel_workers', 'effective_io_concurrency']
 
   # appcache
   _initAppcache: =>

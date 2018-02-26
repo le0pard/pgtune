@@ -123,6 +123,18 @@ title: PgTune
                 </div>
               </div>
               <!-- memory end -->
+              <!-- cpu begin -->
+              <div class="row">
+                <div class="large-12 columns">
+                  <label for="pgtHarddriveValue">Number of CPUs
+                    <span class="right">
+                      <span data-tooltip class="has-tip" title="Number of CPUs, which PostgreSQL can use">what is this?</span>
+                    </span>
+                  </label>
+                  <input class="radius" id="pgtCPUValue" type="number" placeholder="Number of CPUs (optional)" min="1" max="9999" step="1" pattern="[0-9]{1,4}" />
+                </div>
+              </div>
+              <!-- cpu end -->
               <!-- connections begin -->
               <div class="row">
                 <div class="large-12 columns">
@@ -146,6 +158,7 @@ title: PgTune
                   <select class="radius" id="pgtHarddriveValue">
                     <option value="hdd">HDD storage</option>
                     <option value="ssd">SSD storage</option>
+                    <option value="san">Network (SAN) storage</option>
                   </select>
                 </div>
               </div>
