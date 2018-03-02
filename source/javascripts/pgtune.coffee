@@ -200,11 +200,12 @@ class Pgtune
       hdd: '4',
       san: '1.1'
     }[$('#pgtHarddriveValue').val()]
-    gConfig['effective_io_concurrency'] = {
-      ssd: '200',
-      hdd: '2',
-      san: '300'
-    }[$('#pgtHarddriveValue').val()]
+    if 'linux' is @osType
+      gConfig['effective_io_concurrency'] = {
+        ssd: '200',
+        hdd: '2',
+        san: '300'
+      }[$('#pgtHarddriveValue').val()]
     # cpu
     if @dbVersion >= 9.5
       cpuNum = parseInt($('#pgtCPUValue').val(), 10) || 1
