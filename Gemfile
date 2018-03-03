@@ -11,7 +11,7 @@ gem 'middleman-autoprefixer', '~> 2.7'
 gem 'sass', '>= 3.3.0'
 # assets
 source 'https://rails-assets.org' do
-  gem 'rails-assets-jquery', '3.2.1'
+  gem 'rails-assets-jquery', '3.3.1'
   gem 'rails-assets-fastclick', '1.0.6'
 end
 gem 'foundation-rails', '~> 5.5', require: false
