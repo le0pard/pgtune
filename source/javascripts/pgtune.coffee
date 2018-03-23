@@ -163,7 +163,7 @@ class Pgtune
         web: (2048 * @constSize['MB'] / @constSize['KB']),
         oltp: (4096 * @constSize['MB'] / @constSize['KB']),
         dw: (8192 * @constSize['MB'] / @constSize['KB']),
-        desktop: (100 * @constSize['MB'] / @constSize['KB']),
+        desktop: (1024 * @constSize['MB'] / @constSize['KB']),
         mixed: (2048 * @constSize['MB'] / @constSize['KB'])
       }[@dbType]
     # checkpoint_completion_target
