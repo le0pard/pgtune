@@ -1,0 +1,72 @@
+@import '~normalize.css/normalize'
+@import 'functions'
+@import 'variables'
+
+\:root
+  --baseColor: $base00
+  --bgColor: $base3
+  --headsColor: $base2
+  --emphColor: $base01
+  --commentColor: $base1
+
+\:root.dark
+  --baseColor: $base0
+  --bgColor: $base03
+  --headsColor: $base02
+  --emphColor: $base1
+  --commentColor: $base01
+
+html
+  @include responsive-font-size(16px 21px)
+  background-color: var(--headsColor)
+  color: var(--baseColor)
+
+body
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
+
+a
+  color: $yellow
+
+a:hover
+  color: $orange
+  text-decoration: none
+
+pre
+  font-size: 1rem
+  background-color: var(--bgColor)
+  color: var(--baseColor)
+  border: 1px solid var(--commentColor)
+  padding: 1rem
+  box-shadow: 5px 5px 8px var(--headsColor)
+  white-space: pre-wrap
+  code
+    background-color: var(--bgColor)
+
+h1, h2, h3, h4, h5, h6
+  color: $green
+
+h1
+  font-size: 2.4rem
+
+h2
+  font-size: 2.0rem
+
+h3
+  font-size: 1.8rem
+
+h4
+  font-size: 1.4rem
+
+h5
+  font-size: 1.3rem
+
+h6
+  font-size: 1.15rem
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+  appearance: none
+  margin: 0
+
+#app-root
+  padding: 0.8rem
