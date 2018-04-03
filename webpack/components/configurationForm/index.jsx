@@ -4,14 +4,25 @@ import classnames from 'classnames'
 import {Field} from 'redux-form'
 import FormField from 'components/form/field'
 import FormDropdown from 'components/form/dropdown'
-import {DB_VERSIONS} from 'reducers/configuration/constants'
+import {
+  DB_VERSIONS,
+  OS_LINUX,
+  OS_WINDOWS,
+  DB_TYPE_WEB,
+  DB_TYPE_OLTP,
+  DB_TYPE_DW,
+  DB_TYPE_DESKTOP,
+  DB_TYPE_MIXED,
+  HARD_DRIVE_HDD,
+  HARD_DRIVE_SSD,
+  HARD_DRIVE_SAN
+} from 'reducers/configuration/constants'
 
 import './configuration-form.sass'
 
 export default class ConfigurationForm extends React.Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
-    pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
     onSubmitForm: PropTypes.func.isRequired
   }
@@ -27,12 +38,63 @@ export default class ConfigurationForm extends React.Component {
     }))
   }
 
+  osTypeOptions() {
+    return [
+      {
+        label: 'Linux/OS X',
+        value: OS_LINUX
+      },
+      {
+        label: 'Windows',
+        value: OS_WINDOWS
+      }
+    ]
+  }
+
+  dbTypeOptions() {
+    return [
+      {
+        label: 'Web application',
+        value: DB_TYPE_WEB
+      },
+      {
+        label: 'Online transaction processing systems',
+        value: DB_TYPE_OLTP
+      },
+      {
+        label: 'Data warehouses',
+        value: DB_TYPE_DW
+      },
+      {
+        label: 'Desktop applications',
+        value: DB_TYPE_DESKTOP
+      },
+      {
+        label: 'Mixed type of applications',
+        value: DB_TYPE_MIXED
+      }
+    ]
+  }
+
+  hdTypeOptions() {
+    return [
+      {
+        label: 'HDD storage',
+        value: HARD_DRIVE_HDD
+      },
+      {
+        label: 'SSD storage',
+        value: HARD_DRIVE_SSD
+      },
+      {
+        label: 'Network (SAN) storage',
+        value: HARD_DRIVE_SAN
+      }
+    ]
+  }
+
   render() {
-    const {
-      handleSubmit,
-      pristine,
-      submitting
-    } = this.props
+    const {handleSubmit, submitting} = this.props
 
     return (
       <form onSubmit={handleSubmit(this.handleGenerateConfig.bind(this))}>
@@ -43,40 +105,75 @@ export default class ConfigurationForm extends React.Component {
           options={this.dbVersionOptions()}
         />
         <Field
-          name="site"
-          type="text"
+          name="osType"
+          component={FormDropdown}
+          label="OS Type"
+          options={this.osTypeOptions()}
+        />
+        <Field
+          name="dbType"
+          component={FormDropdown}
+          label="DB Type"
+          options={this.dbTypeOptions()}
+        />
+        <Field
+          name="totalMemory"
+          type="number"
           component={FormField}
           inputProps={{
             autoFocus: true,
             autoComplete: 'off',
             autoCorrect: 'off',
-            autoCapitalize: 'none'
+            autoCapitalize: 'none',
+            required: 'required',
+            min: '1',
+            max: '9999',
+            step: '1',
+            pattern: '[0-9]{1,4}'
           }}
-          label="Site"
+          label="Total Memory (RAM)"
         />
         <Field
-          name="counter"
+          name="cpuNum"
           type="number"
           component={FormField}
           inputProps={{
-            step: 1,
-            min: 1,
-            max: 1000,
-            pattern: '[0-9]*'
+            autoComplete: 'off',
+            autoCorrect: 'off',
+            autoCapitalize: 'none',
+            min: '1',
+            max: '9999',
+            step: '1',
+            pattern: '[0-9]{1,4}'
           }}
-          label="Counter"
+          label="Number of CPUs"
         />
         <Field
-          name="template"
-          component={FormDropdown}
-          label="Template"
-          options={[]}
+          name="connectionNum"
+          type="number"
+          component={FormField}
+          inputProps={{
+            autoComplete: 'off',
+            autoCorrect: 'off',
+            autoCapitalize: 'none',
+            min: '10',
+            max: '9999',
+            step: '1',
+            pattern: '[0-9]{1,4}'
+          }}
+          label="Number of Connections"
         />
-        <div className="generate-pass__buttons-wrapper">
-          <button className={classnames('generate-pass__submit-button', {
-            'generate-pass__submit-button--disabled': submitting
+        <Field
+          name="hdType"
+          component={FormDropdown}
+          label="Hard drive type"
+          options={this.hdTypeOptions()}
+        />
+        <div className="configuration-form-btn-wrapper">
+          <button className={classnames('configuration-form-btn', {
+            'configuration-form-btn--disabled': submitting
           })} type="submit" disabled={submitting}>
-            Generate Password
+            Generate
           </button>
         </div>
       </form>

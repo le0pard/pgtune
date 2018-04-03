@@ -1,13 +1,26 @@
 import {reduxForm} from 'redux-form'
 import {connect} from 'react-redux'
-import LocalStorage from 'lib/localStorage'
 import ConfigurationForm from 'components/configurationForm'
-import {DEFAULT_DB_VERSION} from 'reducers/configuration/constants'
+import {
+  DEFAULT_DB_VERSION,
+  OS_LINUX,
+  DB_TYPE_WEB,
+  HARD_DRIVE_HDD
+} from 'reducers/configuration/constants'
 
 const validate = (values) => {
   const errors = {}
   if (!values.dbVersion) {
     errors.dbVersion = 'Required'
+  }
+  if (!values.osType) {
+    errors.osType = 'Required'
+  }
+  if (!values.dbType) {
+    errors.dbType = 'Required'
+  }
+  if (!values.totalMemory) {
+    errors.totalMemory = 'Required'
   }
   return errors
 }
@@ -25,6 +38,9 @@ export default connect(
   form: 'configurationForm',
   validate,
   initialValues: {
-    dbVersion: DEFAULT_DB_VERSION
+    dbVersion: DEFAULT_DB_VERSION,
+    osType: OS_LINUX,
+    dbType: DB_TYPE_WEB,
+    hdType: HARD_DRIVE_HDD
   }
 })(ConfigurationForm))
