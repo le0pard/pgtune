@@ -1,9 +1,7 @@
 import {connect} from 'react-redux'
 import MainGenerator from 'components/mainGenerator'
 
-const mapStateToProps = (state) => ({
-  isHaveGeneratedKey: false
-})
+const mapStateToProps = () => ({})
 
 export default connect(
   mapStateToProps

@@ -1,33 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings'
 
 import './about.sass'
 
-class AboutPage extends React.Component {
-  static propTypes = {
-    theme: PropTypes.oneOf([APP_THEMES_LIGHT, APP_THEMES_DARK])
-  }
-
+export default class AboutPage extends React.Component {
   render() {
-    const {theme} = this.props
-
     return (
-      <div className="algorithm-page">
+      <div className="about-page">
         <p>
-          <strong>Master Password is an algorithm used to generate unique passwords</strong> for websites, email accounts, or anything else based only on easily reproducible input.
-  The goal is a process that avoids all the problems involved with other password solutions.
+          <strong>PGTune</strong> calculate configuration for PostgreSQL based on the maximum performance for a given hardware configuration. It isn't a <a href="https://en.wikipedia.org/wiki/No_Silver_Bullet">silver bullet</a> for the optimization settings of PostgreSQL. Many settings depend not only on the hardware configuration, but also on the size of the database, the number of clients and the complexity of queries, so that optimally configure the database can only be given all these parameters.
         </p>
       </div>
     )
   }
 }
-
-const mapStateToProps = (state) => ({
-  theme: state.settings.theme
-})
-
-export default connect(
-  mapStateToProps
-)(AboutPage)
