@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings'
+import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings/constants'
 import GithubCorner from 'components/githubCorner'
 
 const mapStateToProps = (state) => ({

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings'
+import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings/constants'
 
 export default class ThemeSwitcher extends React.Component {
   static propTypes = {

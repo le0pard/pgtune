@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import {settingsToggleTheme} from 'reducers/settings'
-import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings'
+import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings/constants'
 import LocalStorage from 'lib/localStorage'
 import ThemeSwitcher from 'components/themeSwitcher'
 
