@@ -13,6 +13,8 @@ import {
   DB_TYPE_DW,
   DB_TYPE_DESKTOP,
   DB_TYPE_MIXED,
+  SIZE_UNIT_MB,
+  SIZE_UNIT_GB,
   HARD_DRIVE_HDD,
   HARD_DRIVE_SSD,
   HARD_DRIVE_SAN
@@ -76,6 +78,19 @@ export default class ConfigurationForm extends React.Component {
     ]
   }
 
+  totalMemoryUnitOptions() {
+    return [
+      {
+        label: 'GB',
+        value: SIZE_UNIT_GB
+      },
+      {
+        label: 'MB',
+        value: SIZE_UNIT_MB
+      }
+    ]
+  }
+
   hdTypeOptions() {
     return [
       {
@@ -132,6 +147,12 @@ export default class ConfigurationForm extends React.Component {
             pattern: '[0-9]{1,4}'
           }}
           label="Total Memory (RAM)"
+        />
+        <Field
+          name="totalMemoryUnit"
+          component={FormDropdown}
+          label="Unit"
+          options={this.totalMemoryUnitOptions()}
         />
         <Field
           name="cpuNum"
