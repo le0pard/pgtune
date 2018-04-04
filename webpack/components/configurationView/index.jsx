@@ -62,11 +62,11 @@ export default class ConfigurationView extends React.Component {
     } = this.props
 
     return [
-      `max_connections = ${maxConnections}`,
-      `shared_buffers = ${this.formatValue(sharedBuffers)}`,
-      `effective_cache_size = ${this.formatValue(effectiveCacheSize)}`,
-      `maintenance_work_mem = ${this.formatValue(maintenanceWorkMem)}`
-    ].join("\n")
+      ['max_connections', maxConnections],
+      ['shared_buffers', this.formatValue(sharedBuffers)],
+      ['effective_cache_size', this.formatValue(effectiveCacheSize)],
+      ['maintenance_work_mem', this.formatValue(maintenanceWorkMem)]
+    ].map((item) => `${item[0]} = ${item[1]}`).join("\n")
   }
 
   render() {

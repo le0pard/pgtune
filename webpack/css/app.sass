@@ -27,12 +27,12 @@
   --inputColorPlaceholder: color($base2 shade(30%))
 
 html
-  @include responsive-font-size(16px 21px)
+  @include responsive-font-size(16px 20px)
   background-color: var(--headsColor)
   color: var(--baseColor)
 
 body
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
+  @include system-ui-fonts
 
 a
   color: $yellow
@@ -42,11 +42,12 @@ a:hover
   text-decoration: none
 
 pre
-  font-size: 0.8rem
+  @include system-ui-fonts
+  font-size: 0.8125em
   background-color: var(--bgColor)
   color: var(--baseColor)
   border: 1px solid var(--commentColor)
-  padding: 0.8rem
+  padding: 0.8125rem
   box-shadow: 5px 5px 8px var(--headsColor)
   white-space: pre-wrap
   code
