@@ -85,3 +85,22 @@ export const effectiveCacheSize = createSelector(
     [DB_TYPE_MIXED]: Math.floor(totalMemoryKb * 3 / 4)
   }[dbType])
 )
+
+export const maintenanceWorkMem = createSelector(
+  [totalMemoryInKb, getDBType],
+  (totalMemoryKb, dbType) => {
+    let maintenanceWorkMemValue = {
+      [DB_TYPE_WEB]: Math.floor(totalMemoryKb / 16),
+      [DB_TYPE_OLTP]: Math.floor(totalMemoryKb / 16),
+      [DB_TYPE_DW]: Math.floor(totalMemoryKb / 8),
+      [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 16),
+      [DB_TYPE_MIXED]: Math.floor(totalMemoryKb / 16)
+    }[dbType]
+    // Cap maintenance RAM at 2GB on servers with lots of memory
+    const memoryLimit = 2 * SIZE_UNIT_MAP['GB'] / SIZE_UNIT_MAP['KB']
+    if (maintenanceWorkMemValue > memoryLimit) {
+      maintenanceWorkMemValue = memoryLimit
+    }
+    return maintenanceWorkMemValue
+  }
+)

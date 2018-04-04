@@ -21,6 +21,7 @@ export default class ConfigurationView extends React.Component {
     maxConnections: PropTypes.number.isRequired,
     sharedBuffers: PropTypes.number.isRequired,
     effectiveCacheSize: PropTypes.number.isRequired,
+    maintenanceWorkMem: PropTypes.number.isRequired,
     theme: PropTypes.oneOf([APP_THEMES_LIGHT, APP_THEMES_DARK]).isRequired
   }
 
@@ -56,13 +57,15 @@ export default class ConfigurationView extends React.Component {
     const {
       maxConnections,
       sharedBuffers,
-      effectiveCacheSize
+      effectiveCacheSize,
+      maintenanceWorkMem
     } = this.props
 
     return [
       `max_connections = ${maxConnections}`,
       `shared_buffers = ${this.formatValue(sharedBuffers)}`,
-      `effective_cache_size = ${this.formatValue(effectiveCacheSize)}`
+      `effective_cache_size = ${this.formatValue(effectiveCacheSize)}`,
+      `maintenance_work_mem = ${this.formatValue(maintenanceWorkMem)}`
     ].join("\n")
   }
 

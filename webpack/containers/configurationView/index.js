@@ -4,7 +4,8 @@ import {
   isMinForConfiguration,
   maxConnections,
   sharedBuffers,
-  effectiveCacheSize
+  effectiveCacheSize,
+  maintenanceWorkMem
 } from 'selectors/configuration'
 
 const mapStateToProps = (state) => ({
@@ -12,6 +13,7 @@ const mapStateToProps = (state) => ({
   maxConnections: maxConnections(state),
   sharedBuffers: sharedBuffers(state),
   effectiveCacheSize: effectiveCacheSize(state),
+  maintenanceWorkMem: maintenanceWorkMem(state),
   theme: state.settings.theme
 })
 
