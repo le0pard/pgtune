@@ -229,7 +229,9 @@ export default class ConfigurationView extends React.Component {
 
     return (
       <React.Fragment>
-        {isAlterSystem ? <p><strong>ALTER SYSTEM</strong> writes the given parameter setting to the <strong>postgresql.auto.conf</strong> file, which is read in addition to <strong>postgresql.conf</strong></p> : <p>Add/modify this settings in <strong>postgresql.conf</strong> and restart database</p>}
+        {isAlterSystem ?
+          <p><strong>ALTER SYSTEM</strong> writes the given parameter setting to the <strong>postgresql.auto.conf</strong> file, which is read in addition to <strong>postgresql.conf</strong></p> :
+          <p>Add/modify this settings in <strong>postgresql.conf</strong> and restart database</p>}
         <SyntaxHighlighter language={isAlterSystem ? 'sql' : 'ini'} style={codeHighlightStyle}>
           {this.generateConfig()}
         </SyntaxHighlighter>
@@ -249,7 +251,8 @@ export default class ConfigurationView extends React.Component {
       <div>
         {this.renderTabs()}
         {
-          isKernelInfo ? this.renderKernelInfo(codeHighlightStyle) :
+          isKernelInfo ?
+            this.renderKernelInfo(codeHighlightStyle) :
             this.renderConfigResult(codeHighlightStyle)
         }
       </div>

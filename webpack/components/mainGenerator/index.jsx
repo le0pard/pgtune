@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import InfoView from 'components/infoView'
 import ConfigurationForm from 'containers/configurationForm'
 import ConfigurationView from 'containers/configurationView'
 
@@ -22,6 +23,7 @@ export default class MainGenerator extends React.Component {
           <ConfigurationForm />
         </div>
         <div className="main-generator-result-wrapper">
+          {!isReadyForConfiguration && <InfoView />}
           {isReadyForConfiguration && <ConfigurationView />}
         </div>
       </div>
