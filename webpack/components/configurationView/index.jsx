@@ -6,7 +6,14 @@ import {
   solarizedLight,
   solarizedDark
 } from 'react-syntax-highlighter/styles/hljs'
-import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings/constants'
+import {OS_LINUX} from 'reducers/configuration/constants'
+import {
+  APP_THEMES_LIGHT,
+  APP_THEMES_DARK,
+  TAB_CONFIG,
+  TAB_ALTER_SYSTEM,
+  TAB_KERNEL_INFO
+} from 'reducers/settings/constants'
 
 import './configuration-view.sass'
 
@@ -17,12 +24,36 @@ const KB_UNIT_MAP = {
 
 export default class ConfigurationView extends React.Component {
   static propTypes = {
-    isMinForConfiguration: PropTypes.bool.isRequired,
+    dbVersion: PropTypes.number.isRequired,
+    osType: PropTypes.string.isRequired,
+    dbType: PropTypes.string.isRequired,
+    totalMemory: PropTypes.number.isRequired,
+    totalMemoryUnit: PropTypes.string.isRequired,
+    cpuNum: PropTypes.number,
+    connectionNum: PropTypes.number,
+    hdType: PropTypes.string.isRequired,
     maxConnections: PropTypes.number.isRequired,
     sharedBuffers: PropTypes.number.isRequired,
     effectiveCacheSize: PropTypes.number.isRequired,
     maintenanceWorkMem: PropTypes.number.isRequired,
-    theme: PropTypes.oneOf([APP_THEMES_LIGHT, APP_THEMES_DARK]).isRequired
+    checkpointSegments: PropTypes.arrayOf(PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.number.isRequired
+    })),
+    checkpointCompletionTarget: PropTypes.number.isRequired,
+    walBuffers: PropTypes.number.isRequired,
+    defaultStatisticsTarget: PropTypes.number.isRequired,
+    randomPageCost: PropTypes.number.isRequired,
+    effectiveIoConcurrency: PropTypes.number,
+    parallelSettings: PropTypes.arrayOf(PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.number.isRequired
+    })),
+    workMem: PropTypes.number.isRequired,
+    kernelShall: PropTypes.number.isRequired,
+    tabState: PropTypes.string.isRequired,
+    theme: PropTypes.oneOf([APP_THEMES_LIGHT, APP_THEMES_DARK]).isRequired,
+    handleClickTab: PropTypes.func.isRequired
   }
 
   // This uses larger units only if there's no loss of resolution in displaying
@@ -53,40 +84,174 @@ export default class ConfigurationView extends React.Component {
     return `${result.value}${result.unit}`
   }
 
-  postgresqlConfig() {
+  hardwareConfiguration() {
     const {
-      maxConnections,
-      sharedBuffers,
-      effectiveCacheSize,
-      maintenanceWorkMem
+      dbVersion,
+      osType,
+      dbType,
+      totalMemory,
+      totalMemoryUnit,
+      cpuNum,
+      connectionNum,
+      hdType
     } = this.props
 
     return [
+      ['DB Version', dbVersion],
+      ['OS Type', osType],
+      ['DB Type', dbType],
+      ['Total Memory (RAM)', `${totalMemory} ${totalMemoryUnit}`],
+      ['CPUs num', cpuNum],
+      ['Connections num', connectionNum],
+      ['Hard drive type', hdType]
+    ].filter((item) => !!item[1])
+      .map((item) => `# ${item[0]}: ${item[1]}`).join("\n") // eslint-disable-line quotes
+  }
+
+  getCheckpointSegments() {
+    const {checkpointSegments} = this.props
+    return checkpointSegments.map((item) => {
+      if (item.key === 'checkpoint_segments') {
+        return [item.key, item.value]
+      }
+      return [item.key, this.formatValue(item.value)]
+    })
+  }
+
+  getParallelSettings() {
+    const {parallelSettings} = this.props
+    return parallelSettings.map((item) => [item.key, item.value])
+  }
+
+  postgresqlConfig() {
+    const {
+      tabState,
+      maxConnections,
+      sharedBuffers,
+      effectiveCacheSize,
+      maintenanceWorkMem,
+      checkpointCompletionTarget,
+      walBuffers,
+      defaultStatisticsTarget,
+      randomPageCost,
+      effectiveIoConcurrency,
+      workMem
+    } = this.props
+
+    const isRenderAlterSystem = TAB_ALTER_SYSTEM === tabState
+
+    const configData = [
       ['max_connections', maxConnections],
       ['shared_buffers', this.formatValue(sharedBuffers)],
       ['effective_cache_size', this.formatValue(effectiveCacheSize)],
       ['maintenance_work_mem', this.formatValue(maintenanceWorkMem)]
-    ].map((item) => `${item[0]} = ${item[1]}`).join("\n")
+    ].concat(this.getCheckpointSegments()).concat([
+      ['checkpoint_completion_target', checkpointCompletionTarget],
+      ['wal_buffers', this.formatValue(walBuffers)],
+      ['default_statistics_target', defaultStatisticsTarget],
+      ['random_page_cost', randomPageCost],
+      ['effective_io_concurrency', effectiveIoConcurrency]
+    ]).concat(this.getParallelSettings()).concat([
+      ['work_mem', this.formatValue(workMem)]
+    ])
+
+    return configData.filter((item) => !!item[1])
+      .map((item) => {
+        if (isRenderAlterSystem) {
+          return `ALTER SYSTEM SET\n ${item[0]} = '${item[1]}';`
+        }
+        return `${item[0]} = ${item[1]}`
+      }).join("\n") // eslint-disable-line quotes
+  }
+
+  generateConfig() {
+    return [
+      this.hardwareConfiguration(),
+      '',
+      this.postgresqlConfig()
+    ].join("\n") // eslint-disable-line quotes
+  }
+
+  renderTabs() {
+    const {dbVersion, osType, tabState, handleClickTab} = this.props
+    const showAlterSystemTab = dbVersion >= 9.4
+    const showKernelTab = OS_LINUX === osType && dbVersion <= 9.3
+    const singleTab = !showAlterSystemTab && !showKernelTab
+
+    return (
+      <div className="configuration-view-tabs-wrapper">
+        <div className={classnames('configuration-view-tab', {
+          'configuration-view-tab--active': TAB_CONFIG === tabState,
+          'configuration-view-tab--full': singleTab
+        })} onClick={() => handleClickTab(TAB_CONFIG)}>
+          postgresql.conf
+        </div>
+        {showAlterSystemTab && <div className={classnames('configuration-view-tab', {
+          'configuration-view-tab--active': TAB_ALTER_SYSTEM === tabState
+        })} onClick={() => handleClickTab(TAB_ALTER_SYSTEM)}>
+          ALTER SYSTEM
+        </div>}
+        {showKernelTab && <div className={classnames('configuration-view-tab', {
+          'configuration-view-tab--active': TAB_KERNEL_INFO === tabState
+        })} onClick={() => handleClickTab(TAB_KERNEL_INFO)}>
+          Kernel settings
+        </div>}
+      </div>
+    )
+  }
+
+  renderKernelInfo(codeHighlightStyle) {
+    const {dbVersion, kernelShall} = this.props
+    const config = [
+      `kernel.shmmax=${kernelShall * 4096}`,
+      `kernel.shmall=${kernelShall}`
+    ].join("\n") // eslint-disable-line quotes
+
+    return (
+      <div>
+        <p>
+          <strong>NOTICE:</strong> For PostgreSQL {dbVersion} you also
+          should modify kernel resources (add this in /etc/sysctl.conf)
+          <a href="https://www.postgresql.org/docs/current/static/kernel-resources.html" target="_blank">
+            More info
+          </a>
+        </p>
+        <SyntaxHighlighter language="init" style={codeHighlightStyle}>
+          {config}
+        </SyntaxHighlighter>
+      </div>
+    )
+  }
+
+  renderConfigResult(codeHighlightStyle) {
+    const {tabState} = this.props
+    const isAlterSystem = TAB_ALTER_SYSTEM === tabState
+
+    return (
+      <React.Fragment>
+        {isAlterSystem ? <p><strong>ALTER SYSTEM</strong> writes the given parameter setting to the <strong>postgresql.auto.conf</strong> file, which is read in addition to <strong>postgresql.conf</strong></p> : <p>Add/modify this settings in <strong>postgresql.conf</strong> and restart database</p>}
+        <SyntaxHighlighter language={isAlterSystem ? 'sql' : 'ini'} style={codeHighlightStyle}>
+          {this.generateConfig()}
+        </SyntaxHighlighter>
+      </React.Fragment>
+    )
   }
 
   render() {
-    const {isMinForConfiguration, theme} = this.props
-    if (!isMinForConfiguration) {
-      return null
-    }
+    const {tabState, theme} = this.props
 
+    const isKernelInfo = TAB_KERNEL_INFO === tabState
     const codeHighlightStyle = (
       APP_THEMES_LIGHT === theme ? solarizedLight : solarizedDark
     )
 
     return (
       <div>
-        <h4 className="configuration-view-title">
-          Results
-        </h4>
-        <SyntaxHighlighter language="ini" style={codeHighlightStyle}>
-          {this.postgresqlConfig()}
-        </SyntaxHighlighter>
+        {this.renderTabs()}
+        {
+          isKernelInfo ? this.renderKernelInfo(codeHighlightStyle) :
+            this.renderConfigResult(codeHighlightStyle)
+        }
       </div>
     )
   }

@@ -1,8 +1,14 @@
 import {combineReducers} from 'redux'
 import {createAction, createReducer} from 'redux-act'
-import {APP_THEMES_LIGHT, APP_THEMES_DARK} from './constants'
+import {submitConfiguration} from 'reducers/configuration'
+import {
+  APP_THEMES_LIGHT,
+  APP_THEMES_DARK,
+  TAB_CONFIG
+} from './constants'
 
 export const settingsToggleTheme = createAction('Toggle app theme')
+export const openConfigTab = createAction('Open config tab')
 
 const theme = createReducer({
   [settingsToggleTheme]: (state) => (
@@ -10,6 +16,12 @@ const theme = createReducer({
   )
 }, APP_THEMES_LIGHT)
 
+const tabState = createReducer({
+  [openConfigTab]: (state, payload) => payload,
+  [submitConfiguration]: () => TAB_CONFIG
+}, TAB_CONFIG)
+
 export const reducer = combineReducers({
+  tabState,
   theme
 })

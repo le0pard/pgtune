@@ -1,6 +1,19 @@
 @import 'variables'
 
-.configuration-view-title
-  color: $yellow
+.configuration-view-tabs-wrapper
+  lost-flex-container: row
+
+.configuration-view-tab
+  lost-column: 1/2 2 0
+  lost-align: center
   text-align: center
-  margin: 0.2rem 0
+  height: 2rem
+  cursor: pointer
+  margin-top: 1rem
+
+  &--active
+    border-bottom: 2px solid $orange
+    background-color: var(--headsColor)
+
+  &--full
+    lost-column: 1/1 1 0
