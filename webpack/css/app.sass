@@ -8,6 +8,11 @@
   --headsColor: $base2
   --emphColor: $base01
   --commentColor: $base1
+  --inputBg: color($base3 tint(4%))
+  --inputBgDisabled: $base1
+  --inputColor: $base02
+  --inputBorder: $base1
+  --inputColorPlaceholder: color($base02 tint(30%))
 
 \:root.dark
   --baseColor: $base0
@@ -15,6 +20,11 @@
   --headsColor: $base02
   --emphColor: $base1
   --commentColor: $base01
+  --inputBg: $base02
+  --inputBgDisabled: $base01
+  --inputColor: $base2
+  --inputBorder: $base01
+  --inputColorPlaceholder: color($base2 shade(30%))
 
 html
   @include responsive-font-size(16px 21px)
