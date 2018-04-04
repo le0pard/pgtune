@@ -67,9 +67,9 @@ export const sharedBuffers = createSelector(
       [DB_TYPE_MIXED]: Math.floor(totalMemoryKb/ 4)
     }[dbType]
     // Limit shared_buffers to 512MB on Windows
-    const windowsMax = 512 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']
-    if (OS_WINDOWS === osType && sharedBuffersValue > windowsMax) {
-      sharedBuffersValue = windowsMax
+    const winMemoryLimit = 512 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']
+    if (OS_WINDOWS === osType && sharedBuffersValue > winMemoryLimit) {
+      sharedBuffersValue = winMemoryLimit
     }
     return sharedBuffersValue
   }
