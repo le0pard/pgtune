@@ -1,5 +1,6 @@
 import React from 'react'
 import ConfigurationForm from 'containers/configurationForm'
+import ConfigurationView from 'containers/configurationView'
 
 import './main-generator.sass'
 
@@ -13,7 +14,9 @@ export default class MainGenerator extends React.Component {
           </h4>
           <ConfigurationForm />
         </div>
-        <div className="main-generator-result-wrapper" />
+        <div className="main-generator-result-wrapper">
+          <ConfigurationView />
+        </div>
       </div>
     )
   }

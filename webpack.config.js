@@ -52,6 +52,7 @@ const cssLoaders = [
             features: {
               rem: false,
               customProperties: {
+                strict: false,
                 warnings: false,
                 preserve: true
               }

@@ -11,23 +11,23 @@ import {
 export const submitConfiguration = createAction('Submit hardware configuration')
 
 const dbVersion = createReducer({
-  [submitConfiguration]: (state, {dbVersion}) => parseFloat(dbVersion)
+  [submitConfiguration]: (state, payload) => parseFloat(payload.dbVersion)
 }, DEFAULT_DB_VERSION)
 
 const osType = createReducer({
-  [submitConfiguration]: (state, {osType}) => osType
+  [submitConfiguration]: (state, payload) => payload.osType
 }, OS_LINUX)
 
 const dbType = createReducer({
-  [submitConfiguration]: (state, {dbType}) => dbType
+  [submitConfiguration]: (state, payload) => payload.dbType
 }, DB_TYPE_WEB)
 
 const totalMemory = createReducer({
-  [submitConfiguration]: (state, {totalMemory}) => parseInt(totalMemory, 10)
+  [submitConfiguration]: (state, payload) => parseInt(payload.totalMemory, 10)
 }, null)
 
 const totalMemoryUnit = createReducer({
-  [submitConfiguration]: (state, {totalMemoryUnit}) => totalMemoryUnit
+  [submitConfiguration]: (state, payload) => payload.totalMemoryUnit
 }, SIZE_UNIT_GB)
 
 const cpuNum = createReducer({
@@ -43,7 +43,7 @@ const connectionNum = createReducer({
 }, null)
 
 const hdType = createReducer({
-  [submitConfiguration]: (state, {hdType}) => hdType
+  [submitConfiguration]: (state, payload) => payload.hdType
 }, HARD_DRIVE_HDD)
 
 export const reducer = combineReducers({
