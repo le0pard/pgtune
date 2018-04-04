@@ -19,6 +19,7 @@ export default class ConfigurationView extends React.Component {
   static propTypes = {
     isMinForConfiguration: PropTypes.bool.isRequired,
     maxConnections: PropTypes.number.isRequired,
+    sharedBuffers: PropTypes.number.isRequired,
     effectiveCacheSize: PropTypes.number.isRequired,
     theme: PropTypes.oneOf([APP_THEMES_LIGHT, APP_THEMES_DARK]).isRequired
   }
@@ -54,11 +55,13 @@ export default class ConfigurationView extends React.Component {
   postgresqlConfig() {
     const {
       maxConnections,
+      sharedBuffers,
       effectiveCacheSize
     } = this.props
 
     return [
       `max_connections = ${maxConnections}`,
+      `shared_buffers = ${this.formatValue(sharedBuffers)}`,
       `effective_cache_size = ${this.formatValue(effectiveCacheSize)}`
     ].join("\n")
   }

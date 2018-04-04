@@ -4,7 +4,8 @@ import {
   DB_TYPE_OLTP,
   DB_TYPE_DW,
   DB_TYPE_DESKTOP,
-  DB_TYPE_MIXED
+  DB_TYPE_MIXED,
+  OS_WINDOWS
 } from 'reducers/configuration/constants'
 
 const SIZE_UNIT_MAP = {
@@ -53,6 +54,25 @@ const totalMemoryInKb = createSelector(
   (totalMemoryBytes) => (
     totalMemoryBytes / SIZE_UNIT_MAP['KB']
   )
+)
+
+export const sharedBuffers = createSelector(
+  [totalMemoryInKb, getDBType, getOSType],
+  (totalMemoryKb, dbType, osType) => {
+    let sharedBuffersValue = {
+      [DB_TYPE_WEB]: Math.floor(totalMemoryKb / 4),
+      [DB_TYPE_OLTP]: Math.floor(totalMemoryKb / 4),
+      [DB_TYPE_DW]: Math.floor(totalMemoryKb / 4),
+      [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 16),
+      [DB_TYPE_MIXED]: Math.floor(totalMemoryKb/ 4)
+    }[dbType]
+    // Limit shared_buffers to 512MB on Windows
+    const windowsMax = 512 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']
+    if (OS_WINDOWS === osType && sharedBuffersValue > windowsMax) {
+      sharedBuffersValue = windowsMax
+    }
+    return sharedBuffersValue
+  }
 )
 
 export const effectiveCacheSize = createSelector(
