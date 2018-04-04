@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import SyntaxHighlighter from 'react-syntax-highlighter'
+import SyntaxHighlighter, {registerLanguage} from 'react-syntax-highlighter/light'
+import iniLang from 'react-syntax-highlighter/languages/hljs/ini'
+import sqlLang from 'react-syntax-highlighter/languages/hljs/sql'
 import {
   solarizedLight,
   solarizedDark
 } from 'react-syntax-highlighter/styles/hljs'
+import CopyButton from 'components/copyButton'
 import {OS_LINUX} from 'reducers/configuration/constants'
 import {
   APP_THEMES_LIGHT,
@@ -16,6 +19,9 @@ import {
 } from 'reducers/settings/constants'
 
 import './configuration-view.sass'
+
+registerLanguage('ini', iniLang)
+registerLanguage('sql', sqlLang)
 
 const KB_UNIT_MAP = {
   KB_PER_MB: 1024,
@@ -226,6 +232,7 @@ export default class ConfigurationView extends React.Component {
   renderConfigResult(codeHighlightStyle) {
     const {tabState} = this.props
     const isAlterSystem = TAB_ALTER_SYSTEM === tabState
+    const generatedConfig = this.generateConfig()
 
     return (
       <React.Fragment>
@@ -233,8 +240,12 @@ export default class ConfigurationView extends React.Component {
           <p><strong>ALTER SYSTEM</strong> writes the given parameter setting to the <strong>postgresql.auto.conf</strong> file, which is read in addition to <strong>postgresql.conf</strong></p> :
           <p>Add/modify this settings in <strong>postgresql.conf</strong> and restart database</p>}
         <SyntaxHighlighter language={isAlterSystem ? 'sql' : 'ini'} style={codeHighlightStyle}>
-          {this.generateConfig()}
+          {generatedConfig}
         </SyntaxHighlighter>
+        <div className="configuration-view-copy-wrapper">
+          <CopyButton className="configuration-view-copy-button"
+            text={generatedConfig} label="Copy configuration" />
+        </div>
       </React.Fragment>
     )
   }
