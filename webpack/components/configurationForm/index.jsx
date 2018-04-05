@@ -144,7 +144,8 @@ export default class ConfigurationForm extends React.Component {
             min: '1',
             max: '9999',
             step: '1',
-            pattern: '[0-9]{1,4}'
+            pattern: '[0-9]{1,4}',
+            placeholder: 'Memory size (RAM, required)'
           }}
           label="Total Memory (RAM)"
         />
@@ -165,7 +166,8 @@ export default class ConfigurationForm extends React.Component {
             min: '1',
             max: '9999',
             step: '1',
-            pattern: '[0-9]{1,4}'
+            pattern: '[0-9]{1,4}',
+            placeholder: 'Number of CPUs (optional)'
           }}
           label="Number of CPUs"
         />
@@ -180,7 +182,8 @@ export default class ConfigurationForm extends React.Component {
             min: '10',
             max: '9999',
             step: '1',
-            pattern: '[0-9]{1,4}'
+            pattern: '[0-9]{1,4}',
+            placeholder: 'Number of Connections (optional)'
           }}
           label="Number of Connections"
         />

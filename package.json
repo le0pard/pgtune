@@ -46,6 +46,7 @@
     "postcss-url": "7.3.2",
     "promise-polyfill": "7.1.1",
     "prop-types": "15.6.1",
+    "rc-tooltip": "^3.7.0",
     "react": "16.3.1",
     "react-dom": "16.3.1",
     "react-redux": "5.0.7",

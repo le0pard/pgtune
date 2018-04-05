@@ -238,7 +238,7 @@ export const parallelSettings = createSelector(
       })
     }
 
-    if (dbVersion >= 9.6) {
+    if (dbVersion >= 10) {
       config.push({
         key: 'max_parallel_workers',
         value: cpuNum

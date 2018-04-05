@@ -15,6 +15,8 @@ import {
   HARD_DRIVE_SAN
 } from 'reducers/configuration/constants'
 
+const MAX_INTEGER = 9999
+
 const DB_TYPES = [
   DB_TYPE_WEB,
   DB_TYPE_OLTP,
@@ -57,6 +59,8 @@ export const validate = (values) => {
       errors.totalMemory = 'Must be an integer'
     } else if (totalMemory < 1) {
       errors.totalMemory = 'Must be greater than zero'
+    } else if (totalMemory > MAX_INTEGER) {
+      errors.totalMemory = `Must be less than ${MAX_INTEGER}`
     }
   }
   if (!values.totalMemoryUnit) {
@@ -75,6 +79,8 @@ export const validate = (values) => {
       errors.cpuNum = 'Must be an integer'
     } else if (cpuNum < 1) {
       errors.cpuNum = 'Must be greater than zero'
+    } else if (cpuNum > MAX_INTEGER) {
+      errors.cpuNum = `Must be less than ${MAX_INTEGER}`
     }
   }
   if (values.connectionNum) {
@@ -83,6 +89,8 @@ export const validate = (values) => {
       errors.connectionNum = 'Must be an integer'
     } else if (connectionNum < 1) {
       errors.connectionNum = 'Must be greater than zero'
+    } else if (connectionNum > MAX_INTEGER) {
+      errors.connectionNum = `Must be less than ${MAX_INTEGER}`
     }
   }
   return errors
