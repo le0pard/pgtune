@@ -56,7 +56,8 @@ export default class ConfigurationView extends React.Component {
       value: PropTypes.number.isRequired
     })),
     workMem: PropTypes.number.isRequired,
-    kernelShall: PropTypes.number.isRequired,
+    kernelShmmax: PropTypes.number.isRequired,
+    kernelShmall: PropTypes.number.isRequired,
     tabState: PropTypes.string.isRequired,
     theme: PropTypes.oneOf([APP_THEMES_LIGHT, APP_THEMES_DARK]).isRequired,
     handleClickTab: PropTypes.func.isRequired
@@ -150,24 +151,21 @@ export default class ConfigurationView extends React.Component {
       ['max_connections', maxConnections],
       ['shared_buffers', this.formatValue(sharedBuffers)],
       ['effective_cache_size', this.formatValue(effectiveCacheSize)],
-      ['maintenance_work_mem', this.formatValue(maintenanceWorkMem)]
-    ].concat(this.getCheckpointSegments()).concat([
+      ['maintenance_work_mem', this.formatValue(maintenanceWorkMem)],
       ['checkpoint_completion_target', checkpointCompletionTarget],
       ['wal_buffers', this.formatValue(walBuffers)],
       ['default_statistics_target', defaultStatisticsTarget],
       ['random_page_cost', randomPageCost],
-      ['effective_io_concurrency', effectiveIoConcurrency]
-    ]).concat(this.getParallelSettings()).concat([
+      ['effective_io_concurrency', effectiveIoConcurrency],
       ['work_mem', this.formatValue(workMem)]
-    ])
+    ].concat(this.getCheckpointSegments()).concat(this.getParallelSettings())
 
     return configData.filter((item) => !!item[1])
-      .map((item) => {
-        if (isRenderAlterSystem) {
-          return `ALTER SYSTEM SET\n ${item[0]} = '${item[1]}';`
-        }
-        return `${item[0]} = ${item[1]}`
-      }).join("\n") // eslint-disable-line quotes
+      .map((item) => (
+        isRenderAlterSystem ?
+          `ALTER SYSTEM SET\n ${item[0]} = '${item[1]}';` :
+          `${item[0]} = ${item[1]}`
+      )).join("\n") // eslint-disable-line quotes
   }
 
   generateConfig() {
@@ -207,10 +205,10 @@ export default class ConfigurationView extends React.Component {
   }
 
   renderKernelInfo(codeHighlightStyle) {
-    const {dbVersion, kernelShall} = this.props
+    const {dbVersion, kernelShmall, kernelShmmax} = this.props
     const config = [
-      `kernel.shmmax=${kernelShall * 4096}`,
-      `kernel.shmall=${kernelShall}`
+      `kernel.shmmax=${kernelShmmax}`,
+      `kernel.shmall=${kernelShmall}`
     ].join("\n") // eslint-disable-line quotes
 
     return (

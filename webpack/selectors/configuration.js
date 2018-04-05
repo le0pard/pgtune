@@ -172,7 +172,7 @@ export const walBuffers = createSelector(
     if (walBuffersValue > maxWalBuffer) {
       walBuffersValue = maxWalBuffer
     }
-    // It's nice of wal_buffers is an even 16MB if it's near that number.  Since
+    // It's nice of wal_buffers is an even 16MB if it's near that number. Since
     // that is a common case on Windows, where shared_buffers is clipped to 512MB,
     // round upwards in that situation
     const walBufferNearValue = 14 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']
@@ -277,7 +277,12 @@ export const workMem = createSelector(
   }
 )
 
-export const kernelShall = createSelector(
+export const kernelShmall = createSelector(
   [totalMemoryInBytes],
   (totalMemory) => Math.floor(totalMemory / 8192)
+)
+
+export const kernelShmmax = createSelector(
+  [kernelShmall],
+  (kernelShmallVal) => kernelShmallVal * 4096
 )

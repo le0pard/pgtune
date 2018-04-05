@@ -13,7 +13,8 @@ import {
   effectiveIoConcurrency,
   parallelSettings,
   workMem,
-  kernelShall
+  kernelShmmax,
+  kernelShmall
 } from 'selectors/configuration'
 import {openConfigTab} from 'reducers/settings'
 
@@ -40,7 +41,9 @@ const mapStateToProps = (state) => ({
   effectiveIoConcurrency: effectiveIoConcurrency(state),
   parallelSettings: parallelSettings(state),
   workMem: workMem(state),
-  kernelShall: kernelShall(state),
+  // kernel settings
+  kernelShmmax: kernelShmmax(state),
+  kernelShmall: kernelShmall(state),
   // tab state
   tabState: state.settings.tabState,
   // app theme

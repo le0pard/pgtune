@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import classnames from 'classnames'
 
 import './field.sass'
 
@@ -34,9 +33,7 @@ export default class FormField extends React.Component {
 
     return (
       <div
-        className={classnames('form-field', {
-          'form-field--error': isError
-        })}>
+        className="form-field">
         <div className="form-field__input-wrapper">
           <input
             {...input}
