@@ -2,6 +2,14 @@
 require 'digest'
 
 module PgtuneHelpers
+  def default_keywords_helper
+    "pgtune, postgresql, postgres, tuning, config, configuration, free, open source"
+  end
+
+  def default_description_helper
+    "PgTune - Tuning PostgreSQL config by your hardware"
+  end
+
   def javascript_pack_tag(name)
     file_name = "#{name}.js"
     %(<script src="#{asset_path(file_name)}"
