@@ -41,7 +41,7 @@ export default class FormField extends React.Component {
         </label>
         <Tooltip
           id={`tooltip${inputID}`}
-          label="What is this?"
+          label="what is this?"
           text="test"
           className="form-field-tooltip" />
         <input
