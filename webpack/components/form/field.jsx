@@ -10,6 +10,7 @@ export default class FormField extends React.Component {
     input: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
+    tooltip: PropTypes.string.isRequired,
     inputProps: PropTypes.object,
     meta: PropTypes.shape({
       touched: PropTypes.bool.isRequired,
@@ -26,6 +27,7 @@ export default class FormField extends React.Component {
       label,
       input,
       type,
+      tooltip,
       inputProps,
       meta: {touched, error}
     } = this.props
@@ -41,7 +43,7 @@ export default class FormField extends React.Component {
         <Tooltip
           id={`tooltip${inputID}`}
           label="what is this?"
-          text="test"
+          text={tooltip}
           className="form-field-tooltip" />
         <input
           {...input}

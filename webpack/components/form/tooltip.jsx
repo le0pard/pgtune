@@ -25,13 +25,14 @@ export default class Tooltip extends React.Component {
         id={id}
         placement="topRight"
         trigger={['click']}
-        overlay={'test'}
-        destroyTooltipOnHide={true}>
-          <div className={className}>
-            <a className={className && `${className}__link`} href='#'>
-              {label}
-            </a>
-          </div>
+        overlay={text}
+        destroyTooltipOnHide={true}
+      >
+        <div className={className}>
+          <a className={className && `${className}__link`} href="#">
+            {label}
+          </a>
+        </div>
       </RcTooltip>
     )
   }

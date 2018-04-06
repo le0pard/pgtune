@@ -12,6 +12,10 @@ import {
 import './total-memory-input.sass'
 
 export default class TotalMemoryInput extends React.Component {
+  static propTypes = {
+    tooltip: PropTypes.string.isRequired
+  }
+
   totalMemoryUnitOptions() {
     return [
       {
@@ -26,6 +30,7 @@ export default class TotalMemoryInput extends React.Component {
   }
 
   render() {
+    const {tooltip} = this.props
     const inputID = 'TotalMemoryId'
 
     return (
@@ -36,7 +41,7 @@ export default class TotalMemoryInput extends React.Component {
         <Tooltip
           id={`tooltip${inputID}`}
           label="what is this?"
-          text="test"
+          text={tooltip}
           className="total-memory-tooltip" />
         <Field
           name="totalMemory"

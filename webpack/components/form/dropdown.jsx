@@ -9,6 +9,7 @@ export default class FormDropdown extends React.Component {
   static propTypes = {
     input: PropTypes.object.isRequired,
     label: PropTypes.string.isRequired,
+    tooltip: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string.isRequired,
       value: PropTypes.any.isRequired
@@ -23,6 +24,7 @@ export default class FormDropdown extends React.Component {
     const {
       label,
       input,
+      tooltip,
       options,
       meta: {touched, error}
     } = this.props
@@ -38,7 +40,7 @@ export default class FormDropdown extends React.Component {
         <Tooltip
           id={`tooltip${dropdownID}`}
           label="what is this?"
-          text="test"
+          text={tooltip}
           className="form-dropdown-tooltip" />
         <select
           className="form-dropdown-select"

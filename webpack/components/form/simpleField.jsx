@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import _camelCase from 'lodash/camelCase'
-import Tooltip from './tooltip'
 
 import './field.sass'
 

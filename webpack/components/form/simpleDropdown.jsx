@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import _camelCase from 'lodash/camelCase'
-import Tooltip from './tooltip'
 
 import './dropdown.sass'
 
@@ -23,7 +21,6 @@ export default class FormSimpleDropdown extends React.Component {
 
   render() {
     const {
-      label,
       input,
       options,
       className,

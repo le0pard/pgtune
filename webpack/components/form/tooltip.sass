@@ -1,3 +1,5 @@
+@import 'variables'
+
 .rc-tooltip
   &.rc-tooltip-zoom-enter, &.rc-tooltip-zoom-leave
     display: block
@@ -77,23 +79,23 @@
   display: block
   visibility: visible
   line-height: 1.5
-  font-size: 12px
-  background-color: rgba(0, 0, 0, 0.05)
+  font-size: 0.8rem
+  background-color: var(--bgColor)
   padding: 1px
-  opacity: 0.9
+  opacity: 0.97
 
 .rc-tooltip-hidden
   display: none
 
 .rc-tooltip-inner
   padding: 8px 10px
-  color: #333333
+  color: var(--inputColor)
   text-align: left
   text-decoration: none
-  background-color: #ffffff
+  background-color: $yellow
   border-radius: 3px
   min-height: 34px
-  border: 1px solid #b1b1b1
+  border: 2px solid $yellow
 
 .rc-tooltip-arrow, .rc-tooltip-arrow-inner
   position: absolute
@@ -106,13 +108,13 @@
   bottom: -5px
   margin-left: -6px
   border-width: 6px 6px 0
-  border-top-color: #b1b1b1
+  border-top-color: $yellow
 
 .rc-tooltip-placement-top .rc-tooltip-arrow-inner, .rc-tooltip-placement-topLeft .rc-tooltip-arrow-inner, .rc-tooltip-placement-topRight .rc-tooltip-arrow-inner
   bottom: 1px
   margin-left: -6px
   border-width: 6px 6px 0
-  border-top-color: #ffffff
+  border-top-color: $yellow
 
 .rc-tooltip-placement-top .rc-tooltip-arrow
   left: 50%
@@ -127,13 +129,13 @@
   left: -5px
   margin-top: -6px
   border-width: 6px 6px 6px 0
-  border-right-color: #b1b1b1
+  border-right-color: $yellow
 
 .rc-tooltip-placement-right .rc-tooltip-arrow-inner, .rc-tooltip-placement-rightTop .rc-tooltip-arrow-inner, .rc-tooltip-placement-rightBottom .rc-tooltip-arrow-inner
   left: 1px
   margin-top: -6px
   border-width: 6px 6px 6px 0
-  border-right-color: #ffffff
+  border-right-color: $yellow
 
 .rc-tooltip-placement-right .rc-tooltip-arrow
   top: 50%
@@ -149,13 +151,13 @@
   right: -5px
   margin-top: -6px
   border-width: 6px 0 6px 6px
-  border-left-color: #b1b1b1
+  border-left-color: $yellow
 
 .rc-tooltip-placement-left .rc-tooltip-arrow-inner, .rc-tooltip-placement-leftTop .rc-tooltip-arrow-inner, .rc-tooltip-placement-leftBottom .rc-tooltip-arrow-inner
   right: 1px
   margin-top: -6px
   border-width: 6px 0 6px 6px
-  border-left-color: #ffffff
+  border-left-color: $yellow
 
 .rc-tooltip-placement-left .rc-tooltip-arrow
   top: 50%
@@ -171,13 +173,13 @@
   top: -5px
   margin-left: -6px
   border-width: 0 6px 6px
-  border-bottom-color: #b1b1b1
+  border-bottom-color: $yellow
 
 .rc-tooltip-placement-bottom .rc-tooltip-arrow-inner, .rc-tooltip-placement-bottomLeft .rc-tooltip-arrow-inner, .rc-tooltip-placement-bottomRight .rc-tooltip-arrow-inner
   top: 1px
   margin-left: -6px
   border-width: 0 6px 6px
-  border-bottom-color: #ffffff
+  border-bottom-color: $yellow
 
 .rc-tooltip-placement-bottom .rc-tooltip-arrow
   left: 50%
