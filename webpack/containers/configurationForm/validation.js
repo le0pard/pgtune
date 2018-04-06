@@ -87,8 +87,8 @@ export const validate = (values) => {
     const connectionNum = parseInt(values.connectionNum, 10)
     if (!_isInteger(connectionNum)) {
       errors.connectionNum = 'Must be an integer'
-    } else if (connectionNum < 1) {
-      errors.connectionNum = 'Must be greater than zero'
+    } else if (connectionNum < 10) {
+      errors.connectionNum = 'Must be greater than or equal to 10'
     } else if (connectionNum > MAX_INTEGER) {
       errors.connectionNum = `Must be less than ${MAX_INTEGER}`
     }
