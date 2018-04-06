@@ -45,15 +45,17 @@ export default class FormField extends React.Component {
           label="what is this?"
           text={tooltip}
           className="form-field-tooltip" />
-        <input
-          {...input}
-          {...inputProps}
-          className="form-field-input"
-          aria-label={label}
-          aria-describedby={`tooltip${inputID}`}
-          id={inputID}
-          type={type} />
-        {isError && <div className="form-field-error">{error}</div>}
+        <div className="form-field-wrapper">
+          <input
+            {...input}
+            {...inputProps}
+            className="form-field-wrapper__input"
+            aria-label={label}
+            aria-describedby={`tooltip${inputID}`}
+            id={inputID}
+            type={type} />
+          {isError && <div className="form-field-error">{error}</div>}
+        </div>
       </div>
     )
   }

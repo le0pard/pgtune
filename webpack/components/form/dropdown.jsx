@@ -42,20 +42,22 @@ export default class FormDropdown extends React.Component {
           label="what is this?"
           text={tooltip}
           className="form-dropdown-tooltip" />
-        <select
-          className="form-dropdown-select"
-          {...input}
-          aria-describedby={`tooltip${dropdownID}`}
-          id={dropdownID}>
-          {options.map((option, index) => {
-            return (
-              <option key={index} value={option.value}>
-                {option.label}
-              </option>
-            )
-          })}
-        </select>
-        {isError && <div className="form-dropdown-error">{error}</div>}
+        <div className="form-dropdown-wrapper">
+          <select
+            className="form-dropdown-wrapper__select"
+            {...input}
+            aria-describedby={`tooltip${dropdownID}`}
+            id={dropdownID}>
+            {options.map((option, index) => {
+              return (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
+              )
+            })}
+          </select>
+          {isError && <div className="form-dropdown-error">{error}</div>}
+        </div>
       </div>
     )
   }

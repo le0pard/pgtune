@@ -18,13 +18,18 @@
   text-decoration: none
   vertical-align: middle
 
-.form-dropdown-select
+.form-dropdown-wrapper
   lost-column: 1/1
-  font-size: 1.3rem
-  color: var(--inputColor)
-  border-radius: 6px
-  border: 1px solid var(--inputBorder)
-  background-color: var(--inputBg)
+
+  &__select
+    width: 100%
+    font-size: 1.3rem
+    color: var(--inputColor)
+    border-radius: 0
+    appearance: none
+    border: 1px solid var(--inputBorder)
+    background-color: var(--inputBg)
+    padding: 2px 1px
 
 .form-dropdown-error
   lost-column: 1/1

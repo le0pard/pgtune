@@ -18,18 +18,21 @@
   text-decoration: none
   vertical-align: middle
 
-.form-field-input
+.form-field-wrapper
   lost-column: 1/1
-  font-size: 1.3rem
-  color: var(--inputColor)
-  border-radius: 6px
-  border: 1px solid var(--inputBorder)
-  background-color: var(--inputBg)
-  padding: 2px 1px
 
-  &::placeholder
-    font-size: 1.2rem
-    color: var(--inputColorPlaceholder)
+  &__input
+    width: calc(100% - 4px)
+    font-size: 1.3rem
+    color: var(--inputColor)
+    border-radius: 0
+    border: 1px solid var(--inputBorder)
+    background-color: var(--inputBg)
+    padding: 2px 1px
+
+    &::placeholder
+      font-size: 1.2rem
+      color: var(--inputColorPlaceholder)
 
 .form-field-error
   lost-column: 1/1
