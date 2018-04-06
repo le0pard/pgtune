@@ -1,23 +1,32 @@
 @import 'variables'
 
 .form-dropdown
+  lost-flex-container: row
   margin-bottom: 0.4rem
 
-  &__wrapper
-    width: 100%
-    font-size: 1.2rem
+.form-dropdown-label
+  lost-column: 5/8 2
+  font-size: 1.1rem
 
-  &__select
-    width: 100%
-    color: var(--inputColor)
-    border-radius: 6px
-    border: 1px solid var(--inputBorder)
-    background-color: var(--inputBg)
+.form-dropdown-tooltip
+  lost-column: 3/8 2
+  text-align: right
+  font-size: 0.8rem
 
-  &__label
-    padding-right: 0.4rem
+.form-dropdown-tooltip__link
+  border-bottom: 1px dotted $yellow
+  text-decoration: none
+  vertical-align: middle
 
-  &__error
-    lost-row: 1
-    color: $red
-    font-size: 0.8rem
+.form-dropdown-select
+  lost-column: 1/1
+  font-size: 1.3rem
+  color: var(--inputColor)
+  border-radius: 6px
+  border: 1px solid var(--inputBorder)
+  background-color: var(--inputBg)
+
+.form-dropdown-error
+  lost-column: 1/1
+  font-size: 0.8rem
+  color: $red

@@ -5,11 +5,13 @@ import Tooltip from './tooltip'
 
 import './field.sass'
 
-export default class FormField extends React.Component {
+export default class FormSimpleField extends React.Component {
   static propTypes = {
     input: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    inputClassName: PropTypes.string,
+    errorClassName: PropTypes.string,
     inputProps: PropTypes.object,
     meta: PropTypes.shape({
       touched: PropTypes.bool.isRequired,
@@ -23,35 +25,25 @@ export default class FormField extends React.Component {
 
   render() {
     const {
-      label,
       input,
       type,
       inputProps,
+      className,
+      inputClassName,
+      errorClassName,
       meta: {touched, error}
     } = this.props
 
-    const inputID = _camelCase(`${input.name}-id`)
     const isError = touched && error
 
     return (
-      <div className="form-field">
-        <label className="form-field-label" htmlFor={inputID}>
-          {label}
-        </label>
-        <Tooltip
-          id={`tooltip${inputID}`}
-          label="what is this?"
-          text="test"
-          className="form-field-tooltip" />
+      <div className={className}>
         <input
           {...input}
           {...inputProps}
-          className="form-field-input"
-          aria-label={label}
-          aria-describedby={`tooltip${inputID}`}
-          id={inputID}
+          className={inputClassName}
           type={type} />
-        {isError && <div className="form-field-error">{error}</div>}
+        {isError && <div className={errorClassName}>{error}</div>}
       </div>
     )
   }

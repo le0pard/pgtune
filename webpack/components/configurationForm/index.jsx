@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import {Field} from 'redux-form'
 import FormField from 'components/form/field'
 import FormDropdown from 'components/form/dropdown'
+import TotalMemoryInput from './totalMemoryInput'
 import {
   DB_VERSIONS,
   OS_LINUX,
@@ -13,8 +14,6 @@ import {
   DB_TYPE_DW,
   DB_TYPE_DESKTOP,
   DB_TYPE_MIXED,
-  SIZE_UNIT_MB,
-  SIZE_UNIT_GB,
   HARD_DRIVE_HDD,
   HARD_DRIVE_SSD,
   HARD_DRIVE_SAN
@@ -78,19 +77,6 @@ export default class ConfigurationForm extends React.Component {
     ]
   }
 
-  totalMemoryUnitOptions() {
-    return [
-      {
-        label: 'GB',
-        value: SIZE_UNIT_GB
-      },
-      {
-        label: 'MB',
-        value: SIZE_UNIT_MB
-      }
-    ]
-  }
-
   hdTypeOptions() {
     return [
       {
@@ -131,30 +117,7 @@ export default class ConfigurationForm extends React.Component {
           label="DB Type"
           options={this.dbTypeOptions()}
         />
-        <Field
-          name="totalMemory"
-          type="number"
-          component={FormField}
-          inputProps={{
-            autoFocus: true,
-            autoComplete: 'off',
-            autoCorrect: 'off',
-            autoCapitalize: 'none',
-            required: 'required',
-            min: '1',
-            max: '9999',
-            step: '1',
-            pattern: '[0-9]{1,4}',
-            placeholder: 'Memory size (RAM, required)'
-          }}
-          label="Total Memory (RAM)"
-        />
-        <Field
-          name="totalMemoryUnit"
-          component={FormDropdown}
-          label="Unit"
-          options={this.totalMemoryUnitOptions()}
-        />
+        <TotalMemoryInput />
         <Field
           name="cpuNum"
           type="number"

@@ -1,0 +1,50 @@
+@import 'variables'
+
+.total-memory
+  lost-flex-container: row
+  margin-bottom: 0.4rem
+
+.total-memory-label
+  lost-column: 5/8 2
+  font-size: 1.1rem
+
+.total-memory-tooltip
+  lost-column: 3/8 2
+  text-align: right
+  font-size: 0.8rem
+
+.total-memory-tooltip__link
+  border-bottom: 1px dotted $yellow
+  text-decoration: none
+  vertical-align: middle
+
+.total-memory-amount
+  lost-column: 4/5 2 4px
+
+  &__input
+    font-size: 1.3rem
+    color: var(--inputColor)
+    border-radius: 6px
+    border: 1px solid var(--inputBorder)
+    background-color: var(--inputBg)
+    width: 100%
+    padding: 2px 1px
+
+    &::placeholder
+      font-size: 1.2rem
+      color: var(--inputColorPlaceholder)
+
+  &__error
+    font-size: 0.8rem
+    color: $red
+
+.total-memory-unit
+  lost-column: 1/5 2 4px
+
+  &__select
+    width: 100%
+    font-size: 1.3rem
+    color: var(--inputColor)
+    border-radius: 6px
+    border: 1px solid var(--inputBorder)
+    background-color: var(--inputBg)

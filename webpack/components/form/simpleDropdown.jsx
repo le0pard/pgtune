@@ -5,10 +5,12 @@ import Tooltip from './tooltip'
 
 import './dropdown.sass'
 
-export default class FormDropdown extends React.Component {
+export default class FormSimpleDropdown extends React.Component {
   static propTypes = {
     input: PropTypes.object.isRequired,
-    label: PropTypes.string.isRequired,
+    className: PropTypes.string,
+    selectClassName: PropTypes.string,
+    errorClassName: PropTypes.string,
     options: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string.isRequired,
       value: PropTypes.any.isRequired
@@ -24,27 +26,17 @@ export default class FormDropdown extends React.Component {
       label,
       input,
       options,
+      className,
+      selectClassName,
+      errorClassName,
       meta: {touched, error}
     } = this.props
 
-    const dropdownID = _camelCase(`${input.name}-id`)
     const isError = touched && error
 
     return (
-      <div className="form-dropdown">
-        <label className="form-dropdown-label" htmlFor={dropdownID}>
-          {label}
-        </label>
-        <Tooltip
-          id={`tooltip${dropdownID}`}
-          label="what is this?"
-          text="test"
-          className="form-dropdown-tooltip" />
-        <select
-          className="form-dropdown-select"
-          {...input}
-          aria-describedby={`tooltip${dropdownID}`}
-          id={dropdownID}>
+      <div className={className}>
+        <select {...input} className={selectClassName}>
           {options.map((option, index) => {
             return (
               <option key={index} value={option.value}>
@@ -53,7 +45,7 @@ export default class FormDropdown extends React.Component {
             )
           })}
         </select>
-        {isError && <div className="form-dropdown-error">{error}</div>}
+        {isError && <div className={errorClassName}>{error}</div>}
       </div>
     )
   }

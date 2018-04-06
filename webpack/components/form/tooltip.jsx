@@ -28,7 +28,9 @@ export default class Tooltip extends React.Component {
         overlay={'test'}
         destroyTooltipOnHide={true}>
           <div className={className}>
-            <a className={`${className}--link`} href='#'>{label}</a>
+            <a className={className && `${className}__link`} href='#'>
+              {label}
+            </a>
           </div>
       </RcTooltip>
     )
