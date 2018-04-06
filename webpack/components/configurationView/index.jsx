@@ -56,11 +56,17 @@ export default class ConfigurationView extends React.Component {
       value: PropTypes.number.isRequired
     })),
     workMem: PropTypes.number.isRequired,
+    warningInfoMessages: PropTypes.arrayOf(PropTypes.string.isRequired),
     kernelShmmax: PropTypes.number.isRequired,
     kernelShmall: PropTypes.number.isRequired,
     tabState: PropTypes.string.isRequired,
     theme: PropTypes.oneOf([APP_THEMES_LIGHT, APP_THEMES_DARK]).isRequired,
     handleClickTab: PropTypes.func.isRequired
+  }
+
+  warningInfo() {
+    const {warningInfoMessages} = this.props
+    return warningInfoMessages.join("\n") // eslint-disable-line quotes
   }
 
   // This uses larger units only if there's no loss of resolution in displaying
@@ -169,11 +175,17 @@ export default class ConfigurationView extends React.Component {
   }
 
   generateConfig() {
-    return [
+    const {warningInfoMessages} = this.props
+    let config = [
       this.hardwareConfiguration(),
       '',
       this.postgresqlConfig()
-    ].join("\n") // eslint-disable-line quotes
+    ]
+
+    if (warningInfoMessages.length > 0) {
+      config = [this.warningInfo(), '', ...config]
+    }
+    return config.join("\n") // eslint-disable-line quotes
   }
 
   renderTabs() {

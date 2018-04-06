@@ -277,6 +277,27 @@ export const workMem = createSelector(
   }
 )
 
+export const warningInfoMessages = createSelector(
+  [totalMemoryInBytes],
+  (totalMemory) => {
+    if (totalMemory < 256 * SIZE_UNIT_MAP['MB']) {
+      return [
+        '# WARNING',
+        '# this tool not being optimal',
+        '# for low memory systems'
+      ]
+    }
+    if (totalMemory > 100 * SIZE_UNIT_MAP['GB']) {
+      return [
+        '# WARNING',
+        '# this tool not being optimal',
+        '# for very high memory systems'
+      ]
+    }
+    return []
+  }
+)
+
 export const kernelShmall = createSelector(
   [totalMemoryInBytes],
   (totalMemory) => Math.floor(totalMemory / 8192)

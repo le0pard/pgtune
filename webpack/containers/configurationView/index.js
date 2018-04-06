@@ -13,6 +13,7 @@ import {
   effectiveIoConcurrency,
   parallelSettings,
   workMem,
+  warningInfoMessages,
   kernelShmmax,
   kernelShmall
 } from 'selectors/configuration'
@@ -41,6 +42,8 @@ const mapStateToProps = (state) => ({
   effectiveIoConcurrency: effectiveIoConcurrency(state),
   parallelSettings: parallelSettings(state),
   workMem: workMem(state),
+  // warnings
+  warningInfoMessages: warningInfoMessages(state),
   // kernel settings
   kernelShmmax: kernelShmmax(state),
   kernelShmall: kernelShmall(state),
