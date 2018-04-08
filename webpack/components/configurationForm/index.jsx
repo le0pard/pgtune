@@ -29,7 +29,7 @@ export default class ConfigurationForm extends React.Component {
   }
 
   handleGenerateConfig(values) {
-    this.props.onSubmitForm(values)
+    return this.props.onSubmitForm(values)
   }
 
   dbVersionOptions() {
@@ -138,7 +138,7 @@ export default class ConfigurationForm extends React.Component {
             placeholder: 'Number of CPUs (optional)'
           }}
           label="Number of CPUs"
-          tooltip="Number of CPUs, which PostgreSQL can use (Threads per core X cores per socket X sockets)"
+          tooltip={<span>Number of CPUs, which PostgreSQL can use<br />CPUs = threads per core * cores per socket * sockets</span>}
         />
         <Field
           name="connectionNum"

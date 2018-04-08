@@ -8,7 +8,11 @@ export default class Tooltip extends React.Component {
   static propTypes = {
     id: PropTypes.string,
     label: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
+    text: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.func,
+      PropTypes.string
+    ]).isRequired,
     className: PropTypes.string
   }
 
@@ -26,7 +30,6 @@ export default class Tooltip extends React.Component {
         placement="topRight"
         trigger={['click']}
         overlay={text}
-        destroyTooltipOnHide={true}
       >
         <div className={className}>
           <a className={className && `${className}__link`} href="#">

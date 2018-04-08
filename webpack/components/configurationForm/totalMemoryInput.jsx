@@ -13,7 +13,11 @@ import './total-memory-input.sass'
 
 export default class TotalMemoryInput extends React.Component {
   static propTypes = {
-    tooltip: PropTypes.string.isRequired
+    tooltip: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.func,
+      PropTypes.string
+    ]).isRequired
   }
 
   totalMemoryUnitOptions() {

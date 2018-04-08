@@ -17,6 +17,7 @@
   border-bottom: 1px dotted $yellow
   text-decoration: none
   vertical-align: middle
+  margin-right: 4px
 
 .total-memory-amount
   lost-column: 4/5 2 4px
@@ -27,7 +28,7 @@
     border: 1px solid var(--inputBorder)
     border-radius: 0
     background-color: var(--inputBg)
-    width: 100%
+    width: calc(100% - 2px)
     padding: 2px 1px
 
     &::placeholder
@@ -42,7 +43,7 @@
   lost-column: 1/5 2 4px
 
   &__select
-    width: 100%
+    width: calc(100% - 2px)
     font-size: 1.3rem
     color: var(--inputColor)
     border-radius: 0
