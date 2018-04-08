@@ -33,4 +33,11 @@ describe('maxConnections', () => {
       }
     })).toEqual(300)
   })
+  it('dw app', () => {
+    expect(maxConnections({
+      configuration: {
+        dbType: 'dw'
+      }
+    })).toEqual(20)
+  })
 })
