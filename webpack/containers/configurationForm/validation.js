@@ -60,7 +60,7 @@ export const validate = (values) => {
     } else if (totalMemory < 1) {
       errors.totalMemory = 'Must be greater than zero'
     } else if (totalMemory > MAX_INTEGER) {
-      errors.totalMemory = `Must be less than ${MAX_INTEGER}`
+      errors.totalMemory = `Must be less than or equal to ${MAX_INTEGER}`
     }
   }
   if (!values.totalMemoryUnit) {
@@ -80,7 +80,7 @@ export const validate = (values) => {
     } else if (cpuNum < 1) {
       errors.cpuNum = 'Must be greater than zero'
     } else if (cpuNum > MAX_INTEGER) {
-      errors.cpuNum = `Must be less than ${MAX_INTEGER}`
+      errors.cpuNum = `Must be less than or equal to ${MAX_INTEGER}`
     }
   }
   if (values.connectionNum) {
@@ -90,7 +90,7 @@ export const validate = (values) => {
     } else if (connectionNum < 10) {
       errors.connectionNum = 'Must be greater than or equal to 10'
     } else if (connectionNum > MAX_INTEGER) {
-      errors.connectionNum = `Must be less than ${MAX_INTEGER}`
+      errors.connectionNum = `Must be less than or equal to ${MAX_INTEGER}`
     }
   }
   return errors
