@@ -1,0 +1,20 @@
+CACHE MANIFEST
+# version v2.2
+
+CACHE:
+/stylesheets/application-415c95b0.css
+/javascripts/application-50f1835c.js
+/images/postgres-ce131627.png
+/images/postgres@2x-49c47ce2.png
+/images/calc-bg-661aa7f4.png
+/images/main-bg-1255d77e.png
+/images/favicons/apple-touch-icon-152x152-precomposed.png
+/images/favicons/apple-touch-icon-144x144-precomposed.png
+/images/favicons/apple-touch-icon-114x114-precomposed.png
+/images/favicons/apple-touch-icon-72x72-precomposed.png
+/images/favicons/apple-touch-icon-precomposed.png
+/images/favicons/favicon.png
+/images/favicons/favicon.ico
+
+NETWORK:
+*
