@@ -263,17 +263,22 @@ export const workMem = createSelector(
       return 1
     })()
     // work_mem is assigned any time a query calls for a sort, or a hash, or any other structure that needs a space allocation, which can happen multiple times per query. So you're better off assuming max_connections * 2 or max_connections * 3 is the amount of RAM that will actually use in reality. At the very least, you need to subtract shared_buffers from the amount you're distributing to connections in work_mem.
-    // The other thing to consider is that there's no reason to run on the edge of available memory. If you do that, there's a very high risk the out-of-memory killer will come along and start killing PostgreSQL backends. Always leave a buffer of some kind in case of spikes in memory usage. So your maximum amount of memory available in work_mem should be ((RAM - shared_buffers) / (max_connections * 3) / max_parallel_workers_per_gather / 2).
+    // The other thing to consider is that there's no reason to run on the edge of available memory. If you do that, there's a very high risk the out-of-memory killer will come along and start killing PostgreSQL backends. Always leave a buffer of some kind in case of spikes in memory usage. So your maximum amount of memory available in work_mem should be ((RAM - shared_buffers) / (max_connections * 3) / max_parallel_workers_per_gather).
     const workMemValue = (
-      (totalMemoryKb - sharedBuffersValue) / (maxConnectionsValue * 3) / parallelForWorkMem / 2
+      (totalMemoryKb - sharedBuffersValue) / (maxConnectionsValue * 3) / parallelForWorkMem
     )
-    return {
+    let workMemResult = {
       [DB_TYPE_WEB]: Math.floor(workMemValue),
       [DB_TYPE_OLTP]: Math.floor(workMemValue),
       [DB_TYPE_DW]: Math.floor(workMemValue / 2),
       [DB_TYPE_DESKTOP]: Math.floor(workMemValue / 6),
       [DB_TYPE_MIXED]: Math.floor(workMemValue / 2)
     }[dbType]
+    // if less, than 64 kb, than set it to minimum
+    if (workMemResult < 64) {
+      workMemResult = 64
+    }
+    return workMemResult
   }
 )
 
