@@ -191,7 +191,7 @@ export default class ConfigurationView extends React.Component {
   renderTabs() {
     const {dbVersion, osType, tabState, handleClickTab} = this.props
     const showAlterSystemTab = dbVersion >= 9.4
-    const showKernelTab = OS_LINUX === osType && dbVersion <= 9.3
+    const showKernelTab = OS_LINUX === osType && dbVersion <= 9.2
     const singleTab = !showAlterSystemTab && !showKernelTab
 
     return (
