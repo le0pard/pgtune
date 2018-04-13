@@ -252,7 +252,7 @@
     Pgtune.prototype._kernelSettings = function() {
       var gConfig, kernelBlockEl, shmall;
       kernelBlockEl = $('#oldPostgresBlock');
-      if ('windows' === this.osType || this.dbVersion > 9.3) {
+      if ('windows' === this.osType || this.dbVersion > 9.2) {
         return kernelBlockEl.hide();
       } else {
         shmall = Math.floor(this.totalMemory / 8192);
