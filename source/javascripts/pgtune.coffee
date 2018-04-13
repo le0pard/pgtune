@@ -238,7 +238,7 @@ class Pgtune
   _kernelSettings: =>
     kernelBlockEl = $('#oldPostgresBlock')
 
-    if 'windows' is @osType or @dbVersion > 9.3
+    if 'windows' is @osType or @dbVersion > 9.2
       kernelBlockEl.hide()
     else
       shmall = Math.floor(@totalMemory / 8192)
