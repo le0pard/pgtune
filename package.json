@@ -66,7 +66,7 @@
     "text-encoding": "^0.6.4",
     "uglifyjs-webpack-plugin": "1.2.5",
     "url-loader": "1.0.1",
-    "webpack": "4.6.0",
+    "webpack": "4.5.0",
     "webpack-manifest-plugin": "2.0.1",
     "whatwg-fetch": "2.0.4"
   },
