@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OfflinePlugin = require('offline-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
@@ -23,6 +23,7 @@ const preScriptsEnv = isProduction ?
   preScripts['development'];
 
 const cssLoaders = [
+  MiniCssExtractPlugin.loader,
   {
     loader: 'css-loader',
     options: {
@@ -115,41 +116,47 @@ const config = {
       },
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: cssLoaders.concat({
-            loader: 'sass-loader',
-            options: {
-              indentedSyntax: false,
-              sourceMap:      true,
-              includePaths:   [path.join(__dirname, 'webpack', 'css')]
-            }
-          })
+        use: cssLoaders.concat({
+          loader: 'sass-loader',
+          options: {
+            indentedSyntax: false,
+            sourceMap:      true,
+            includePaths:   [path.join(__dirname, 'webpack', 'css')]
+          }
         })
       },
       {
         test: /\.sass$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: cssLoaders.concat({
-            loader: 'sass-loader',
-            options: {
-              indentedSyntax: true,
-              sourceMap:      true,
-              includePaths:   [path.join(__dirname, 'webpack', 'css')]
-            }
-          })
+        use: cssLoaders.concat({
+          loader: 'sass-loader',
+          options: {
+            indentedSyntax: true,
+            sourceMap:      true,
+            includePaths:   [path.join(__dirname, 'webpack', 'css')]
+          }
         })
       }
     ]
   },
 
   plugins: [
-    new ExtractTextPlugin({
-      filename: isProduction ? '[name]-[contenthash].css' : '[name].css',
-      allChunks: true
+    new MiniCssExtractPlugin({
+      filename: isProduction ? '[name]-[hash].css' : '[name].css'
     })
-  ]
+  ],
+
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true
+        }
+      }
+    }
+  }
 };
 
 if (isProduction) {
@@ -163,6 +170,7 @@ if (isProduction) {
   config.optimization = config.optimization || {};
   config.optimization.minimizer = [
     new UglifyJSPlugin({
+      cache: true,
       parallel: 2,
       sourceMap: true,
       uglifyOptions: {
