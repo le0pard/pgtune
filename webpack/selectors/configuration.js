@@ -179,6 +179,10 @@ export const walBuffers = createSelector(
     if (walBuffersValue > walBufferNearValue && walBuffersValue < maxWalBuffer) {
       walBuffersValue = maxWalBuffer
     }
+    // if less, than 32 kb, than set it to minimum
+    if (walBuffersValue < 32) {
+      walBuffersValue = 32
+    }
     return walBuffersValue
   }
 )
