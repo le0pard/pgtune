@@ -31,7 +31,7 @@ task :release, [] => [:build, :deploy] do
     region: aws_config['region']
   })
   resp = cloudfront.create_invalidation({
-    distribution_id: 'E2PDZMCBHUC43D',
+    distribution_id: 'E2OZ07LKN2FM73',
     invalidation_batch: {
       paths: {
         quantity: 1,
