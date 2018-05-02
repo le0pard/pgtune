@@ -8,7 +8,12 @@ import './main-generator.sass'
 
 export default class MainGenerator extends React.Component {
   static propTypes = {
-    isReadyForConfiguration: PropTypes.bool.isRequired
+    isReadyForConfiguration: PropTypes.bool.isRequired,
+    resetConfiguration: PropTypes.func.isRequired
+  }
+
+  componentWillUnmount() {
+    this.props.resetConfiguration()
   }
 
   render() {
