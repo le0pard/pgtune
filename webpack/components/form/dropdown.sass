@@ -1,0 +1,39 @@
+@import 'variables'
+
+.form-dropdown
+  lost-flex-container: row
+  margin-bottom: 1rem
+
+.form-dropdown-label
+  lost-column: 5/8 2
+  font-size: 1.1rem
+
+.form-dropdown-tooltip
+  lost-column: 3/8 2
+  text-align: right
+  font-size: 0.8rem
+
+.form-dropdown-tooltip__link
+  border-bottom: 1px dotted $yellow
+  text-decoration: none
+  vertical-align: middle
+  margin-right: 4px
+
+.form-dropdown-wrapper
+  lost-column: 1/1
+
+  &__select
+    width: 100%
+    font-size: 1.3rem
+    color: var(--inputColor)
+    border-radius: 0
+    appearance: none
+    border: 1px solid var(--inputBorder)
+    background-color: var(--inputBg)
+    padding: 2px 1px
+    box-sizing: border-box
+
+.form-dropdown-error
+  lost-column: 1/1
+  font-size: 0.8rem
+  color: $red

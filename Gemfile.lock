@@ -1,20 +1,6 @@
 GEM
   remote: https://rubygems.org/
-  remote: https://rails-assets.org/
   specs:
-    actionpack (5.0.7)
-      actionview (= 5.0.7)
-      activesupport (= 5.0.7)
-      rack (~> 2.0)
-      rack-test (~> 0.6.3)
-      rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionview (5.0.7)
-      activesupport (= 5.0.7)
-      builder (~> 3.1)
-      erubis (~> 2.7.0)
-      rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.0.3)
     activesupport (5.0.7)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
@@ -22,11 +8,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    autoprefixer-rails (8.3.0.1)
-      execjs
     backports (3.11.3)
-    builder (3.2.3)
-    chunky_png (1.3.10)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
@@ -35,19 +17,12 @@ GEM
       sass (>= 3.2, < 3.5)
     concurrent-ruby (1.0.5)
     contracts (0.13.0)
-    crass (1.0.4)
-    docile (1.3.0)
     dotenv (2.4.0)
     erubis (2.7.0)
     execjs (2.7.0)
     fast_blank (1.0.0)
-    fastimage (2.1.1)
-    favicon_maker (1.3.1)
-      docile (~> 1.1)
+    fastimage (2.1.3)
     ffi (1.9.23)
-    foundation-rails (5.5.3.2)
-      railties (>= 3.1.0)
-      sass (>= 3.3.0, < 3.5)
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
@@ -61,11 +36,7 @@ GEM
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    loofah (2.2.2)
-      crass (~> 1.0.2)
-      nokogiri (>= 1.5.9)
     memoist (0.16.0)
-    method_source (0.9.0)
     middleman (4.2.1)
       coffee-script (~> 2.2)
       compass-import-once (= 1.0.5)
@@ -74,9 +45,6 @@ GEM
       middleman-cli (= 4.2.1)
       middleman-core (= 4.2.1)
       sass (>= 3.4.0, < 4.0)
-    middleman-autoprefixer (2.9.0)
-      autoprefixer-rails (~> 8.0)
-      middleman-core (>= 3.3.3)
     middleman-cli (4.2.1)
       thor (>= 0.17.0, < 2.0)
     middleman-core (4.2.1)
@@ -106,26 +74,13 @@ GEM
       middleman-core (>= 3.2)
       net-sftp
       ptools
-    middleman-favicon-maker (4.1.0)
-      favicon_maker (~> 1.3, >= 1.3.1)
-      middleman-core (~> 4.0)
     middleman-minify-html (3.4.1)
       htmlcompressor (~> 0.2.0)
       middleman-core (>= 3.2)
-    middleman-sprockets (4.1.1)
-      middleman-core (~> 4.0)
-      sprockets (>= 3.0)
-    mini_magick (4.8.0)
-    mini_portile2 (2.3.0)
     minitest (5.11.3)
-    multi_json (1.13.1)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (4.2.0)
-    nokogiri (1.8.2)
-      mini_portile2 (~> 2.3.0)
-    oily_png (1.2.1)
-      chunky_png (~> 1.3.7)
     oj (3.5.1)
     padrino-helpers (0.13.3.4)
       i18n (~> 0.6, >= 0.6.7)
@@ -137,21 +92,6 @@ GEM
     ptools (1.3.5)
     public_suffix (3.0.2)
     rack (2.0.5)
-    rack-test (0.6.3)
-      rack (>= 1.0)
-    rails-assets-fastclick (1.0.6)
-    rails-assets-jquery (3.3.1)
-    rails-dom-testing (2.0.3)
-      activesupport (>= 4.2.0)
-      nokogiri (>= 1.6)
-    rails-html-sanitizer (1.0.4)
-      loofah (~> 2.2, >= 2.2.2)
-    railties (5.0.7)
-      actionpack (= 5.0.7)
-      activesupport (= 5.0.7)
-      method_source
-      rake (>= 0.8.7)
-      thor (>= 0.18.1, < 2.0)
     rake (12.3.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
@@ -159,9 +99,6 @@ GEM
     ref (2.0.0)
     sass (3.4.25)
     servolux (0.13.0)
-    sprockets (3.7.1)
-      concurrent-ruby (~> 1.0)
-      rack (> 1, < 3)
     temple (0.8.0)
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
@@ -178,26 +115,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  builder
-  erubis
-  foundation-rails (~> 5.5)
   kramdown (>= 1.9.0)
-  middleman (>= 4.1.9)
-  middleman-autoprefixer (~> 2.7)
+  middleman (>= 4.2)
   middleman-deploy (>= 2.0.0.pre.alpha)
-  middleman-favicon-maker (>= 4.0.3)
   middleman-minify-html (>= 3.4.1)
-  middleman-sprockets (>= 4.0.0)
-  mini_magick
-  multi_json
-  nokogiri
-  oily_png
-  oj
-  rails-assets-fastclick (= 1.0.6)!
-  rails-assets-jquery (= 3.3.1)!
-  sass (>= 3.3.0)
+  oj (>= 2.10.4)
+  rake
   therubyracer
-  tzinfo
+  tzinfo-data
+  wdm (~> 0.1)
 
 BUNDLED WITH
    1.16.1

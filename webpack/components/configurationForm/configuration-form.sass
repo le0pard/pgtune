@@ -1,0 +1,19 @@
+@import 'variables'
+
+.configuration-form-btn-wrapper
+  lost-flex-container: row
+
+.configuration-form-btn
+  lost-column: 1/1
+  lost-align: center
+  text-align: center
+  background-color: var(--headsColor)
+  color: var(--baseColor)
+  border: 1px solid var(--commentColor)
+  height: $button-height
+
+  &--disabled
+    background-color: var(--commentColor)
+
+  &:hover
+    background-color: var(--buttonHover)

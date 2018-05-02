@@ -1,0 +1,90 @@
+@import '~normalize.css/normalize'
+@import 'functions'
+@import 'variables'
+
+\:root
+  --baseColor: $base00
+  --bgColor: $base3
+  --headsColor: $base2
+  --emphColor: $base01
+  --commentColor: $base1
+  --inputBg: color($base3 tint(4%))
+  --inputBgDisabled: $base1
+  --inputColor: $base02
+  --inputBorder: $base1
+  --inputColorPlaceholder: color($base00 tint(30%))
+  --buttonHover: color($base2 tint(10%))
+
+\:root.dark
+  --baseColor: $base0
+  --bgColor: $base03
+  --headsColor: $base02
+  --emphColor: $base1
+  --commentColor: $base01
+  --inputBg: $base02
+  --inputBgDisabled: $base01
+  --inputColor: $base2
+  --inputBorder: $base01
+  --inputColorPlaceholder: color($base0 shade(30%))
+  --buttonHover: color($base02 shade(10%))
+
+html
+  @include responsive-font-size(16px 20px)
+  background-color: var(--headsColor)
+  color: var(--baseColor)
+
+body
+  font-family: system-ui
+
+a
+  color: $yellow
+
+a:hover
+  color: $orange
+  text-decoration: none
+
+pre
+  font-family: system-ui
+  font-size: 0.8125rem
+  background-color: var(--bgColor)
+  color: var(--baseColor)
+  border: 1px solid var(--commentColor)
+  padding: 0.8125rem
+  box-shadow: 5px 5px 8px var(--headsColor)
+  white-space: pre-wrap
+  code
+    background-color: var(--bgColor)
+
+h1, h2, h3, h4, h5, h6
+  color: $green
+
+h1
+  font-size: 2.4rem
+
+h2
+  font-size: 2.0rem
+
+h3
+  font-size: 1.8rem
+
+h4
+  font-size: 1.4rem
+
+h5
+  font-size: 1.3rem
+
+h6
+  font-size: 1.15rem
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+  appearance: none
+  margin: 0
+
+button::-moz-focus-inner,
+input::-moz-focus-inner
+  border: 0
+  padding: 0
+
+#app-root
+  padding: 0.8rem

@@ -2,15 +2,13 @@
 
 Tuning PostgreSQL config by your hardware. Based on original [pgtune](http://pgfoundry.org/projects/pgtune/).
 
-
-
 ## Development
 
-[Main calculation logic](https://github.com/le0pard/pgtune/blob/master/source/javascripts/pgtune.coffee).
-Web app build on top of [middleman](http://middlemanapp.com/). To start it in development mode, you need install ruby and run in terminal:
+Web app build on top of [middleman](http://middlemanapp.com/). To start it in development mode, you need install ruby, node.js and run in terminal:
 
 ```bash
-$ bundle # get all deps
+$ bundle # get all ruby deps
+$ yarn # get all node.js deps
 $ middleman server # start server on 4567 port
 ```
 

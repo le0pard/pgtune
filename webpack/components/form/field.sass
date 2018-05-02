@@ -1,0 +1,42 @@
+@import 'variables'
+
+.form-field
+  lost-flex-container: row
+  margin-bottom: 1rem
+
+.form-field-label
+  lost-column: 5/8 2
+  font-size: 1.1rem
+
+.form-field-tooltip
+  lost-column: 3/8 2
+  text-align: right
+  font-size: 0.8rem
+
+.form-field-tooltip__link
+  border-bottom: 1px dotted $yellow
+  text-decoration: none
+  vertical-align: middle
+  margin-right: 4px
+
+.form-field-wrapper
+  lost-column: 1/1
+
+  &__input
+    width: 100%
+    font-size: 1.3rem
+    color: var(--inputColor)
+    border-radius: 0
+    border: 1px solid var(--inputBorder)
+    background-color: var(--inputBg)
+    padding: 2px 1px
+    box-sizing: border-box
+
+    &::placeholder
+      font-size: 1.2rem
+      color: var(--inputColorPlaceholder)
+
+.form-field-error
+  lost-column: 1/1
+  font-size: 0.8rem
+  color: $red
