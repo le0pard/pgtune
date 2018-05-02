@@ -2,9 +2,7 @@ source 'https://rubygems.org'
 
 gem 'middleman', '>= 4.2'
 gem 'middleman-minify-html', '>= 3.4.1' # min html
-gem 'middleman-s3_sync', '>= 4.0.3' # Deploy site
-gem 'aws-sdk-cloudfront', '>= 1.1.0' # invalidate cache
-gem 'mime-types'
+gem 'middleman-deploy', '>= 2.0.0.pre.alpha' # Deploy site
 
 gem 'therubyracer'   # faster ExecJS
 gem 'oj', '>= 2.10.4'           # faster JSON
