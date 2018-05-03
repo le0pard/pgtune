@@ -201,8 +201,8 @@ export const defaultStatisticsTarget = createSelector(
 export const randomPageCost = createSelector(
   [getHDType],
   (hdType) => ({
-    [HARD_DRIVE_HDD]: 1.1,
-    [HARD_DRIVE_SSD]: 4,
+    [HARD_DRIVE_HDD]: 4,
+    [HARD_DRIVE_SSD]: 1.1,
     [HARD_DRIVE_SAN]: 1.1
   }[hdType])
 )
@@ -214,8 +214,8 @@ export const effectiveIoConcurrency = createSelector(
       return null
     }
     return {
-      [HARD_DRIVE_HDD]: 200,
-      [HARD_DRIVE_SSD]: 2,
+      [HARD_DRIVE_HDD]: 2,
+      [HARD_DRIVE_SSD]: 200,
       [HARD_DRIVE_SAN]: 300
     }[hdType]
   }
