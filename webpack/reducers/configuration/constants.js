@@ -14,6 +14,6 @@ export const DB_TYPE_MIXED = 'mixed'
 export const SIZE_UNIT_MB = 'MB'
 export const SIZE_UNIT_GB = 'GB'
 // harddrive types
-export const HARD_DRIVE_HDD = 'hdd'
 export const HARD_DRIVE_SSD = 'ssd'
 export const HARD_DRIVE_SAN = 'san'
+export const HARD_DRIVE_HDD = 'hdd'

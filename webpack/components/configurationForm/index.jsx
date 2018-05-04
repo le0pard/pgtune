@@ -14,9 +14,9 @@ import {
   DB_TYPE_DW,
   DB_TYPE_DESKTOP,
   DB_TYPE_MIXED,
-  HARD_DRIVE_HDD,
   HARD_DRIVE_SSD,
-  HARD_DRIVE_SAN
+  HARD_DRIVE_SAN,
+  HARD_DRIVE_HDD
 } from 'reducers/configuration/constants'
 
 import './configuration-form.sass'
@@ -80,16 +80,16 @@ export default class ConfigurationForm extends React.Component {
   hdTypeOptions() {
     return [
       {
-        label: 'HDD storage',
-        value: HARD_DRIVE_HDD
-      },
-      {
         label: 'SSD storage',
         value: HARD_DRIVE_SSD
       },
       {
         label: 'Network (SAN) storage',
         value: HARD_DRIVE_SAN
+      },
+      {
+        label: 'HDD storage',
+        value: HARD_DRIVE_HDD
       }
     ]
   }

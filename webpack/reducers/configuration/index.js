@@ -5,7 +5,7 @@ import {
   OS_LINUX,
   DB_TYPE_WEB,
   SIZE_UNIT_GB,
-  HARD_DRIVE_HDD
+  HARD_DRIVE_SSD
 } from 'reducers/configuration/constants'
 
 export const submitConfiguration = createAction('Submit hardware configuration')
@@ -52,8 +52,8 @@ const connectionNum = createReducer({
 
 const hdType = createReducer({
   [submitConfiguration]: (state, payload) => payload.hdType,
-  [resetConfiguration]: () => HARD_DRIVE_HDD
-}, HARD_DRIVE_HDD)
+  [resetConfiguration]: () => HARD_DRIVE_SSD
+}, HARD_DRIVE_SSD)
 
 export const reducer = combineReducers({
   dbVersion,

@@ -7,7 +7,7 @@ import {
   OS_LINUX,
   DB_TYPE_WEB,
   SIZE_UNIT_GB,
-  HARD_DRIVE_HDD
+  HARD_DRIVE_SSD
 } from 'reducers/configuration/constants'
 import {validate} from './validation'
 
@@ -26,6 +26,6 @@ export default connect(
     osType: OS_LINUX,
     dbType: DB_TYPE_WEB,
     totalMemoryUnit: SIZE_UNIT_GB,
-    hdType: HARD_DRIVE_HDD
+    hdType: HARD_DRIVE_SSD
   }
 })(ConfigurationForm))
