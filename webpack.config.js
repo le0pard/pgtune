@@ -38,9 +38,7 @@ const cssLoaders = [
       sourceMap: true,
       plugins: function() {
         return [
-          require('postcss-import')({
-            addDependencyTo: webpack
-          }),
+          require('postcss-import')(),
           require('postcss-url')(),
           require('lost')({
             flexbox: 'flex'
