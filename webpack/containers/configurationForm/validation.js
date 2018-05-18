@@ -68,6 +68,15 @@ export const validate = (values) => {
   } else if ([SIZE_UNIT_MB, SIZE_UNIT_GB].indexOf(values.totalMemoryUnit) < 0) {
     errors.totalMemoryUnit = 'Unsupported unit'
   }
+  const MIN_MEMORY = 512
+  if (
+    values.totalMemory &&
+    parseInt(values.totalMemory, 10) < MIN_MEMORY &&
+    values.totalMemoryUnit &&
+    SIZE_UNIT_MB === values.totalMemoryUnit
+  ) {
+    errors.totalMemory = `Must be greater than or equal to ${MIN_MEMORY} MB`
+  }
   if (!values.hdType) {
     errors.hdType = 'Required'
   } else if (HARD_DRIVE_TYPES.indexOf(values.hdType) < 0) {
