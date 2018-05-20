@@ -63,6 +63,13 @@ const cssLoaders = [
         ];
       }
     }
+  },
+  {
+    loader: 'sass-loader',
+    options: {
+      sourceMap:    true,
+      includePaths: [path.join(__dirname, 'webpack', 'css')]
+    }
   }
 ];
 
@@ -114,26 +121,8 @@ const config = {
         }]
       },
       {
-        test: /\.scss$/,
-        use: cssLoaders.concat({
-          loader: 'sass-loader',
-          options: {
-            indentedSyntax: false,
-            sourceMap:      true,
-            includePaths:   [path.join(__dirname, 'webpack', 'css')]
-          }
-        })
-      },
-      {
-        test: /\.sass$/,
-        use: cssLoaders.concat({
-          loader: 'sass-loader',
-          options: {
-            indentedSyntax: true,
-            sourceMap:      true,
-            includePaths:   [path.join(__dirname, 'webpack', 'css')]
-          }
-        })
+        test: /\.(scss|sass)$/,
+        use: cssLoaders
       }
     ]
   },
