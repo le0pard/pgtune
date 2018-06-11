@@ -228,13 +228,13 @@ export default class ConfigurationView extends React.Component {
         <p>
           <strong>NOTICE:</strong> For PostgreSQL {dbVersion} you also
           should modify kernel resources (add this in /etc/sysctl.conf)
-          <a href="https://www.postgresql.org/docs/current/static/kernel-resources.html" target="_blank">
-            More info
-          </a>
         </p>
         <SyntaxHighlighter language="init" style={codeHighlightStyle}>
           {config}
         </SyntaxHighlighter>
+        <a href="https://www.postgresql.org/docs/current/static/kernel-resources.html" target="_blank">
+          More info
+        </a>
       </div>
     )
   }
