@@ -1,6 +1,6 @@
-# [PgTune](http://pgtune.leopard.in.ua/) [![Build Status](https://travis-ci.org/le0pard/pgtune.svg?branch=master)](https://travis-ci.org/le0pard/pgtune)
+# [PgTune](https://pgtune.leopard.in.ua/) [![Build Status](https://travis-ci.org/le0pard/pgtune.svg?branch=master)](https://travis-ci.org/le0pard/pgtune)
 
-Tuning PostgreSQL config by your hardware. Based on original [pgtune](http://pgfoundry.org/projects/pgtune/).
+Tuning PostgreSQL config by your hardware. Based on original [pgtune](https://github.com/gregs1104/pgtune).
 
 ## Development
 
