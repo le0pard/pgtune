@@ -80,7 +80,7 @@ GEM
     minitest (5.11.3)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (5.0.1)
+    net-ssh (5.0.2)
     oj (3.6.2)
     padrino-helpers (0.13.3.4)
       i18n (~> 0.6, >= 0.6.7)
