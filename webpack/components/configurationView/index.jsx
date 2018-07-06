@@ -116,7 +116,7 @@ export default class ConfigurationView extends React.Component {
       ['Total Memory (RAM)', `${totalMemory} ${totalMemoryUnit}`],
       ['CPUs num', cpuNum],
       ['Connections num', connectionNum],
-      ['Hard drive type', hdType]
+      ['Data Storage', hdType]
     ].filter((item) => !!item[1])
       .map((item) => `# ${item[0]}: ${item[1]}`).join("\n") // eslint-disable-line quotes
   }
