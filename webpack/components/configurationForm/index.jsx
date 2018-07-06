@@ -104,24 +104,24 @@ export default class ConfigurationForm extends React.Component {
           component={FormDropdown}
           label="DB version"
           options={this.dbVersionOptions()}
-          tooltip="PostgreSQL version"
+          tooltip="PostgreSQL version (find out via 'SELECT version();')"
         />
         <Field
           name="osType"
           component={FormDropdown}
           label="OS Type"
           options={this.osTypeOptions()}
-          tooltip="Select type of operation system, where working PostgreSQL database"
+          tooltip="Operation system of the PostgreSQL server host"
         />
         <Field
           name="dbType"
           component={FormDropdown}
           label="DB Type"
           options={this.dbTypeOptions()}
-          tooltip="For what type of application used PostgreSQL"
+          tooltip="For what type of application is PostgreSQL used"
         />
         <TotalMemoryInput
-          tooltip="How many memory can use PostgreSQL on server"
+          tooltip="How much memory can PostgreSQL use"
         />
         <Field
           name="cpuNum"
@@ -155,14 +155,14 @@ export default class ConfigurationForm extends React.Component {
             placeholder: 'Number of Connections (optional)'
           }}
           label="Number of Connections"
-          tooltip="Maximum number of connection for PostgreSQL clients"
+          tooltip="Maximum number of PostgreSQL client connections"
         />
         <Field
           name="hdType"
           component={FormDropdown}
-          label="Hard drive type"
+          label="Data Storage"
           options={this.hdTypeOptions()}
-          tooltip="Hard drive type, which PostgreSQL use as storage for data"
+          tooltip="Type of data storage device"
         />
         <div className="configuration-form-btn-wrapper">
           <button className={classnames('configuration-form-btn', {
