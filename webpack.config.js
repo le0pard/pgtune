@@ -44,14 +44,13 @@ const cssLoaders = [
             flexbox: 'flex'
           }),
           require('rucksack-css')(),
-          require('postcss-cssnext')({
+          require('postcss-preset-env')({
             browsers: [
               '>0.25%',
               'not op_mini all'
             ],
             features: {
-              rem: false,
-              customProperties: {
+              'custom-properties': {
                 strict: false,
                 warnings: false,
                 preserve: true
