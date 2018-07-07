@@ -8,12 +8,12 @@
   --headsColor: $base2
   --emphColor: $base01
   --commentColor: $base1
-  --inputBg: color($base3 tint(4%))
+  --inputBg: color-mod($base3 tint(4%))
   --inputBgDisabled: $base1
   --inputColor: $base02
   --inputBorder: $base1
-  --inputColorPlaceholder: color($base00 tint(30%))
-  --buttonHover: color($base2 tint(10%))
+  --inputColorPlaceholder: color-mod($base00 tint(30%))
+  --buttonHover: color-mod($base2 tint(10%))
 
 \:root.dark
   --baseColor: $base0
@@ -25,8 +25,8 @@
   --inputBgDisabled: $base01
   --inputColor: $base2
   --inputBorder: $base01
-  --inputColorPlaceholder: color($base0 shade(30%))
-  --buttonHover: color($base02 shade(10%))
+  --inputColorPlaceholder: color-mod($base0 shade(30%))
+  --buttonHover: color-mod($base02 shade(10%))
 
 html
   @include responsive-font-size(18px 22px)
