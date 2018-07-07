@@ -45,6 +45,7 @@ const cssLoaders = [
           }),
           require('rucksack-css')(),
           require('postcss-preset-env')({
+            stage: 1,
             browsers: [
               '>0.25%',
               'not op_mini all'
