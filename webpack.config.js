@@ -9,6 +9,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OfflinePlugin = require('offline-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
+const packageJSON = require('./package.json');
+const browserList = packageJSON.babel.presets[0][1].targets.browsers;
+
 // set NODE_ENV=production on the environment to add asset fingerprints
 const currentEnv = process.env.NODE_ENV || 'development';
 const isProduction = currentEnv === 'production';
@@ -46,10 +49,7 @@ const cssLoaders = [
           require('rucksack-css')(),
           require('postcss-preset-env')({
             stage: 1,
-            browsers: [
-              '>0.25%',
-              'not op_mini all'
-            ],
+            browsers: browserList,
             features: {
               'custom-properties': {
                 strict: false,

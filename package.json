@@ -22,7 +22,7 @@
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "6.24.1",
     "babel-runtime": "^6.26.0",
     "classnames": "2.2.6",
@@ -74,8 +74,15 @@
   "babel": {
     "presets": [
       [
-        "es2015",
+        "env",
         {
+          "targets": {
+            "browsers": [
+              ">0.25%",
+              "not ie 11",
+              "not op_mini all"
+            ]
+          },
           "modules": false
         }
       ],
@@ -95,7 +102,16 @@
       "test": {
         "presets": [
           [
-            "es2015"
+            "env",
+            {
+              "targets": {
+                "browsers": [
+                  ">0.25%",
+                  "not ie 11",
+                  "not op_mini all"
+                ]
+              }
+            }
           ],
           "react"
         ]
