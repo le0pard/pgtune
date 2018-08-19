@@ -145,6 +145,12 @@
     "es6": true,
     "jest": true
   },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "16.4.2"
+    }
+  },
   "plugins": [
     "react",
     "import"
