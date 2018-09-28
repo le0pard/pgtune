@@ -291,7 +291,9 @@ template {
   --buttonHover: color-mod(#073642 shade(10%)); }
 html {
   font-size: calc(18px + 4 * ((100vw - 420px) / 560));
+  background-color: #eee8d5;
   background-color: var(--headsColor);
+  color: #657b83;
   color: var(--baseColor); }
 @media screen and (min-width: 980px) {
   html {
@@ -1090,4 +1092,4 @@ input::-moz-focus-inner {
   padding: 0.5rem; }
 
 
-/*# sourceMappingURL=app-e861e145d1ae7ce55785.css.map*/
+/*# sourceMappingURL=app-cf55eaa17ce671cc4096.css.map*/
