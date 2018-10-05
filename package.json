@@ -11,7 +11,7 @@
     "test": "gulp test"
   },
   "dependencies": {
-    "@babel/core": "7.1.0",
+    "@babel/core": "7.1.2",
     "@babel/plugin-proposal-class-properties": "7.1.0",
     "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
@@ -25,7 +25,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "7.1.2",
     "babel-loader": "8.0.4",
     "classnames": "2.2.6",
     "clipboard": "2.0.1",
@@ -44,7 +44,7 @@
     "postcss-browser-reporter": "^0.5.0",
     "postcss-import": "12.0.0",
     "postcss-loader": "3.0.0",
-    "postcss-preset-env": "6.0.7",
+    "postcss-preset-env": "6.0.10",
     "postcss-reporter": "6.0.0",
     "postcss-url": "8.0.0",
     "promise-polyfill": "8.1.0",
@@ -54,7 +54,7 @@
     "react-dom": "16.5.2",
     "react-redux": "5.0.7",
     "react-router": "4.3.1",
-    "react-router-config": "1.0.0-beta.4",
+    "react-router-config": "4.4.0-beta.1",
     "react-router-dom": "4.3.1",
     "react-router-redux": "5.0.0-alpha.5",
     "react-syntax-highlighter": "8.0.1",
@@ -62,7 +62,7 @@
     "redux-act": "1.7.4",
     "redux-form": "7.4.2",
     "redux-logger": "3.0.6",
-    "reselect": "^3.0.1",
+    "reselect": "4.0.0",
     "rucksack-css": "^1.0.2",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",
@@ -127,7 +127,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "10.0.1",
     "babel-jest": "23.6.0",
-    "eslint": "5.6.0",
+    "eslint": "5.6.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-react": "7.11.1",
     "gulp": "^3.9.1",
@@ -136,7 +136,7 @@
     "gulp-util": "^3.0.8",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
-    "webpack-cli": "3.1.1"
+    "webpack-cli": "3.1.2"
   },
   "jest": {
     "rootDir": "webpack",
