@@ -1,13 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import SyntaxHighlighter, {registerLanguage} from 'react-syntax-highlighter/light'
-import iniLang from 'react-syntax-highlighter/languages/hljs/ini'
-import sqlLang from 'react-syntax-highlighter/languages/hljs/sql'
-import {
-  solarizedLight,
-  solarizedDark
-} from 'react-syntax-highlighter/styles/hljs'
+import {Light as SyntaxHighlighter} from 'react-syntax-highlighter'
+import iniLang from 'react-syntax-highlighter/dist/languages/hljs/ini'
+import sqlLang from 'react-syntax-highlighter/dist/languages/hljs/sql'
+import solarizedLight from 'react-syntax-highlighter/dist/styles/hljs/solarized-light'
+import solarizedDark from 'react-syntax-highlighter/dist/styles/hljs/solarized-dark'
 import CopyButton from 'components/copyButton'
 import {OS_LINUX} from 'reducers/configuration/constants'
 import {
@@ -20,8 +18,8 @@ import {
 
 import './configuration-view.sass'
 
-registerLanguage('ini', iniLang)
-registerLanguage('sql', sqlLang)
+SyntaxHighlighter.registerLanguage('ini', iniLang)
+SyntaxHighlighter.registerLanguage('sql', sqlLang)
 
 const KB_UNIT_MAP = {
   KB_PER_MB: 1024,
