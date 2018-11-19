@@ -46,7 +46,6 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.3.0",
     "postcss-reporter": "6.0.0",
-    "postcss-url": "8.0.0",
     "promise-polyfill": "8.1.0",
     "prop-types": "15.6.2",
     "rc-tooltip": "3.7.3",

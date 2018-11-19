@@ -42,11 +42,6 @@ const cssLoaders = [
       plugins: function() {
         return [
           require('postcss-import')(),
-          require('postcss-url')(),
-          require('lost')({
-            flexbox: 'flex'
-          }),
-          require('rucksack-css')(),
           require('postcss-preset-env')({
             stage: 1,
             browsers: browserList,
@@ -58,6 +53,10 @@ const cssLoaders = [
               }
             }
           }),
+          require('lost')({
+            flexbox: 'flex'
+          }),
+          require('rucksack-css')(),
           require('postcss-browser-reporter')(),
           require('postcss-reporter')()
         ];
@@ -116,6 +115,7 @@ const config = {
           loader: 'url-loader',
           options: {
             limit: 10000,
+            name: '[name]-[hash].[ext]',
             outputPath: 'assets/'
           }
         }]
