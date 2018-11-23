@@ -1,4 +1,4 @@
-@import '~normalize.css/normalize'
+@import '~normalize.css'
 @import 'functions'
 @import 'variables'
 
@@ -8,12 +8,12 @@
   --headsColor: $base2
   --emphColor: $base01
   --commentColor: $base1
-  --inputBg: color-mod($base3 tint(4%))
+  --inputBg: lighten($base3, 4)
   --inputBgDisabled: $base1
   --inputColor: $base02
   --inputBorder: $base1
-  --inputColorPlaceholder: color-mod($base00 tint(30%))
-  --buttonHover: color-mod($base2 tint(10%))
+  --inputColorPlaceholder: lighten($base00, 30)
+  --buttonHover: lighten($base2, 10)
 
 \:root.dark
   --baseColor: $base0
@@ -25,8 +25,8 @@
   --inputBgDisabled: $base01
   --inputColor: $base2
   --inputBorder: $base01
-  --inputColorPlaceholder: color-mod($base0 shade(30%))
-  --buttonHover: color-mod($base02 shade(10%))
+  --inputColorPlaceholder: darken($base0, 30)
+  --buttonHover: darken($base02, 10)
 
 html
   @include responsive-font-size(18px 22px)
