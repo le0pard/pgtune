@@ -5,13 +5,13 @@
   "version": "0.1.0",
   "license": "MIT",
   "engines": {
-    "node": "8.11.0"
+    "node": "10.13.0"
   },
   "scripts": {
     "test": "gulp test"
   },
   "dependencies": {
-    "@babel/core": "7.1.2",
+    "@babel/core": "7.1.6",
     "@babel/plugin-proposal-class-properties": "7.1.0",
     "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
@@ -23,9 +23,9 @@
     "@babel/plugin-transform-regenerator": "^7.0.0",
     "@babel/plugin-transform-runtime": "7.1.0",
     "@babel/polyfill": "^7.0.0",
-    "@babel/preset-env": "7.1.0",
+    "@babel/preset-env": "7.1.6",
     "@babel/preset-react": "^7.0.0",
-    "@babel/runtime": "7.1.2",
+    "@babel/runtime": "7.1.5",
     "babel-loader": "8.0.4",
     "classnames": "2.2.6",
     "clipboard": "2.0.4",
@@ -36,7 +36,7 @@
     "history": "4.7.2",
     "lodash": "4.17.11",
     "lost": "8.3.0",
-    "mini-css-extract-plugin": "0.4.4",
+    "mini-css-extract-plugin": "0.4.5",
     "moment": "2.22.2",
     "node-sass": "4.7.2",
     "normalize.css": "8.0.1",
@@ -56,7 +56,7 @@
     "react-router-config": "4.4.0-beta.6",
     "react-router-dom": "4.3.1",
     "react-router-redux": "5.0.0-alpha.5",
-    "react-syntax-highlighter": "10.0.1",
+    "react-syntax-highlighter": "10.1.1",
     "redux": "4.0.1",
     "redux-act": "1.7.4",
     "redux-form": "7.4.2",
@@ -68,7 +68,7 @@
     "text-encoding": "0.7.0",
     "uglifyjs-webpack-plugin": "2.0.1",
     "url-loader": "1.1.2",
-    "webpack": "4.26.0",
+    "webpack": "4.26.1",
     "webpack-manifest-plugin": "2.0.4",
     "whatwg-fetch": "3.0.0"
   },
