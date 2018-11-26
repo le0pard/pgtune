@@ -108,7 +108,6 @@ export const maintenanceWorkMem = createSelector(
       } else {
         maintenanceWorkMemValue = memoryLimit
       }
-
     }
     return maintenanceWorkMemValue
   }
