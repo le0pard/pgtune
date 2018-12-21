@@ -8,4 +8,4 @@ var gulp = require('gulp')
 require('./gulp/eslint')
 require('./gulp/jest')
 
-gulp.task('test', ['eslint', 'jest'])
+gulp.task('test', gulp.parallel('eslint', 'jest'))

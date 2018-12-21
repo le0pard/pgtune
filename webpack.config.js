@@ -31,7 +31,6 @@ const cssLoaders = [
     loader: 'css-loader',
     options: {
       modules: false,
-      minimize: isProduction,
       sourceMap: true
     }
   },

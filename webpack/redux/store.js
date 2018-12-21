@@ -3,15 +3,9 @@ import {createStore, applyMiddleware} from 'redux'
 import {createLogger} from 'redux-logger'
 import {loggers} from 'redux-act'
 import rootReducer from './rootReducer'
-import createHistory from 'history/createHashHistory'
-import {routerMiddleware} from 'react-router-redux'
-
-export const routerHistory = createHistory()
 
 export const initializeStore = (preloadedState = null) => {
-  let middlewares = [
-    routerMiddleware(routerHistory)
-  ]
+  let middlewares = []
 
   if (config.logger.reduxEnabled) {
     middlewares.push(createLogger({
