@@ -39,7 +39,7 @@ const cssLoaders = [
     options: {
       sourceMap: true,
       plugins: function() {
-        return [
+        const plugins = [
           require('postcss-import')(),
           require('postcss-preset-env')({
             stage: 1,
@@ -57,8 +57,18 @@ const cssLoaders = [
           }),
           require('rucksack-css')(),
           require('postcss-browser-reporter')(),
-          require('postcss-reporter')()
+          require('postcss-reporter')(),
         ];
+
+        if (isProduction) {
+          return plugins.concat([
+            require('cssnano')({
+              preset: 'default'
+            })
+          ]);
+        } else {
+          return plugins;
+        }
       }
     }
   },
