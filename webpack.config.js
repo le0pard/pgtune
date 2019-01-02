@@ -57,7 +57,7 @@ const cssLoaders = [
           }),
           require('rucksack-css')(),
           require('postcss-browser-reporter')(),
-          require('postcss-reporter')(),
+          require('postcss-reporter')()
         ];
 
         if (isProduction) {
