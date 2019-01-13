@@ -6,6 +6,7 @@ import './dropdown.sass'
 export default class FormSimpleDropdown extends React.Component {
   static propTypes = {
     input: PropTypes.object.isRequired,
+    label: PropTypes.string.isRequired,
     className: PropTypes.string,
     selectClassName: PropTypes.string,
     errorClassName: PropTypes.string,
@@ -23,6 +24,7 @@ export default class FormSimpleDropdown extends React.Component {
     const {
       input,
       options,
+      label,
       className,
       selectClassName,
       errorClassName,
@@ -33,7 +35,7 @@ export default class FormSimpleDropdown extends React.Component {
 
     return (
       <div className={className}>
-        <select {...input} className={selectClassName}>
+        <select {...input} className={selectClassName} aria-label={label}>
           {options.map((option, index) => {
             return (
               <option key={index} value={option.value}>

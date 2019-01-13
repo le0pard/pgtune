@@ -32,7 +32,7 @@ export default class Tooltip extends React.Component {
         overlay={text}
       >
         <div className={className}>
-          <a className={className && `${className}__link`} href="#">
+          <a id={`${id}Content`} className={className && `${className}__link`} href="#">
             {label}
           </a>
         </div>

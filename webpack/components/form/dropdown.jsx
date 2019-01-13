@@ -46,7 +46,7 @@ export default class FormDropdown extends React.Component {
           <select
             className="form-dropdown-wrapper__select"
             {...input}
-            aria-describedby={`tooltip${dropdownID}`}
+            aria-describedby={`tooltip${dropdownID}Content`}
             id={dropdownID}>
             {options.map((option, index) => {
               return (
