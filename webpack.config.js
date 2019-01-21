@@ -2,7 +2,6 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
