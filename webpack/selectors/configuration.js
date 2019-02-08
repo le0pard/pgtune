@@ -90,8 +90,8 @@ export const effectiveCacheSize = createSelector(
 )
 
 export const maintenanceWorkMem = createSelector(
-  [totalMemoryInKb, getDBType],
-  (totalMemoryKb, dbType) => {
+  [totalMemoryInKb, getDBType, getOSType],
+  (totalMemoryKb, dbType, osType) => {
     let maintenanceWorkMemValue = {
       [DB_TYPE_WEB]: Math.floor(totalMemoryKb / 16),
       [DB_TYPE_OLTP]: Math.floor(totalMemoryKb / 16),
@@ -102,7 +102,12 @@ export const maintenanceWorkMem = createSelector(
     // Cap maintenance RAM at 2GB on servers with lots of memory
     const memoryLimit = 2 * SIZE_UNIT_MAP['GB'] / SIZE_UNIT_MAP['KB']
     if (maintenanceWorkMemValue > memoryLimit) {
-      maintenanceWorkMemValue = memoryLimit
+      if (OS_WINDOWS === osType) {
+        // 2048MB (2 GB) will raise error at Windows, so we need remove 1 MB from it
+        maintenanceWorkMemValue = memoryLimit - (1 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])
+      } else {
+        maintenanceWorkMemValue = memoryLimit
+      }
     }
     return maintenanceWorkMemValue
   }

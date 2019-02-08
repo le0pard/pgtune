@@ -2,7 +2,6 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -31,7 +30,6 @@ const cssLoaders = [
     loader: 'css-loader',
     options: {
       modules: false,
-      minimize: isProduction,
       sourceMap: true
     }
   },
@@ -40,13 +38,8 @@ const cssLoaders = [
     options: {
       sourceMap: true,
       plugins: function() {
-        return [
+        const plugins = [
           require('postcss-import')(),
-          require('postcss-url')(),
-          require('lost')({
-            flexbox: 'flex'
-          }),
-          require('rucksack-css')(),
           require('postcss-preset-env')({
             stage: 1,
             browsers: browserList,
@@ -58,9 +51,23 @@ const cssLoaders = [
               }
             }
           }),
+          require('lost')({
+            flexbox: 'flex'
+          }),
+          require('rucksack-css')(),
           require('postcss-browser-reporter')(),
           require('postcss-reporter')()
         ];
+
+        if (isProduction) {
+          return plugins.concat([
+            require('cssnano')({
+              preset: 'default'
+            })
+          ]);
+        } else {
+          return plugins;
+        }
       }
     }
   },
@@ -116,6 +123,7 @@ const config = {
           loader: 'url-loader',
           options: {
             limit: 10000,
+            name: '[name]-[hash].[ext]',
             outputPath: 'assets/'
           }
         }]

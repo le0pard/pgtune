@@ -70,6 +70,7 @@ export default class TotalMemoryInput extends React.Component {
         />
         <Field
           name="totalMemoryUnit"
+          label="Memory units"
           className="total-memory-unit"
           selectClassName="total-memory-unit__select"
           component={FormSimpleDropdown}
