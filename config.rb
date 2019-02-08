@@ -25,7 +25,7 @@ page '/404.html', layout: false
 require "lib/pgtune_helpers"
 helpers PgtuneHelpers
 
-assets_dir = ".tmp/dist"
+assets_dir = ::File.expand_path('../.tmp/dist', __FILE__)
 
 activate :external_pipeline,
   name: :webpack,
