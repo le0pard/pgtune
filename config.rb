@@ -30,7 +30,7 @@ assets_dir = ::File.expand_path('../.tmp/dist', __FILE__)
 activate :external_pipeline,
   name: :webpack,
   command: build? ?
-    "rm -fr #{assets_dir}/* && NODE_ENV=production ./node_modules/.bin/webpack --bail" :
+    "rm -fr '#{assets_dir}/'* && NODE_ENV=production ./node_modules/.bin/webpack --bail" :
     './node_modules/.bin/webpack --watch -d --color',
   source: assets_dir,
   latency: 1
