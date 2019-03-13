@@ -3,6 +3,7 @@ import {
   DB_VERSIONS,
   OS_LINUX,
   OS_WINDOWS,
+  OS_MAC,
   DB_TYPE_WEB,
   DB_TYPE_OLTP,
   DB_TYPE_DW,
@@ -43,7 +44,7 @@ export const validate = (values) => {
   }
   if (!values.osType) {
     errors.osType = 'Required'
-  } else if ([OS_LINUX, OS_WINDOWS].indexOf(values.osType) < 0) {
+  } else if ([OS_LINUX, OS_WINDOWS, OS_MAC].indexOf(values.osType) < 0) {
     errors.osType = 'Unsupported OS'
   }
   if (!values.dbType) {
