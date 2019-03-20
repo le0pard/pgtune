@@ -1,6 +1,7 @@
 import {createSelector} from 'reselect'
 import {
   OS_WINDOWS,
+  OS_MAC,
   DB_TYPE_WEB,
   DB_TYPE_OLTP,
   DB_TYPE_DW,
@@ -215,7 +216,7 @@ export const randomPageCost = createSelector(
 export const effectiveIoConcurrency = createSelector(
   [getOSType, getHDType],
   (osType, hdType) => {
-    if (OS_WINDOWS === osType) {
+    if ([OS_WINDOWS, OS_MAC].indexOf(osType) >= 0) {
       return null
     }
     return {

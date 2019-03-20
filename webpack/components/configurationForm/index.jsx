@@ -8,6 +8,7 @@ import TotalMemoryInput from './totalMemoryInput'
 import {
   DB_VERSIONS,
   OS_LINUX,
+  OS_MAC,
   OS_WINDOWS,
   DB_TYPE_WEB,
   DB_TYPE_OLTP,
@@ -42,8 +43,12 @@ export default class ConfigurationForm extends React.Component {
   osTypeOptions() {
     return [
       {
-        label: 'Linux/OS X',
+        label: 'Linux',
         value: OS_LINUX
+      },
+      {
+        label: 'OS X',
+        value: OS_MAC
       },
       {
         label: 'Windows',

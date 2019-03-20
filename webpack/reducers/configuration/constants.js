@@ -4,6 +4,7 @@ export const DB_VERSIONS = [DEFAULT_DB_VERSION, 10, 9.6, 9.5, 9.4, 9.3, 9.2]
 // os types
 export const OS_LINUX = 'linux'
 export const OS_WINDOWS = 'windows'
+export const OS_MAC = 'mac'
 // db types
 export const DB_TYPE_WEB = 'web'
 export const DB_TYPE_OLTP = 'oltp'
