@@ -244,7 +244,7 @@ export const parallelSettings = createSelector(
     if (dbVersion >= 9.6) {
       config.push({
         key: 'max_parallel_workers_per_gather',
-        value: Math.ceil(cpuNum / 2)
+        value: Math.min(Math.ceil(cpuNum / 2), 4)
       })
     }
 
