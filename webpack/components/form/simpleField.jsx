@@ -6,7 +6,6 @@ import './field.sass'
 export default class FormSimpleField extends React.Component {
   static propTypes = {
     input: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired,
     className: PropTypes.string,
     inputClassName: PropTypes.string,
     errorClassName: PropTypes.string,
@@ -24,7 +23,6 @@ export default class FormSimpleField extends React.Component {
   render() {
     const {
       input,
-      type,
       inputProps,
       className,
       inputClassName,
@@ -39,8 +37,7 @@ export default class FormSimpleField extends React.Component {
         <input
           {...input}
           {...inputProps}
-          className={inputClassName}
-          type={type} />
+          className={inputClassName} />
         {isError && <div className={errorClassName}>{error}</div>}
       </div>
     )

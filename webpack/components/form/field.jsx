@@ -8,7 +8,6 @@ import './field.sass'
 export default class FormField extends React.Component {
   static propTypes = {
     input: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     tooltip: PropTypes.oneOfType([
       PropTypes.node,
@@ -30,7 +29,6 @@ export default class FormField extends React.Component {
     const {
       label,
       input,
-      type,
       tooltip,
       inputProps,
       meta: {touched, error}
@@ -56,8 +54,7 @@ export default class FormField extends React.Component {
             className="form-field-wrapper__input"
             aria-label={label}
             aria-describedby={`tooltip${inputID}Content`}
-            id={inputID}
-            type={type} />
+            id={inputID} />
           {isError && <div className="form-field-error">{error}</div>}
         </div>
       </div>

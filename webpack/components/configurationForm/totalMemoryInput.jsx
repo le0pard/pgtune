@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Field} from 'redux-form'
+import {Field} from 'react-final-form'
 import Tooltip from 'components/form/tooltip'
 import FormSimpleField from 'components/form/simpleField'
 import FormSimpleDropdown from 'components/form/simpleDropdown'
