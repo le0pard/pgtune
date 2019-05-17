@@ -112,6 +112,7 @@ export default class ConfigurationForm extends React.Component {
           hdType: HARD_DRIVE_SSD
         }}
         validate={validate}
+        subscription={{submitting: true, pristine: true}}
         render={({handleSubmit, submitting}) => (
           <form onSubmit={handleSubmit}>
             <Field
