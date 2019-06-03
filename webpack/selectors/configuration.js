@@ -46,8 +46,8 @@ export const maxConnections = createSelector(
     connectionNum ? connectionNum : {
       [DB_TYPE_WEB]: 200,
       [DB_TYPE_OLTP]: 300,
-      [DB_TYPE_DW]: 20,
-      [DB_TYPE_DESKTOP]: 10,
+      [DB_TYPE_DW]: 40,
+      [DB_TYPE_DESKTOP]: 20,
       [DB_TYPE_MIXED]: 100
     }[dbType]
   )

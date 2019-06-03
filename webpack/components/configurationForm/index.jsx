@@ -164,7 +164,7 @@ export default class ConfigurationForm extends React.Component {
                 autoComplete: 'off',
                 autoCorrect: 'off',
                 autoCapitalize: 'none',
-                min: '10',
+                min: '20',
                 max: '9999',
                 step: '1',
                 pattern: '[0-9]{1,4}',
