@@ -35,6 +35,34 @@ const totalMemoryInBytes = createSelector(
   )
 )
 
+const getDbDefaultValues = createSelector(
+  [getDBVersion],
+  (dbVersion) => (
+    {
+      9.2: {},
+      9.3: {},
+      9.4: {},
+      9.5: {
+        ['max_worker_processes']: 8
+      },
+      9.6: {
+        ['max_worker_processes']: 8,
+        ['max_parallel_workers_per_gather']: 0
+      },
+      10: {
+        ['max_worker_processes']: 8,
+        ['max_parallel_workers_per_gather']: 2,
+        ['max_parallel_workers']: 8
+      },
+      11: {
+        ['max_worker_processes']: 8,
+        ['max_parallel_workers_per_gather']: 2,
+        ['max_parallel_workers']: 8
+      }
+    }[dbVersion]
+  )
+)
+
 export const isReadyForConfiguration = createSelector(
   [getTotalMemory],
   (totalMemory) => !!totalMemory
@@ -260,15 +288,21 @@ export const parallelSettings = createSelector(
 )
 
 export const workMem = createSelector(
-  [totalMemoryInKb, sharedBuffers, maxConnections, parallelSettings, getDBType],
+  [totalMemoryInKb, sharedBuffers, maxConnections, parallelSettings, getDbDefaultValues, getDBType],
   (
     totalMemoryKb, sharedBuffersValue,
     maxConnectionsValue, parallelSettingsValue,
-    dbType
+    dbDefaultValues, dbType
   ) => {
     const parallelForWorkMem = (() => {
       if (parallelSettingsValue.length) {
         return Math.ceil(parallelSettingsValue[0].value / 2)
+      }
+      if (
+        dbDefaultValues['max_parallel_workers_per_gather'] &&
+        dbDefaultValues['max_parallel_workers_per_gather'] > 0
+      ) {
+        return dbDefaultValues['max_parallel_workers_per_gather']
       }
       return 1
     })()

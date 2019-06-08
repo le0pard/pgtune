@@ -42,14 +42,14 @@ describe('maxConnections', () => {
       configuration: {
         dbType: 'dw'
       }
-    })).toEqual(20)
+    })).toEqual(40)
   })
   it('desktop app', () => {
     expect(maxConnections({
       configuration: {
         dbType: 'desktop'
       }
-    })).toEqual(10)
+    })).toEqual(20)
   })
   it('mixed app', () => {
     expect(maxConnections({
