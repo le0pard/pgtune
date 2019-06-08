@@ -296,7 +296,12 @@ export const workMem = createSelector(
   ) => {
     const parallelForWorkMem = (() => {
       if (parallelSettingsValue.length) {
-        return Math.ceil(parallelSettingsValue[0].value / 2)
+        const maxParallelWorkersPerGather = parallelSettingsValue.find((param) => (
+          param['key'] === 'max_parallel_workers_per_gather'
+        ))
+        if (maxParallelWorkersPerGather) {
+          return maxParallelWorkersPerGather
+        }
       }
       if (
         dbDefaultValues['max_parallel_workers_per_gather'] &&
