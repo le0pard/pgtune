@@ -5,7 +5,10 @@ import './dropdown.sass'
 
 export default class FormSimpleDropdown extends React.Component {
   static propTypes = {
-    input: PropTypes.object.isRequired,
+    field: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.any
+    }).isRequired,
     label: PropTypes.string.isRequired,
     className: PropTypes.string,
     selectClassName: PropTypes.string,
@@ -14,28 +17,32 @@ export default class FormSimpleDropdown extends React.Component {
       label: PropTypes.string.isRequired,
       value: PropTypes.any.isRequired
     }).isRequired),
-    meta: PropTypes.shape({
-      touched: PropTypes.bool.isRequired,
-      error: PropTypes.string
+    form: PropTypes.shape({
+      touched: PropTypes.object,
+      errors: PropTypes.object
     }).isRequired
   }
 
   render() {
     const {
-      input,
+      field,
       options,
       label,
       className,
       selectClassName,
       errorClassName,
-      meta: {touched, error}
+      form: {
+        touched,
+        errors
+      },
+      ...props
     } = this.props
 
-    const isError = touched && error
+    const isError = touched[field.name] && errors[field.name]
 
     return (
       <div className={className}>
-        <select {...input} className={selectClassName} aria-label={label}>
+        <select {...field} {...props} className={selectClassName} aria-label={label}>
           {options.map((option, index) => {
             return (
               <option key={index} value={option.value}>
@@ -44,7 +51,7 @@ export default class FormSimpleDropdown extends React.Component {
             )
           })}
         </select>
-        {isError && <div className={errorClassName}>{error}</div>}
+        {isError && <div className={errorClassName}>{errors[field.name]}</div>}
       </div>
     )
   }

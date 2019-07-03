@@ -6,6 +6,9 @@
       "jsx": true
     }
   },
+  "extends": [
+    "eslint:recommended"
+  ],
   "rules": {
     "array-bracket-spacing": 2,
     "brace-style": [2, "1tbs", {"allowSingleLine": true}],

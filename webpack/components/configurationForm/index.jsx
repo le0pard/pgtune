@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {Form, Field} from 'react-final-form'
+import {Formik, Field, Form} from 'formik'
 import FormField from 'components/form/field'
 import FormDropdown from 'components/form/dropdown'
 import TotalMemoryInput from './totalMemoryInput'
@@ -30,8 +30,9 @@ export default class ConfigurationForm extends React.Component {
     onSubmitForm: PropTypes.func.isRequired
   }
 
-  handleGenerateConfig(values) {
-    return this.props.onSubmitForm(values)
+  handleGenerateConfig(values, {setSubmitting}) {
+    this.props.onSubmitForm(values)
+    setSubmitting(false)
   }
 
   dbVersionOptions() {
@@ -102,19 +103,21 @@ export default class ConfigurationForm extends React.Component {
 
   render() {
     return (
-      <Form
+      <Formik
         onSubmit={this.handleGenerateConfig.bind(this)}
         initialValues={{
           dbVersion: DEFAULT_DB_VERSION,
           osType: OS_LINUX,
           dbType: DB_TYPE_WEB,
+          cpuNum: '',
+          totalMemory: '',
           totalMemoryUnit: SIZE_UNIT_GB,
+          connectionNum: '',
           hdType: HARD_DRIVE_SSD
         }}
         validate={validate}
-        subscription={{submitting: true, pristine: true}}
-        render={({handleSubmit, submitting}) => (
-          <form onSubmit={handleSubmit}>
+        render={({isSubmitting}) => (
+          <Form>
             <Field
               name="dbVersion"
               component={FormDropdown}
@@ -143,16 +146,14 @@ export default class ConfigurationForm extends React.Component {
               name="cpuNum"
               type="number"
               component={FormField}
-              inputProps={{
-                autoComplete: 'off',
-                autoCorrect: 'off',
-                autoCapitalize: 'none',
-                min: '1',
-                max: '9999',
-                step: '1',
-                pattern: '[0-9]{1,4}',
-                placeholder: 'Number of CPUs (optional)'
-              }}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="none"
+              min={1}
+              max={9999}
+              step={1}
+              pattern="[0-9]{1,4}"
+              placeholder="Number of CPUs (optional)"
               label="Number of CPUs"
               tooltip={<span>Number of CPUs, which PostgreSQL can use<br />CPUs = threads per core * cores per socket * sockets</span>}
             />
@@ -160,16 +161,14 @@ export default class ConfigurationForm extends React.Component {
               name="connectionNum"
               type="number"
               component={FormField}
-              inputProps={{
-                autoComplete: 'off',
-                autoCorrect: 'off',
-                autoCapitalize: 'none',
-                min: '20',
-                max: '9999',
-                step: '1',
-                pattern: '[0-9]{1,4}',
-                placeholder: 'Number of Connections (optional)'
-              }}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="none"
+              min={20}
+              max={9999}
+              step={1}
+              pattern="[0-9]{1,4}"
+              placeholder="Number of Connections (optional)"
               label="Number of Connections"
               tooltip="Maximum number of PostgreSQL client connections"
             />
@@ -182,12 +181,12 @@ export default class ConfigurationForm extends React.Component {
             />
             <div className="configuration-form-btn-wrapper">
               <button className={classnames('configuration-form-btn', {
-                'configuration-form-btn--disabled': submitting
-              })} type="submit" disabled={submitting}>
+                'configuration-form-btn--disabled': isSubmitting
+              })} type="submit" disabled={isSubmitting}>
                 Generate
               </button>
             </div>
-          </form>
+          </Form>
         )}
       />
     )

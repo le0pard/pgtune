@@ -5,40 +5,41 @@ import './field.sass'
 
 export default class FormSimpleField extends React.Component {
   static propTypes = {
-    input: PropTypes.object.isRequired,
+    field: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.any
+    }).isRequired,
     className: PropTypes.string,
     inputClassName: PropTypes.string,
     errorClassName: PropTypes.string,
-    inputProps: PropTypes.object,
-    meta: PropTypes.shape({
-      touched: PropTypes.bool.isRequired,
-      error: PropTypes.string
+    form: PropTypes.shape({
+      touched: PropTypes.object,
+      errors: PropTypes.object
     }).isRequired
-  }
-
-  static defaultProps = {
-    inputProps: {}
   }
 
   render() {
     const {
-      input,
-      inputProps,
+      field,
       className,
       inputClassName,
       errorClassName,
-      meta: {touched, error}
+      form: {
+        touched,
+        errors
+      },
+      ...props
     } = this.props
 
-    const isError = touched && error
+    const isError = touched[field.name] && errors[field.name]
 
     return (
       <div className={className}>
         <input
-          {...input}
-          {...inputProps}
+          {...field}
+          {...props}
           className={inputClassName} />
-        {isError && <div className={errorClassName}>{error}</div>}
+        {isError && <div className={errorClassName}>{errors[field.name]}</div>}
       </div>
     )
   }

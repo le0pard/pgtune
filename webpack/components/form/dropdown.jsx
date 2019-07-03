@@ -7,30 +7,37 @@ import './dropdown.sass'
 
 export default class FormDropdown extends React.Component {
   static propTypes = {
-    input: PropTypes.object.isRequired,
     label: PropTypes.string.isRequired,
     tooltip: PropTypes.string.isRequired,
+    field: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.any
+    }).isRequired,
+    form: PropTypes.shape({
+      touched: PropTypes.object,
+      errors: PropTypes.object
+    }).isRequired,
     options: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string.isRequired,
       value: PropTypes.any.isRequired
-    }).isRequired),
-    meta: PropTypes.shape({
-      touched: PropTypes.bool.isRequired,
-      error: PropTypes.string
-    }).isRequired
+    }).isRequired)
   }
 
   render() {
     const {
       label,
-      input,
       tooltip,
       options,
-      meta: {touched, error}
+      field,
+      form: {
+        touched,
+        errors
+      },
+      ...props
     } = this.props
 
-    const dropdownID = _camelCase(`${input.name}-id`)
-    const isError = touched && error
+    const dropdownID = _camelCase(`${field.name}-id`)
+    const isError = touched[field.name] && errors[field.name]
 
     return (
       <div className="form-dropdown">
@@ -45,7 +52,8 @@ export default class FormDropdown extends React.Component {
         <div className="form-dropdown-wrapper">
           <select
             className="form-dropdown-wrapper__select"
-            {...input}
+            {...field}
+            {...props}
             aria-describedby={`tooltip${dropdownID}Content`}
             id={dropdownID}>
             {options.map((option, index) => {
@@ -56,7 +64,7 @@ export default class FormDropdown extends React.Component {
               )
             })}
           </select>
-          {isError && <div className="form-dropdown-error">{error}</div>}
+          {isError && <div className="form-dropdown-error">{errors[field.name]}</div>}
         </div>
       </div>
     )

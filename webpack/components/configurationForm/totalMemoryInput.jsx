@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Field} from 'react-final-form'
+import {Field} from 'formik'
 import Tooltip from 'components/form/tooltip'
 import FormSimpleField from 'components/form/simpleField'
 import FormSimpleDropdown from 'components/form/simpleDropdown'
@@ -54,19 +54,17 @@ export default class TotalMemoryInput extends React.Component {
           inputClassName="total-memory-amount__input"
           errorClassName="total-memory-amount__error"
           component={FormSimpleField}
-          inputProps={{
-            id: inputID,
-            autoFocus: true,
-            autoComplete: 'off',
-            autoCorrect: 'off',
-            autoCapitalize: 'none',
-            required: 'required',
-            min: '1',
-            max: '9999',
-            step: '1',
-            pattern: '[0-9]{1,4}',
-            placeholder: 'Memory size (RAM, required)'
-          }}
+          id={inputID}
+          autoFocus={true}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="none"
+          required="required"
+          min={1}
+          max={9999}
+          step={1}
+          pattern="[0-9]{1,4}"
+          placeholder="Memory size (RAM, required)"
         />
         <Field
           name="totalMemoryUnit"
