@@ -42,7 +42,7 @@ const cssLoaders = [
           require('postcss-import')(),
           require('postcss-preset-env')({
             stage: 1,
-            browsers: browserList,
+            browserlist: browserList,
             features: {
               'custom-properties': {
                 strict: false,
