@@ -38,7 +38,7 @@
     "file-loader": "4.0.0",
     "formik": "^1.5.7",
     "history": "4.9.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "lost": "8.3.1",
     "mini-css-extract-plugin": "0.7.0",
     "node-sass": "4.7.2",
