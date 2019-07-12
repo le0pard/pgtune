@@ -147,7 +147,6 @@
     "gulp": "4.0.2",
     "gulp-eslint": "6.0.0",
     "gulp-jest": "4.0.2",
-    "gulp-util": "^3.0.8",
     "jest": "24.8.0",
     "jest-cli": "24.8.0",
     "webpack-cli": "3.3.5"
