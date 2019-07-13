@@ -49,11 +49,11 @@ export const validationSchema = Yup.object().shape({
   totalMemory: Yup.number()
     .required('Required')
     .integer('Must be an integer')
-    .when('totalMemoryUnit', {
-      is: SIZE_UNIT_MB,
-      then: Yup.number()
-        .min(MIN_MB_MEMORY, `Must be greater than or equal to ${MIN_MB_MEMORY} MB`),
-      otherwise: Yup.number().min(1, 'Must be greater than zero')
+    .when('totalMemoryUnit', (totalMemoryUnit, schema) => {
+      if (totalMemoryUnit === SIZE_UNIT_MB) {
+        return schema.min(MIN_MB_MEMORY, `Must be greater than or equal to ${MIN_MB_MEMORY} MB`)
+      }
+      return schema.min(1, 'Must be greater than zero')
     })
     .max(MAX_INTEGER, `Must be less than or equal to ${MAX_INTEGER}`),
   hdType: Yup.string()
