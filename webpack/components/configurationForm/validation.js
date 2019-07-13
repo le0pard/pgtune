@@ -49,7 +49,7 @@ export const validationSchema = Yup.object().shape({
   totalMemory: Yup.number()
     .required('Required')
     .integer('Must be an integer')
-    .when(['totalMemoryUnit'], {
+    .when('totalMemoryUnit', {
       is: SIZE_UNIT_MB,
       then: Yup.number()
         .min(MIN_MB_MEMORY, `Must be greater than or equal to ${MIN_MB_MEMORY} MB`),
