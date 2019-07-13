@@ -5,7 +5,7 @@ import {Formik, Field, Form} from 'formik'
 import FormField from 'components/form/field'
 import FormDropdown from 'components/form/dropdown'
 import TotalMemoryInput from './totalMemoryInput'
-import {validate} from './validation'
+import {validationSchema} from './validation'
 import {
   DEFAULT_DB_VERSION,
   DB_VERSIONS,
@@ -115,7 +115,7 @@ export default class ConfigurationForm extends React.Component {
           connectionNum: '',
           hdType: HARD_DRIVE_SSD
         }}
-        validate={validate}
+        validationSchema={validationSchema}
         render={({isSubmitting}) => (
           <Form>
             <Field

@@ -71,7 +71,8 @@
     "url-loader": "2.0.1",
     "webpack": "4.35.3",
     "webpack-manifest-plugin": "2.0.4",
-    "whatwg-fetch": "3.0.0"
+    "whatwg-fetch": "3.0.0",
+    "yup": "^0.27.0"
   },
   "babel": {
     "presets": [
