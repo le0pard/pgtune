@@ -75,7 +75,14 @@ const cssLoaders = [
     loader: 'sass-loader',
     options: {
       sourceMap:    true,
-      includePaths: [path.join(__dirname, 'webpack', 'css')]
+      webpackImporter: true,
+      sassOptions: {
+        implementation: require('node-sass'),
+        fiber: require('fibers'),
+        includePaths: [
+          path.join(__dirname, 'webpack', 'css')
+        ]
+      }
     }
   }
 ];
@@ -105,7 +112,7 @@ const config = {
       path.join(__dirname, 'webpack'),
       path.join(__dirname, 'node_modules')
     ],
-    extensions: ['.js', '.jsx', '.json']
+    extensions: ['.js', '.jsx', '.json', '.css', '.sass']
   },
 
   module: {
@@ -129,7 +136,7 @@ const config = {
         }]
       },
       {
-        test: /\.(scss|sass)$/,
+        test: /\.(css|scss|sass)$/,
         use: cssLoaders
       }
     ]
