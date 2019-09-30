@@ -2,7 +2,7 @@
 
 ![PGTune](https://repository-images.githubusercontent.com/17980400/70080f80-e3ab-11e9-91b0-eb74a8023ab0)
 
-Tuning PostgreSQL config by your hardware. Based on original [pgtune](https://github.com/gregs1104/pgtune).
+Tuning PostgreSQL config by your hardware. Based on original [pgtune](https://github.com/gregs1104/pgtune). Illustration by [Kate](https://dribbble.com/Kite).
 
 ## Development
 
