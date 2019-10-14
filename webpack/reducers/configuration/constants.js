@@ -1,6 +1,6 @@
 // postgresql versions
-export const DEFAULT_DB_VERSION = 11
-export const DB_VERSIONS = [DEFAULT_DB_VERSION, 10, 9.6, 9.5, 9.4, 9.3, 9.2]
+export const DEFAULT_DB_VERSION = 12
+export const DB_VERSIONS = [DEFAULT_DB_VERSION, 11, 10, 9.6, 9.5, 9.4, 9.3, 9.2]
 // os types
 export const OS_LINUX = 'linux'
 export const OS_WINDOWS = 'windows'
