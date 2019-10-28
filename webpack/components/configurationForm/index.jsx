@@ -116,7 +116,7 @@ export default class ConfigurationForm extends React.Component {
           hdType: HARD_DRIVE_SSD
         }}
         validationSchema={validationSchema}
-        render={({isSubmitting}) => (
+      >{({isSubmitting}) => (
           <Form>
             <Field
               name="dbVersion"
@@ -188,7 +188,7 @@ export default class ConfigurationForm extends React.Component {
             </div>
           </Form>
         )}
-      />
+      </Formik>
     )
   }
 }
