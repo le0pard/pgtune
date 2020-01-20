@@ -3,30 +3,30 @@
 @import 'variables'
 
 \:root
-  --baseColor: $base00
-  --bgColor: $base3
-  --headsColor: $base2
-  --emphColor: $base01
-  --commentColor: $base1
-  --inputBg: lighten($base3, 4)
-  --inputBgDisabled: $base1
-  --inputColor: $base02
-  --inputBorder: $base1
-  --inputColorPlaceholder: lighten($base00, 30)
-  --buttonHover: lighten($base2, 10)
+  --baseColor: #{#{$base00}}
+  --bgColor: #{$base3}
+  --headsColor: #{$base2}
+  --emphColor: #{$base01}
+  --commentColor: #{$base1}
+  --inputBg: #{lighten($base3, 4)}
+  --inputBgDisabled: #{$base1}
+  --inputColor: #{$base02}
+  --inputBorder: #{$base1}
+  --inputColorPlaceholder: #{lighten($base00, 30)}
+  --buttonHover: #{lighten($base2, 10)}
 
 \:root.dark
-  --baseColor: $base0
-  --bgColor: $base03
-  --headsColor: $base02
-  --emphColor: $base1
-  --commentColor: $base01
-  --inputBg: $base02
-  --inputBgDisabled: $base01
-  --inputColor: $base2
-  --inputBorder: $base01
-  --inputColorPlaceholder: darken($base0, 30)
-  --buttonHover: darken($base02, 10)
+  --baseColor: #{$base0}
+  --bgColor: #{$base03}
+  --headsColor: #{$base02}
+  --emphColor: #{$base1}
+  --commentColor: #{$base01}
+  --inputBg: #{$base02}
+  --inputBgDisabled: #{$base01}
+  --inputColor: #{$base2}
+  --inputBorder: #{$base01}
+  --inputColorPlaceholder: #{darken($base0, 30)}
+  --buttonHover: #{darken($base02, 10)}
 
 html
   @include responsive-font-size(18px 22px)
@@ -37,10 +37,10 @@ body
   font-family: system-ui
 
 a
-  color: $yellow
+  color: #{$yellow}
 
 a:hover
-  color: $orange
+  color: #{$orange}
   text-decoration: none
 
 pre
@@ -56,7 +56,7 @@ pre
     background-color: var(--bgColor)
 
 h1, h2, h3, h4, h5, h6
-  color: $green
+  color: #{$green}
 
 h1
   font-size: 2.4rem
