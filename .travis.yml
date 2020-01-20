@@ -1,10 +1,10 @@
 language: node_js
 
 node_js:
-  - 10.13.0
+  - 12.13.1
 
-sudo: false
-dist: trusty
+os: linux
+dist: bionic
 
 cache:
   yarn: true
