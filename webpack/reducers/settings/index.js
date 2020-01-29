@@ -17,7 +17,7 @@ const theme = createReducer({
 }, APP_THEMES_LIGHT)
 
 const tabState = createReducer({
-  [openConfigTab]: (state, payload) => payload,
+  [openConfigTab]: (_state, payload) => payload,
   [submitConfiguration]: () => TAB_CONFIG
 }, TAB_CONFIG)
 
