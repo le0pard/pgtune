@@ -191,7 +191,7 @@ describe('parallelSettings', () => {
       }
     })).toEqual([
       {key: 'max_worker_processes', value: 12},
-      {key: 'max_parallel_workers_per_gather', value: 6}
+      {key: 'max_parallel_workers_per_gather', value: 4}
     ])
   })
   it('postgresql 10', () => {
@@ -202,7 +202,7 @@ describe('parallelSettings', () => {
       }
     })).toEqual([
       {key: 'max_worker_processes', value: 12},
-      {key: 'max_parallel_workers_per_gather', value: 6},
+      {key: 'max_parallel_workers_per_gather', value: 4},
       {key: 'max_parallel_workers', value: 12}
     ])
   })
@@ -215,8 +215,23 @@ describe('parallelSettings', () => {
       }
     })).toEqual([
       {key: 'max_worker_processes', value: 31},
-      {key: 'max_parallel_workers_per_gather', value: 16},
+      {key: 'max_parallel_workers_per_gather', value: 4},
       {key: 'max_parallel_workers', value: 31}
+    ])
+  })
+
+  it('postgresql 12 with 31 cpu and DWH', () => {
+    expect(parallelSettings({
+      configuration: {
+        dbVersion: 12,
+        cpuNum: 31,
+        dbType: 'dw'
+      }
+    })).toEqual([
+      {key: 'max_worker_processes', value: 31},
+      {key: 'max_parallel_workers_per_gather', value: 16},
+      {key: 'max_parallel_workers', value: 31},
+      {key: 'max_parallel_maintenance_workers', value: 4}
     ])
   })
 })
