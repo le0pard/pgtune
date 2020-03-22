@@ -3,7 +3,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OfflinePlugin = require('offline-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
@@ -172,14 +172,10 @@ if (isProduction) {
   );
   config.optimization = config.optimization || {};
   config.optimization.minimizer = [
-    new UglifyJSPlugin({
+    new TerserPlugin({
       cache: true,
       parallel: 2,
-      sourceMap: true,
-      uglifyOptions: {
-        compressor: {warnings: false},
-        mangle: true
-      }
+      sourceMap: true
     })
   ];
   // Source maps
