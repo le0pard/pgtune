@@ -8,7 +8,9 @@
     "node": "12.13.1"
   },
   "scripts": {
-    "test": "gulp test"
+    "eslint": "eslint --ext .jsx,.js webpack/",
+    "jest": "TZ=utc jest",
+    "test": "yarn run eslint && yarn run jest"
   },
   "dependencies": {
     "@babel/core": "7.9.6",
@@ -159,8 +161,6 @@
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-react": "7.20.0",
     "gulp": "4.0.2",
-    "gulp-eslint": "6.0.0",
-    "gulp-jest": "4.0.3",
     "jest": "26.0.1",
     "jest-cli": "26.0.1",
     "webpack-cli": "3.3.11"
