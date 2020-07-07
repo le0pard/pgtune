@@ -74,10 +74,10 @@ const cssLoaders = [
   {
     loader: 'sass-loader',
     options: {
-      sourceMap:    true,
+      sourceMap: true,
       webpackImporter: true,
+      implementation: require('sass'),
       sassOptions: {
-        implementation: require('node-sass'),
         fiber: require('fibers'),
         includePaths: [
           path.join(__dirname, 'webpack', 'css')
