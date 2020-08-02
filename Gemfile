@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'middleman', '>= 5.0.0.rc.1'
+gem 'middleman', '>= 4.3.7'
 gem 'htmlcompressor', '>= 0.4.0' # min html
 
 gem 'oj', '>= 2.10.4'           # faster JSON

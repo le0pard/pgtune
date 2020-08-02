@@ -10,6 +10,7 @@
   "scripts": {
     "eslint": "eslint --ext .jsx,.js webpack/",
     "jest": "TZ=utc jest",
+    "critical": "gulp critical",
     "test": "yarn run eslint && yarn run jest",
     "assets:watch": "webpack --watch -d --color",
     "assets:build": "gulp cleanup:assets && NODE_ENV=production webpack --bail"
@@ -35,6 +36,7 @@
     "clipboard": "2.0.6",
     "core-js": "3.6.5",
     "create-react-context": "0.3.0",
+    "critical": "^2.0.1",
     "css-loader": "4.2.0",
     "cssnano": "4.1.10",
     "del": "5.1.0",

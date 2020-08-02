@@ -21,7 +21,7 @@ page '/404.html', layout: false
 require "lib/pgtune_helpers"
 helpers PgtuneHelpers
 
-assets_dir = ::File.expand_path('../.tmp/dist', __FILE__)
+assets_dir = File.expand_path('.tmp/dist', __dir__)
 
 activate :external_pipeline,
   name: :webpack,
@@ -74,4 +74,10 @@ activate :gzip, exts: %w(.css .htm .html .js .svg .xhtml)
 configure :build do
   # min html
   activate :minify_html
+  # ignore npms
+  ignore 'node_modules/**/*'
+end
+
+after_build do
+  system('yarn run critical')
 end

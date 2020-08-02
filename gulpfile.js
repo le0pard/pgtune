@@ -1,6 +1,28 @@
-/* eslint-env node */
-/* eslint-disable no-var, no-console, strict */
+const gulp = require('gulp')
+const del = require('del')
+const critical = require('critical').stream
 
-'use strict'
+const criticalOptions = {
+  base: 'build/',
+  inline: true,
+  minify: true,
+  width: 1440,
+  height: 1024
+}
 
-require('./gulp/cleanup')
+gulp.task('cleanup:assets', () => {
+  return del([
+    '.tmp/dist/**/*'
+  ])
+})
+
+// Generate & Inline Critical-path CSS
+gulp.task('critical', () => {
+  return gulp
+    .src(['build/*.html', '!build/404.html'])
+    .pipe(critical(criticalOptions))
+    .on('error', (err) => {
+      console.error(err.message)
+    })
+    .pipe(gulp.dest('build'))
+})
