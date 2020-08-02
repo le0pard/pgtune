@@ -1,4 +1,4 @@
-# [PgTune](https://pgtune.leopard.in.ua/) [![Build Status](https://travis-ci.com/le0pard/pgtune.svg?branch=master)](https://travis-ci.com/le0pard/pgtune)
+# [PgTune](https://pgtune.leopard.in.ua/) ![Build and Deploy](https://github.com/le0pard/pgtune/workflows/Build%20and%20Deploy/badge.svg?branch=master)
 
 [![PGTune](https://repository-images.githubusercontent.com/17980400/ff62f200-e3ae-11e9-9169-fcdbb1cbdb20 "PGTune")](https://pgtune.leopard.in.ua/)
 
