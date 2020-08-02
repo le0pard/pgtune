@@ -36,6 +36,9 @@ jobs:
       - name: Install Javascript dependencies
         run: yarn install
 
+      - name: Check tests
+        run: yarn run test
+
       - name: Build website
         run: bundle exec middleman build
 
