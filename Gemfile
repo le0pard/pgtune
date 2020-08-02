@@ -1,8 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'middleman', '>= 5.0.0.rc.1'
-gem 'middleman-minify-html', '>= 3.4.1' # min html
-gem 'middleman-deploy', '>= 2.0.0.pre.alpha' # Deploy site
+gem 'htmlcompressor', '>= 0.4.0' # min html
 
 gem 'oj', '>= 2.10.4'           # faster JSON
 gem 'kramdown', '>= 1.9.0'     # faster ExecJS

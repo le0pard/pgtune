@@ -10,38 +10,39 @@
   "scripts": {
     "eslint": "eslint --ext .jsx,.js webpack/",
     "jest": "TZ=utc jest",
-    "test": "yarn run eslint && yarn run jest"
+    "test": "yarn run eslint && yarn run jest",
+    "assets:watch": "webpack --watch -d --color",
+    "assets:build": "gulp cleanup:assets && NODE_ENV=production webpack --bail"
   },
   "dependencies": {
-    "@babel/core": "7.10.4",
+    "@babel/core": "7.11.0",
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@babel/plugin-proposal-export-default-from": "7.10.4",
     "@babel/plugin-proposal-export-namespace-from": "7.10.4",
-    "@babel/plugin-proposal-object-rest-spread": "7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.11.0",
     "@babel/plugin-syntax-class-properties": "7.10.4",
     "@babel/plugin-syntax-export-default-from": "7.10.4",
     "@babel/plugin-syntax-export-namespace-from": "7.8.3",
     "@babel/plugin-syntax-object-rest-spread": "7.8.3",
     "@babel/plugin-transform-regenerator": "7.10.4",
-    "@babel/plugin-transform-runtime": "7.10.4",
-    "@babel/preset-env": "7.10.4",
+    "@babel/plugin-transform-runtime": "7.11.0",
+    "@babel/preset-env": "7.11.0",
     "@babel/preset-react": "7.10.4",
-    "@babel/runtime": "7.10.4",
-    "@babel/runtime-corejs3": "7.10.4",
+    "@babel/runtime": "7.11.0",
+    "@babel/runtime-corejs3": "7.11.0",
     "babel-loader": "8.1.0",
     "classnames": "2.2.6",
     "clipboard": "2.0.6",
     "core-js": "3.6.5",
     "create-react-context": "0.3.0",
-    "css-loader": "3.6.0",
+    "css-loader": "4.2.0",
     "cssnano": "4.1.10",
     "del": "5.1.0",
-    "fbjs": "1.0.0",
     "fibers": "5.0.0",
     "file-loader": "6.0.0",
-    "formik": "2.1.4",
+    "formik": "2.1.5",
     "history": "4.10.1",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "lost": "8.3.1",
     "mini-css-extract-plugin": "0.9.0",
     "normalize.css": "8.0.1",
@@ -55,111 +56,34 @@
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-redux": "7.2.0",
+    "react-redux": "7.2.1",
     "react-router": "5.2.0",
     "react-router-config": "5.1.1",
     "react-router-dom": "5.2.0",
-    "react-syntax-highlighter": "12.2.1",
+    "react-syntax-highlighter": "13.2.1",
     "redux": "4.0.5",
     "redux-act": "1.8.0",
     "redux-logger": "3.0.6",
     "reselect": "4.0.0",
     "rucksack-css": "^1.0.2",
     "sass": "^1.26.10",
-    "sass-loader": "9.0.1",
+    "sass-loader": "9.0.2",
     "style-loader": "1.2.1",
-    "terser-webpack-plugin": "3.0.6",
+    "terser-webpack-plugin": "3.0.8",
     "text-encoding": "0.7.0",
     "url-loader": "4.1.0",
-    "webpack": "4.43.0",
+    "webpack": "4.44.1",
     "webpack-manifest-plugin": "2.2.0",
-    "whatwg-fetch": "3.1.0",
-    "yup": "0.29.1"
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "browsers": [
-              ">0.25%",
-              "not ie 11",
-              "not op_mini all"
-            ]
-          },
-          "modules": false,
-          "useBuiltIns": "entry",
-          "corejs": 3,
-          "exclude": [
-            "transform-typeof-symbol"
-          ]
-        }
-      ],
-      [
-        "@babel/preset-react",
-        {
-          "useBuiltIns": "entry",
-          "corejs": 3
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-syntax-class-properties",
-      "@babel/plugin-syntax-export-default-from",
-      "@babel/plugin-syntax-export-namespace-from",
-      "@babel/plugin-syntax-object-rest-spread",
-      [
-        "@babel/plugin-transform-runtime",
-        {
-          "helpers": false,
-          "regenerator": true,
-          "corejs": false
-        }
-      ],
-      "@babel/plugin-proposal-class-properties",
-      "@babel/plugin-proposal-export-default-from",
-      "@babel/plugin-proposal-export-namespace-from",
-      [
-        "@babel/plugin-proposal-object-rest-spread",
-        {
-          "useBuiltIns": "entry"
-        }
-      ],
-      [
-        "@babel/plugin-transform-regenerator",
-        {
-          "async": false
-        }
-      ]
-    ],
-    "env": {
-      "test": {
-        "presets": [
-          [
-            "@babel/preset-env",
-            {
-              "targets": {
-                "browsers": [
-                  ">0.25%",
-                  "not ie 11",
-                  "not op_mini all"
-                ]
-              }
-            }
-          ],
-          "@babel/preset-react"
-        ]
-      }
-    }
+    "whatwg-fetch": "3.2.0",
+    "yup": "0.29.2"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
-    "babel-jest": "26.1.0",
-    "eslint": "7.4.0",
+    "babel-jest": "26.2.2",
+    "eslint": "7.6.0",
     "eslint-plugin-import": "2.22.0",
-    "eslint-plugin-react": "7.20.3",
+    "eslint-plugin-react": "7.20.5",
     "gulp": "4.0.2",
     "jest": "26.1.0",
     "jest-cli": "26.1.0",

@@ -8,8 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OfflinePlugin = require('offline-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
-const packageJSON = require('./package.json');
-const browserList = packageJSON.babel.presets[0][1].targets.browsers;
+const browserList = require('./browserslist.config');
 
 // set NODE_ENV=production on the environment to add asset fingerprints
 const currentEnv = process.env.NODE_ENV || 'development';
