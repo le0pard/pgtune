@@ -34,7 +34,7 @@ jobs:
             v2-${{ runner.os }}-${{steps.versions.outputs.node_version}}-yarn-
 
       - name: Install Javascript dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Check tests
         run: yarn run test
