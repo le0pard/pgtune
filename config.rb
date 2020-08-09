@@ -74,8 +74,6 @@ activate :gzip, exts: %w(.css .htm .html .js .svg .xhtml)
 configure :build do
   # min html
   activate :minify_html
-  # ignore npms
-  ignore 'node_modules/**/*'
 end
 
 after_build do
