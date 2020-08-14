@@ -1,35 +1,66 @@
-require "middleman-core"
+require 'middleman-core'
+require 'htmlcompressor'
 
-module Middleman
-  class MinifyHtmlExtension < Extension
-    option :remove_multi_spaces, true, 'Remove multiple spaces'
-    option :remove_comments, true, 'Remove comments'
-    option :remove_intertag_spaces, false, 'Remove inter-tag spaces'
-    option :remove_quotes, true, 'Remove quotes'
-    option :simple_doctype, false, 'Use simple doctype'
-    option :remove_script_attributes, true, 'Remove script attributes'
-    option :remove_style_attributes, true, 'Remove style attributes'
-    option :remove_link_attributes, true, 'Remove link attributes'
-    option :remove_form_attributes, false, 'Remove form attributes'
-    option :remove_input_attributes, true, 'Remove input attributes'
-    option :remove_javascript_protocol, true, 'Remove JS protocol'
-    option :remove_http_protocol, false, 'Remove HTTP protocol'
-    option :remove_https_protocol, false, 'Remove HTTPS protocol'
-    option :preserve_line_breaks, false, 'Preserve line breaks'
-    option :simple_boolean_attributes, true, 'Use simple boolean attributes'
-    option :preserve_patterns, nil, 'Patterns to preserve'
+class MinifyHtmlExtension < ::Middleman::Extension
 
-    def initialize(*)
-      super
-      require 'htmlcompressor'
-    end
+  DEFAULT_OPTIONS = {
+    enabled: true,
+    remove_multi_spaces: true,
+    remove_comments: true,
+    remove_intertag_spaces: false,
+    remove_quotes: true,
+    compress_css: false,
+    compress_javascript: false,
+    simple_doctype: false,
+    remove_script_attributes: true,
+    remove_style_attributes: true,
+    remove_link_attributes: true,
+    remove_form_attributes: false,
+    remove_input_attributes: true,
+    remove_javascript_protocol: true,
+    remove_http_protocol: false,
+    remove_https_protocol: false,
+    preserve_line_breaks: false,
+    simple_boolean_attributes: true
+  }.freeze
 
-    def after_configuration
-      app.use ::HtmlCompressor::Rack, options.to_h
+  option :ignore, [], 'Patterns to avoid minifying'
+  option :content_types, %w[text/html], 'Content types of resources that contain HTML'
+  option :compress_options, {}, 'HTML compress options'
+
+  def initialize(app, _options_hash = ::Middleman::EMPTY_HASH, &block)
+    super
+
+    @ignore = Array(options[:ignore])
+    @compressor = HtmlCompressor::Compressor.new(
+      DEFAULT_OPTIONS.merge(options[:compress_options])
+    )
+  end
+
+  def manipulate_resource_list_container!(resource_list)
+    resource_list.by_binary(false).each do |r|
+      type = r.content_type.try(:slice, /^[^;]*/)
+      if minifiable?(type) && !ignore?(r.destination_path)
+        r.add_filter method(:minify)
+      end
     end
   end
+
+  def minifiable?(content_type)
+    options[:content_types].include?(content_type)
+  end
+  memoize :minifiable?
+
+  def ignore?(path)
+    @ignore.any? { |ignore| ::Middleman::Util.path_match(ignore, path) }
+  end
+  memoize :ignore?
+
+  def minify(content)
+    @compressor.compress(content)
+  end
+  memoize :minify
+
 end
 
-::Middleman::Extensions.register(:minify_html) do
-  ::Middleman::MinifyHtmlExtension
-end
+::Middleman::Extensions.register(:minify_html, MinifyHtmlExtension)

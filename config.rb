@@ -69,11 +69,11 @@ set :encoding, "utf-8"
 
 set :images_dir, 'images'
 
-activate :gzip, exts: %w(.css .htm .html .js .svg .xhtml)
-
 configure :build do
-  # min html
+    # min html
   activate :minify_html
+  # gzip
+  activate :gzip, exts: %w(.css .htm .html .js .svg .xhtml)
 end
 
 after_build do

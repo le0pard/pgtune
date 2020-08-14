@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'middleman', '>= 4.3.7'
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
+gem 'middleman', github: 'middleman/middleman'
 gem 'htmlcompressor', '>= 0.4.0' # min html
 
 gem 'oj', '>= 2.10.4'           # faster JSON
