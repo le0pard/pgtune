@@ -4,7 +4,7 @@ gem 'middleman', '>= 4.3.7'
 gem 'htmlcompressor', '>= 0.4.0' # min html
 
 gem 'oj', '>= 2.10.4'           # faster JSON
-gem 'kramdown', '>= 1.9.0'     # faster ExecJS
+gem 'kramdown', '>= 2.3.0'     # faster markdown
 gem 'rake'
 
 gem 'tzinfo-data', platforms: [:mswin, :mingw, :jruby]
