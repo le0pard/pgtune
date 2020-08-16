@@ -3,7 +3,6 @@ Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
 require "lib/middleman_patches"
-require "lib/middleman_minify_html"
 
 # Layouts
 # https://middlemanapp.com/basics/layouts/
@@ -29,7 +28,8 @@ activate :external_pipeline,
     "yarn run assets:build" :
     'yarn run assets:watch',
   source: assets_dir,
-  latency: 1
+  latency: 2,
+  ignore_exit_code: true
 
 # With alternative layout
 # page '/path/to/file.html', layout: 'other_layout'
