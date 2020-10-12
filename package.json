@@ -12,7 +12,7 @@
     "jest": "TZ=utc jest",
     "critical": "gulp critical",
     "test": "yarn run eslint && yarn run jest",
-    "assets:watch": "webpack --watch -d --color",
+    "assets:watch": "webpack --watch --color",
     "assets:build": "gulp cleanup:assets && NODE_ENV=production webpack --bail"
   },
   "dependencies": {
