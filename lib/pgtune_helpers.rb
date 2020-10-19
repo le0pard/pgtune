@@ -33,7 +33,7 @@ module PgtuneHelpers
                       {}
                     end
 
-    manifest_data[name.to_s]
+    manifest_data[name.to_s] || raise("asset #{name} not found in #{manifest_data.inspect}")
   end
 
   def integrity_hash(file)
