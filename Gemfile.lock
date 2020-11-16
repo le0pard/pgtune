@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 77ec2b65a2711b2728d24adc10ba2f1c9c791fa1
+  revision: 6b6a05b0bedb696796692a6594039443990cbc57
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.2)
@@ -45,7 +45,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.0.3.2)
+    activesupport (6.0.3.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -64,7 +64,7 @@ GEM
     execjs (2.7.0)
     fastimage (2.2.0)
     ffi (1.13.1)
-    haml (5.1.2)
+    haml (5.2.0)
       temple (>= 0.8.0)
       tilt
     hamster (3.0.0)
@@ -76,19 +76,19 @@ GEM
     kramdown (2.3.0)
       rexml
     lazy_priority_queue (0.1.1)
-    listen (3.2.1)
+    listen (3.3.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
-    minitest (5.14.1)
-    oj (3.10.8)
+    minitest (5.14.2)
+    oj (3.10.16)
     padrino-helpers (0.14.4)
       i18n (~> 0.6, >= 0.6.7)
       padrino-support (= 0.14.4)
       tilt (>= 1.4.1, < 3)
     padrino-support (0.14.4)
-    parallel (1.19.2)
-    public_suffix (4.0.5)
+    parallel (1.20.0)
+    public_suffix (4.0.6)
     rack (2.2.3)
     rake (13.0.1)
     rb-fsevent (0.10.4)
@@ -106,11 +106,11 @@ GEM
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
-    tzinfo (1.2.7)
+    tzinfo (1.2.8)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
-    zeitwerk (2.4.0)
+    zeitwerk (2.4.1)
 
 PLATFORMS
   ruby

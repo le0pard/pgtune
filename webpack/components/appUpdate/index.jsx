@@ -1,16 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {skipWaitingMessageAndReload} from 'swWindow'
 
 import './app-update.sass'
 
 export default class AppUpdate extends React.Component {
   static propTypes = {
-    isNewVersionAvailable: PropTypes.bool.isRequired
+    isNewVersionAvailable: PropTypes.bool.isRequired,
+    updatingSw: PropTypes.func.isRequired
   }
 
   reloadPage(e) {
     e.preventDefault()
-    window.location.reload()
+
+    this.props.updatingSw()
+    skipWaitingMessageAndReload()
   }
 
   render() {

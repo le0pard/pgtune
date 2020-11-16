@@ -5,8 +5,8 @@ const path = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OfflinePlugin = require('offline-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const browserList = require('./browserslist.config');
 
@@ -36,12 +36,12 @@ const cssLoaders = [
     loader: 'postcss-loader',
     options: {
       sourceMap: true,
-      plugins: function() {
+      postcssOptions: (loaderContext) => {
         const plugins = [
-          require('postcss-import')(),
-          require('postcss-preset-env')({
+          ['postcss-import'],
+          ['postcss-preset-env', {
             stage: 1,
-            browserlist: browserList,
+            browsers: browserList,
             features: {
               'custom-properties': {
                 strict: false,
@@ -49,24 +49,26 @@ const cssLoaders = [
                 preserve: true
               }
             }
-          }),
-          require('lost')({
+          }],
+          ['lost', {
             flexbox: 'flex'
-          }),
-          require('rucksack-css')(),
-          require('postcss-browser-reporter')(),
-          require('postcss-reporter')()
+          }],
+          ['rucksack-css'],
+          ['postcss-browser-reporter'],
+          ['postcss-reporter']
         ];
 
         if (isProduction) {
-          return plugins.concat([
-            require('cssnano')({
-              preset: 'default'
-            })
-          ]);
-        } else {
-          return plugins;
+          return {
+            plugins: plugins.concat([
+              ['cssnano', {
+                preset: 'default'
+              }]
+            ])
+          };
         }
+
+        return {plugins};
       }
     }
   },
@@ -172,56 +174,29 @@ if (isProduction) {
   config.optimization = config.optimization || {};
   config.optimization.minimizer = [
     new TerserPlugin({
-      cache: true,
-      parallel: 2,
-      sourceMap: true
+      parallel: 2
     })
   ];
   // Source maps
   config.devtool = 'source-map';
 } else {
-  config.plugins.push(
-    new webpack.NamedModulesPlugin()
-  );
+  config.optimization = config.optimization || {};
+  config.optimization.moduleIds = 'named';
   // Source maps
   config.devtool = 'inline-source-map';
 }
 
 config.plugins.push(
-  new OfflinePlugin({
-    cache: {
-      main: [
-        '*.js',
-        '*.css',
-        '*.png',
-        '*.svg'
-      ],
-    },
-    excludes: [
-      '**/.*',
-      '**/*.map',
-      '**/*.gz'
-    ],
-    externals: [
-      '/'
-    ],
-    name: 'mp-cache',
-    version: '[hash]',
-    responseStrategy: 'cache-first',
-    prefetchRequest: {
-      credentials: 'include'
-    },
-    ServiceWorker: {
-      events: true,
-      scope: '/',
-      minify: isProduction
-    },
-    AppCache: null
-  }),
-  new ManifestPlugin({
-    fileName: 'assets-manifest.json',
+  new WebpackAssetsManifest({
+    output: 'assets-manifest.json',
     publicPath: config.output.publicPath,
-    writeToFileEmit: process.env.NODE_ENV !== 'test'
+    writeToDisk: true
+  }),
+  new WorkboxPlugin.InjectManifest({
+    swSrc: './webpack/sw.js',
+    swDest: 'sw.js',
+    compileSrc: true,
+    maximumFileSizeToCacheInBytes: (isProduction ? 3145728 : 15730000)
   })
 )
 
