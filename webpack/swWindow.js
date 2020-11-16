@@ -10,8 +10,6 @@ export const skipWaitingMessageAndReload = () => {
   if (wbRegistration && wbRegistration.waiting) {
     // Send a message to the waiting service worker,
     // instructing it to activate.
-    // Note: for this to work, you have to add a message
-    // listener in your service worker. See below.
     messageSW(wbRegistration.waiting, {type: 'SKIP_WAITING'})
   }
 }
