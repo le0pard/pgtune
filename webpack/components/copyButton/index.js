@@ -12,17 +12,17 @@ const CopyButton = ({text, className, label = 'Copy', successLabel = 'Copied', e
   const [copiedSuccess, setCopiedSuccess] = useState(false)
   const [copiedError, setCopiedError] = useState(false)
 
-  const resetState = () => {
-    setTimeout(() => {
-      if (clipboard.current && mounted) {
-        setCopiedSuccess(false)
-        setCopiedError(false)
-      }
-    }, COPIED_TIMEOUT)
-  }
-
   useEffect(() => {
-    if (copyButton.current) {
+    const resetState = () => {
+      setTimeout(() => {
+        if (clipboard.current && mounted) {
+          setCopiedSuccess(false)
+          setCopiedError(false)
+        }
+      }, COPIED_TIMEOUT)
+    }
+
+    if (mounted && copyButton.current) {
       clipboard.current = new Clipboard(copyButton.current)
       clipboard.current.on('success', () => {
         setCopiedSuccess(true)
@@ -42,7 +42,7 @@ const CopyButton = ({text, className, label = 'Copy', successLabel = 'Copied', e
     }
 
     return () => {}
-  }, [])
+  }, [mounted])
 
   const renderLabel = () => {
     if (copiedSuccess) {
