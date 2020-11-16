@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import GithubCorner from 'containers/githubCorner'
+import GithubCorner from 'components/githubCorner'
 import AppUpdate from 'components/appUpdate'
 import ThemeSwitcher from 'components/themeSwitcher'
 import classnames from 'classnames'
