@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "engines": {
-    "node": "12.13.1"
+    "node": "14.15.0"
   },
   "scripts": {
     "eslint": "eslint --ext .jsx,.js webpack/",
