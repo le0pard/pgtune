@@ -4,7 +4,7 @@ import {isReadyForConfiguration} from 'selectors/configuration'
 import {resetConfiguration} from 'reducers/configuration'
 import InfoView from 'components/infoView'
 import ConfigurationForm from 'components/configurationForm'
-import ConfigurationView from 'containers/configurationView'
+import ConfigurationView from 'components/configurationView'
 
 import './main-generator.sass'
 
