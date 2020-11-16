@@ -25,8 +25,7 @@ const MainGenerator = () => {
         <ConfigurationForm />
       </div>
       <div className="main-generator-result-wrapper">
-        {!readyForConfig && <InfoView />}
-        {readyForConfig && <ConfigurationView />}
+        {readyForConfig ? <ConfigurationView /> : <InfoView />}
       </div>
     </div>
   )
