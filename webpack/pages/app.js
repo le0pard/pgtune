@@ -11,7 +11,6 @@ import {renderRoutes} from 'react-router-config'
 import './app.sass'
 
 const AppLayout = ({location: {pathname}, route}) => {
-
   const isActive = (path) => (
     matchPath(pathname, {
       path,

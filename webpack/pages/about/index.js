@@ -8,7 +8,7 @@ const AboutPage = () => (
     <img className="about-page-logo" src={Logo} alt="PGTune" />
     <p>
       <strong>PGTune</strong> calculate configuration for PostgreSQL based on the maximum performance for a given hardware configuration. It isn't a <a href="https://en.wikipedia.org/wiki/No_Silver_Bullet">silver bullet</a> for the optimization settings of PostgreSQL. Many settings depend not only on the hardware configuration, but also on the size of the database, the number of clients and the complexity of queries, so that optimally configure the database can only be given all these parameters.
-        </p>
+    </p>
     <h3>Useful links</h3>
     <ul className="about-page-list">
       <li><a href="https://github.com/le0pard/pgtune">Source code</a></li>

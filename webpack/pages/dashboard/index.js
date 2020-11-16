@@ -1,5 +1,5 @@
 import React from 'react'
-import MainGenerator from 'containers/mainGenerator'
+import MainGenerator from 'components/mainGenerator'
 import pgtuneLogo from './pgtune.svg'
 
 import './dashboard.sass'
