@@ -1,9 +1,5 @@
 {
-  "app.css": "/app-96ebaf467dd922729f31.css",
-  "app.js": "/app-dabaa4c17111cb027d13.js",
-  "app.css.map": "/app-96ebaf467dd922729f31.css.map",
-  "app.js.map": "/app-dabaa4c17111cb027d13.js.map",
-  "app-dabaa4c17111cb027d13.js.LICENSE.txt": "/app-dabaa4c17111cb027d13.js.LICENSE.txt",
-  "assets/logo-3f7fb7a22a208c46d6e571fb44e0dc31.svg": "/assets/logo-3f7fb7a22a208c46d6e571fb44e0dc31.svg",
-  "sw.js": "/sw.js"
+  "app.css": "/app-8c0b2340afecfbbcd2dc.css",
+  "app.js": "/app-cb1283bdad177e469d82.js",
+  "assets/logo.svg": "/assets/logo-3f7fb7a22a208c46d6e571fb44e0dc31.svg"
 }
