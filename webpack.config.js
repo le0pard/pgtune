@@ -196,7 +196,7 @@ config.plugins.push(
     swSrc: './webpack/sw.js',
     swDest: 'sw.js',
     compileSrc: true,
-    maximumFileSizeToCacheInBytes: (isProduction ? 3145728 : 15730000)
+    maximumFileSizeToCacheInBytes: (isProduction ? 2097152 : 15730000)
   })
 )
 
