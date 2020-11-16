@@ -15,9 +15,7 @@ export default class DashboardPage extends React.Component {
               src={pgtuneLogo} />
           </div>
           <div className="dashboard-header-title">
-            <h1 className="dashboard-header-title__text">
-              PGTune
-            </h1>
+            <h1 className="dashboard-header-title__text">PGTune</h1>
           </div>
         </div>
         <MainGenerator />
