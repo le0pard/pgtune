@@ -77,7 +77,7 @@
     "webpack": "5.4.0",
     "webpack-assets-manifest": "^3.1.1",
     "whatwg-fetch": "3.5.0",
-    "workbox-webpack-plugin": "6.0.0-alpha.3",
+    "workbox-webpack-plugin": "6.0.0-rc.0",
     "workbox-window": "^5.1.4",
     "yup": "0.29.3"
   },
