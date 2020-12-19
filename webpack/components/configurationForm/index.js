@@ -57,19 +57,19 @@ const dbTypeOptions = () => (
       value: DB_TYPE_WEB
     },
     {
-      label: 'Online transaction processing systems',
+      label: 'Online transaction processing system',
       value: DB_TYPE_OLTP
     },
     {
-      label: 'Data warehouses',
+      label: 'Data warehouse',
       value: DB_TYPE_DW
     },
     {
-      label: 'Desktop applications',
+      label: 'Desktop application',
       value: DB_TYPE_DESKTOP
     },
     {
-      label: 'Mixed type of applications',
+      label: 'Mixed type of application',
       value: DB_TYPE_MIXED
     }
   ]
