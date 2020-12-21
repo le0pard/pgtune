@@ -39,36 +39,12 @@ module.exports = function (api) {
       ]
     ],
     plugins: [
-      '@babel/plugin-syntax-class-properties',
-      '@babel/plugin-syntax-export-default-from',
-      '@babel/plugin-syntax-export-namespace-from',
-      '@babel/plugin-syntax-object-rest-spread',
       [
         '@babel/plugin-transform-runtime',
         {
           helpers: false,
           regenerator: true,
           corejs: false
-        }
-      ],
-      [
-        '@babel/plugin-proposal-class-properties',
-        {
-          loose: true
-        }
-      ],
-      '@babel/plugin-proposal-export-default-from',
-      '@babel/plugin-proposal-export-namespace-from',
-      [
-        '@babel/plugin-proposal-object-rest-spread',
-        {
-          useBuiltIns: 'entry'
-        }
-      ],
-      [
-        '@babel/plugin-transform-regenerator',
-        {
-          async: false
         }
       ]
     ]
