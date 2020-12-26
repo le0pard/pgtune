@@ -33,6 +33,7 @@
     "del": "6.0.0",
     "fibers": "5.0.0",
     "file-loader": "6.2.0",
+    "focus-visible": "^5.2.0",
     "formik": "2.2.6",
     "history": "4.10.1",
     "lodash": "4.17.20",
@@ -45,7 +46,6 @@
     "postcss-loader": "4.1.0",
     "postcss-preset-env": "6.7.0",
     "postcss-reporter": "7.0.2",
-    "promise-polyfill": "8.2.0",
     "prop-types": "15.7.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -67,7 +67,6 @@
     "url-loader": "4.1.1",
     "webpack": "5.11.0",
     "webpack-assets-manifest": "5.0.0",
-    "whatwg-fetch": "3.5.0",
     "workbox-webpack-plugin": "6.0.2",
     "workbox-window": "6.0.2",
     "yup": "0.32.8"

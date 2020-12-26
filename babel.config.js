@@ -4,7 +4,6 @@ const browserlist = require('./browserslist.config')
 module.exports = function (api) {
   var validEnv = ['development', 'test', 'production']
   var currentEnv = api.env()
-  var isDevelopmentEnv = api.env('development')
   var isTestEnv = api.env('test')
 
   if (!validEnv.includes(currentEnv)) {
@@ -25,7 +24,7 @@ module.exports = function (api) {
           targets: browserlist,
           forceAllTransforms: true,
           modules: (isTestEnv ? 'auto' : false),
-          useBuiltIns: 'entry',
+          useBuiltIns: 'usage',
           corejs: 3,
           exclude: ['transform-typeof-symbol']
         }
@@ -33,7 +32,7 @@ module.exports = function (api) {
       [
         '@babel/preset-react',
         {
-          useBuiltIns: 'entry',
+          useBuiltIns: 'usage',
           corejs: 3
         }
       ]
