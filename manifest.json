@@ -3,34 +3,22 @@
   "name": "PGTune",
   "icons": [
     {
-      "src": "images/favicons/launcher-icon-48x48.png",
+      "src": "/images/favicons/launcher-icon-192x192.png",
       "type": "image/png",
-      "sizes": "48x48"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
-      "src": "images/favicons/launcher-icon-72x72.png",
+      "src": "/images/favicons/launcher-icon-512x512.png",
       "type": "image/png",
-      "sizes": "72x72"
+      "sizes": "512x512",
+      "purpose": "any"
     },
     {
-      "src": "images/favicons/launcher-icon-96x96.png",
+      "src": "/images/favicons/maskable_icon.png",
       "type": "image/png",
-      "sizes": "96x96"
-    },
-    {
-      "src": "images/favicons/launcher-icon-144x144.png",
-      "type": "image/png",
-      "sizes": "144x144"
-    },
-    {
-      "src": "images/favicons/launcher-icon-192x192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "images/favicons/launcher-icon-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "1024x1024",
+      "purpose": "maskable"
     }
   ],
   "display": "standalone",
