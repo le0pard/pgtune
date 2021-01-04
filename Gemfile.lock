@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 457b18447bf3ded09ffe1fb4b39718288cb19d9d
+  revision: 8da1947b0d13b9190aa86e0757a80f873ea72fda
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.2)
@@ -20,7 +20,7 @@ GIT
       execjs (~> 2.0)
       fastimage (~> 2.0)
       hamster (~> 3.0)
-      hashie (~> 3.4)
+      hashie (~> 4.0)
       i18n (~> 0.9.0)
       listen (~> 3.0)
       memoist (~> 0.14)
@@ -34,6 +34,7 @@ GIT
       tilt (~> 2.0.9)
       toml
       uglifier (~> 4.1)
+      webrick
 
 GIT
   remote: https://github.com/middleman/middleman-minify-html
@@ -63,7 +64,7 @@ GEM
     dotenv (2.7.6)
     erubis (2.7.0)
     execjs (2.7.0)
-    fastimage (2.2.0)
+    fastimage (2.2.1)
     ffi (1.14.2)
     generator (0.0.1)
     haml (5.2.1)
@@ -71,19 +72,19 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashie (3.6.0)
+    hashie (4.1.0)
     htmlcompressor (0.4.0)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     kramdown (2.3.0)
       rexml
     lazy_priority_queue (0.1.1)
-    listen (3.3.3)
+    listen (3.4.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
     minitest (5.14.2)
-    oj (3.10.17)
+    oj (3.10.18)
     padrino-helpers (0.14.4)
       i18n (~> 0.6, >= 0.6.7)
       padrino-support (= 0.14.4)
@@ -116,6 +117,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
+    webrick (1.7.0)
     zeitwerk (2.4.2)
 
 PLATFORMS
@@ -131,4 +133,4 @@ DEPENDENCIES
   wdm (~> 0.1)
 
 BUNDLED WITH
-   2.1.4
+   2.2.3
