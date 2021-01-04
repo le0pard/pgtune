@@ -1,4 +1,5 @@
 import React, {useEffect, useRef} from 'react'
+import PropTypes from 'prop-types'
 import {useDispatch, useSelector} from 'react-redux'
 import {settingsToggleTheme} from 'reducers/settings'
 import LocalStorage from 'lib/localStorage'
@@ -38,6 +39,10 @@ const ThemeSwitcher = ({className = ''}) => {
       {theme}
     </a>
   )
+}
+
+ThemeSwitcher.propTypes = {
+  className: PropTypes.string
 }
 
 export default ThemeSwitcher
