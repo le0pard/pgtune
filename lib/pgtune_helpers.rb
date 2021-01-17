@@ -1,5 +1,4 @@
 # encoding: utf-8
-require 'digest'
 
 module PgtuneHelpers
   def default_keywords_helper
@@ -10,39 +9,49 @@ module PgtuneHelpers
     "PgTune - Tuning PostgreSQL config by your hardware"
   end
 
+  def assets_manifest
+    public_manifest_path = File.expand_path File.join(
+      File.dirname(__FILE__),
+      '../.tmp/dist/assets-manifest.json'
+    )
+    if File.exist?(public_manifest_path)
+      JSON.parse(File.read(public_manifest_path))
+    else
+      {}
+    end
+  end
+
   def javascript_pack_tag(name)
     file_name = "#{name}.js"
-    %(<script src="#{asset_path(file_name)}"
-      integrity="#{integrity_hash(file_name)}"
-      defer="defer" async="async"></script>)
+    %(
+      <script
+        src="#{asset_pack_path(file_name)}"
+        integrity="#{asset_pack_integrity(file_name)}"
+        defer="defer"
+        async="async"
+        data-turbolinks-track="true"
+        crossorigin="anonymous"></script>
+    )
   end
 
   def stylesheet_pack_tag(name)
     file_name = "#{name}.css"
-    %(<link href="#{asset_path(file_name)}" rel="stylesheet" media="all" />)
+    %(
+      <link
+        href="#{asset_pack_path(file_name)}"
+        integrity="#{asset_pack_integrity(file_name)}"
+        rel="stylesheet"
+        media="all"
+        crossorigin="anonymous" />
+    )
   end
 
-  def asset_path(name)
-    public_manifest_path = File.expand_path File.join(
-      File.dirname(__FILE__),
-      '../.tmp/dist/assets-manifest.json',
-    )
-    manifest_data = if File.exist?(public_manifest_path)
-                      JSON.parse(File.read(public_manifest_path))
-                    else
-                      {}
-                    end
-
-    manifest_data[name.to_s] || raise("asset #{name} not found in #{manifest_data.inspect}")
+  def asset_pack_path(name)
+    assets_manifest.dig(name.to_s, 'src') || raise("asset #{name} not found in #{assets_manifest.inspect}")
   end
 
-  def integrity_hash(file)
-    file_path = File.expand_path File.join(
-      File.dirname(__FILE__),
-      "../.tmp/dist#{asset_path(file)}",
-    )
-
-    digest = Digest::SHA512.new.update(File.read(file_path)).digest
-    "sha512-#{[digest].pack('m0')}"
+  def asset_pack_integrity(name)
+    assets_manifest.dig(name.to_s,
+                        'integrity') || raise("integrity for asset #{name} not found in #{assets_manifest.inspect}")
   end
 end
