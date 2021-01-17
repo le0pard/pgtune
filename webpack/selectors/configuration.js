@@ -39,8 +39,6 @@ const getDbDefaultValues = createSelector(
   [getDBVersion],
   (dbVersion) => (
     {
-      9.2: {},
-      9.3: {},
       9.4: {},
       9.5: {
         ['max_worker_processes']: 8
@@ -379,14 +377,4 @@ export const warningInfoMessages = createSelector(
     }
     return []
   }
-)
-
-export const kernelShmall = createSelector(
-  [totalMemoryInBytes],
-  (totalMemory) => Math.floor(totalMemory / 8192)
-)
-
-export const kernelShmmax = createSelector(
-  [kernelShmall],
-  (kernelShmallVal) => kernelShmallVal * 4096
 )

@@ -7,12 +7,10 @@ import sqlLang from 'react-syntax-highlighter/dist/cjs/languages/hljs/sql'
 import solarizedLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/solarized-light'
 import solarizedDark from 'react-syntax-highlighter/dist/cjs/styles/hljs/solarized-dark'
 import CopyButton from 'components/copyButton'
-import {OS_LINUX} from 'reducers/configuration/constants'
 import {
   APP_THEMES_LIGHT,
   TAB_CONFIG,
-  TAB_ALTER_SYSTEM,
-  TAB_KERNEL_INFO
+  TAB_ALTER_SYSTEM
 } from 'reducers/settings/constants'
 import {
   maxConnections,
@@ -27,9 +25,7 @@ import {
   effectiveIoConcurrency,
   parallelSettings,
   workMem,
-  warningInfoMessages,
-  kernelShmmax,
-  kernelShmall
+  warningInfoMessages
 } from 'selectors/configuration'
 import {openConfigTab} from 'reducers/settings'
 
@@ -98,9 +94,6 @@ const ConfigurationView = () => {
   const workMemVal = useSelector(workMem)
   // warnings
   const warningInfoMessagesVal = useSelector(warningInfoMessages)
-  // kernel settings
-  const kernelShmmaxVal = useSelector(kernelShmmax)
-  const kernelShmallVal = useSelector(kernelShmall)
   // tab state
   const tabState = useSelector(({settings}) => settings.tabState)
   // app theme
@@ -172,50 +165,18 @@ const ConfigurationView = () => {
   }
 
   const renderTabs = () => {
-    const showAlterSystemTab = dbVersion >= 9.4
-    const showKernelTab = OS_LINUX === osType && dbVersion <= 9.2
-    const singleTab = !showAlterSystemTab && !showKernelTab
-
     return (
       <div className="configuration-view-tabs-wrapper">
         <div className={classnames('configuration-view-tab', {
-          'configuration-view-tab--active': TAB_CONFIG === tabState,
-          'configuration-view-tab--full': singleTab
+          'configuration-view-tab--active': TAB_CONFIG === tabState
         })} onClick={() => handleClickTab(TAB_CONFIG)}>
           postgresql.conf
         </div>
-        {showAlterSystemTab && <div className={classnames('configuration-view-tab', {
+        <div className={classnames('configuration-view-tab', {
           'configuration-view-tab--active': TAB_ALTER_SYSTEM === tabState
         })} onClick={() => handleClickTab(TAB_ALTER_SYSTEM)}>
           ALTER SYSTEM
-        </div>}
-        {showKernelTab && <div className={classnames('configuration-view-tab', {
-          'configuration-view-tab--active': TAB_KERNEL_INFO === tabState
-        })} onClick={() => handleClickTab(TAB_KERNEL_INFO)}>
-          Kernel settings
-        </div>}
-      </div>
-    )
-  }
-
-  const renderKernelInfo = (codeHighlightStyle) => {
-    const config = [
-      `kernel.shmmax=${kernelShmmaxVal}`,
-      `kernel.shmall=${kernelShmallVal}`
-    ].join("\n") // eslint-disable-line quotes
-
-    return (
-      <div>
-        <p>
-          <strong>NOTICE:</strong> For PostgreSQL {dbVersion} you also
-          should modify kernel resources (add this in /etc/sysctl.conf)
-        </p>
-        <SyntaxHighlighter language="init" style={codeHighlightStyle}>
-          {config}
-        </SyntaxHighlighter>
-        <a href="https://www.postgresql.org/docs/current/static/kernel-resources.html" target="_blank" rel="noopener noreferrer">
-          More info
-        </a>
+        </div>
       </div>
     )
   }
@@ -240,7 +201,6 @@ const ConfigurationView = () => {
     )
   }
 
-  const isKernelInfo = TAB_KERNEL_INFO === tabState
   const codeHighlightStyle = (
     APP_THEMES_LIGHT === theme ? solarizedLight : solarizedDark
   )
@@ -248,11 +208,7 @@ const ConfigurationView = () => {
   return (
     <div>
       {renderTabs()}
-      {
-        isKernelInfo ?
-          renderKernelInfo(codeHighlightStyle) :
-          renderConfigResult(codeHighlightStyle)
-      }
+      {renderConfigResult(codeHighlightStyle)}
     </div>
   )
 }

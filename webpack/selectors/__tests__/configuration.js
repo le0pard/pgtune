@@ -158,13 +158,6 @@ describe('effectiveIoConcurrency', () => {
 })
 
 describe('parallelSettings', () => {
-  it('postgresql version older 9.4', () => {
-    expect(parallelSettings({
-      configuration: {
-        dbVersion: 9.2
-      }
-    })).toEqual([])
-  })
   it('less 2 cpu provided', () => {
     expect(parallelSettings({
       configuration: {
