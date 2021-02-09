@@ -29,6 +29,7 @@
     "create-react-context": "0.3.0",
     "critical": "2.0.6",
     "css-loader": "5.0.1",
+    "css-minimizer-webpack-plugin": "^1.2.0",
     "cssnano": "4.1.10",
     "del": "6.0.0",
     "fibers": "5.0.0",
