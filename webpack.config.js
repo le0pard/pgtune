@@ -97,7 +97,7 @@ const config = {
     path: path.join(__dirname, '.tmp', 'dist'),
     publicPath: '/',
     filename: isProduction ? '[name]-[chunkhash].js' : '[name].js',
-    assetModuleFilename: 'assets/[name]-[hash].[ext]'
+    assetModuleFilename: 'assets/[name]-[hash][ext]'
   },
 
   resolve: {
