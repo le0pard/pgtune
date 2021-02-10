@@ -96,8 +96,8 @@ const config = {
     // must match config.webpack.output_dir
     path: path.join(__dirname, '.tmp', 'dist'),
     publicPath: '/',
-    filename: isProduction ? '[name]-[chunkhash].js' : '[name].js',
-    assetModuleFilename: 'assets/[name]-[hash][ext]'
+    filename: isProduction ? '[name]-[contenthash].js' : '[name].js',
+    assetModuleFilename: 'assets/[name]-[contenthash][ext]'
   },
 
   resolve: {
