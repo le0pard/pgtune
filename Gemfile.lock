@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: f888c32214803c57ba6bbb692513ba7585fbe131
+  revision: 577d0c434181e6da658bbf4919495f677d47e19f
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.2)
@@ -8,6 +8,7 @@ GIT
       kramdown (~> 2.3)
       middleman-cli (= 5.0.0.rc.2)
       middleman-core (= 5.0.0.rc.2)
+      webrick (~> 1.7)
     middleman-cli (5.0.0.rc.2)
       thor (>= 0.17.0, < 2.0)
     middleman-core (5.0.0.rc.2)
@@ -83,7 +84,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
-    minitest (5.14.3)
+    minitest (5.14.4)
     oj (3.11.2)
     padrino-helpers (0.14.4)
       i18n (~> 0.6, >= 0.6.7)
