@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 35a52af5284cb1b7164ba0ead734cbdb8a1322f7
+  revision: 0dc897211baaae4433cfc9d26f7334549cbf9f50
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.2)
@@ -80,7 +80,7 @@ GEM
     kramdown (2.3.1)
       rexml
     lazy_priority_queue (0.1.1)
-    listen (3.5.0)
+    listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)

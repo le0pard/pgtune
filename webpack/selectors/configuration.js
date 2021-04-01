@@ -97,8 +97,8 @@ const totalMemoryInKb = createSelector(
 )
 
 export const sharedBuffers = createSelector(
-  [totalMemoryInKb, getDBType, getOSType],
-  (totalMemoryKb, dbType, osType) => {
+  [totalMemoryInKb, getDBType, getOSType, getDBVersion],
+  (totalMemoryKb, dbType, osType, dbVersion) => {
     let sharedBuffersValue = {
       [DB_TYPE_WEB]: Math.floor(totalMemoryKb / 4),
       [DB_TYPE_OLTP]: Math.floor(totalMemoryKb / 4),
@@ -106,10 +106,12 @@ export const sharedBuffers = createSelector(
       [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 16),
       [DB_TYPE_MIXED]: Math.floor(totalMemoryKb / 4)
     }[dbType]
-    // Limit shared_buffers to 512MB on Windows
-    const winMemoryLimit = 512 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']
-    if (OS_WINDOWS === osType && sharedBuffersValue > winMemoryLimit) {
-      sharedBuffersValue = winMemoryLimit
+    if (dbVersion < 10 && OS_WINDOWS === osType) {
+      // Limit shared_buffers to 512MB on Windows
+      const winMemoryLimit = 512 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']
+      if (sharedBuffersValue > winMemoryLimit) {
+        sharedBuffersValue = winMemoryLimit
+      }
     }
     return sharedBuffersValue
   }
