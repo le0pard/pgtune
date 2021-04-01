@@ -29,7 +29,6 @@ module PgtuneHelpers
         integrity="#{asset_pack_integrity(file_name)}"
         defer="defer"
         async="async"
-        data-turbolinks-track="true"
         crossorigin="anonymous"></script>
     )
   end
