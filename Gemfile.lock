@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 0dc897211baaae4433cfc9d26f7334549cbf9f50
+  revision: 48c97b22ff25e22a2533fb5b4128337b5a97e080
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.2)
@@ -99,7 +99,7 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rexml (3.2.4)
+    rexml (3.2.5)
     rgl (0.5.7)
       lazy_priority_queue (~> 0.1.0)
       stream (~> 0.5.3)
