@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {useIsMounted} from 'hooks/useIsMounted'
 import Clipboard from 'clipboard'
 
-const COPIED_TIMEOUT = 1500
+const COPIED_TIMEOUT = 2000
 
 const CopyButton = ({text, className, label = 'Copy', successLabel = 'Copied', errorLabel = 'Error'}) => {
   const copyButton = useRef()
