@@ -196,14 +196,8 @@ export const checkpointSegments = createSelector(
 )
 
 export const checkpointCompletionTarget = createSelector(
-  [getDBType],
-  (dbType) => ({
-    [DB_TYPE_WEB]: 0.9,
-    [DB_TYPE_OLTP]: 0.9,
-    [DB_TYPE_DW]: 0.9,
-    [DB_TYPE_DESKTOP]: 0.9,
-    [DB_TYPE_MIXED]: 0.9
-  }[dbType])
+  [],
+  () => 0.9 // based on https://github.com/postgres/postgres/commit/bbcc4eb2
 )
 
 export const walBuffers = createSelector(
