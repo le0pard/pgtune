@@ -198,10 +198,10 @@ export const checkpointSegments = createSelector(
 export const checkpointCompletionTarget = createSelector(
   [getDBType],
   (dbType) => ({
-    [DB_TYPE_WEB]: 0.7,
+    [DB_TYPE_WEB]: 0.9,
     [DB_TYPE_OLTP]: 0.9,
     [DB_TYPE_DW]: 0.9,
-    [DB_TYPE_DESKTOP]: 0.5,
+    [DB_TYPE_DESKTOP]: 0.9,
     [DB_TYPE_MIXED]: 0.9
   }[dbType])
 )
