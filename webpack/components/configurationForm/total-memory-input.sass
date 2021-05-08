@@ -36,6 +36,9 @@
       font-size: 1.2rem
       color: var(--inputColorPlaceholder)
 
+    &:focus:not(:focus-visible)
+      outline: none
+
   &__error
     font-size: 0.8rem
     color: $red
@@ -52,3 +55,6 @@
     border: 1px solid var(--inputBorder)
     background-color: var(--inputBg)
     padding: 2px 1px
+
+    &:focus:not(:focus-visible)
+      outline: none

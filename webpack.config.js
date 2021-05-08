@@ -166,7 +166,18 @@ if (isProduction) {
     new TerserPlugin({
       parallel: 2
     }),
-    new CssMinimizerPlugin()
+    new CssMinimizerPlugin({
+      minimizerOptions: {
+        preset: [
+          'default',
+          {
+            discardComments: {removeAll: true},
+            mergeRules: false, // right now it break focus-visible
+            svgo: false
+          }
+        ]
+      }
+    })
   ];
   // Source maps
   config.devtool = 'source-map';
