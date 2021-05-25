@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: c96193ab44f063d2b73156a7e131f9fbf2627a19
+  revision: dc1b2e8e5959667d9312b0ac5c30b9e980141856
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.2)
@@ -64,9 +64,9 @@ GEM
     contracts (0.16.1)
     dotenv (2.7.6)
     erubis (2.7.0)
-    execjs (2.7.0)
+    execjs (2.8.1)
     fastimage (2.2.3)
-    ffi (1.15.0)
+    ffi (1.15.1)
     generator (0.0.1)
     haml (5.2.1)
       temple (>= 0.8.0)
