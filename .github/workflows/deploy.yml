@@ -22,7 +22,7 @@ jobs:
       - name: Install Node.JS
         uses: actions/setup-node@v1
         with:
-          node-version: '14.15.0'
+          node-version: '16.3.0'
 
       - name: Restore node_modules cache
         uses: actions/cache@v2

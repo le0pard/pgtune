@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: dc1b2e8e5959667d9312b0ac5c30b9e980141856
+  revision: 065526b2ff89b89429ca79fe38879f06ee6e4cc8
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.2)
@@ -48,25 +48,25 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.0.3.7)
+    activesupport (6.0.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     contracts (0.16.1)
     dotenv (2.7.6)
     erubis (2.7.0)
     execjs (2.8.1)
-    fastimage (2.2.3)
-    ffi (1.15.1)
+    fastimage (2.2.4)
+    ffi (1.15.3)
     generator (0.0.1)
     haml (5.2.1)
       temple (>= 0.8.0)
@@ -85,14 +85,14 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
     minitest (5.14.4)
-    oj (3.11.5)
+    oj (3.11.8)
     padrino-helpers (0.14.4)
       i18n (~> 0.6, >= 0.6.7)
       padrino-support (= 0.14.4)
       tilt (>= 1.4.1, < 3)
     padrino-support (0.14.4)
     parallel (1.20.1)
-    parslet (1.8.2)
+    parslet (2.0.0)
     public_suffix (4.0.6)
     rack (2.2.3)
     rake (13.0.3)
@@ -112,8 +112,8 @@ GEM
     thor (1.1.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
-    toml (0.2.0)
-      parslet (~> 1.8.0)
+    toml (0.3.0)
+      parslet (>= 1.8.0, < 3.0.0)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
