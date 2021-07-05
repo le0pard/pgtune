@@ -5,7 +5,6 @@ const critical = require('critical').stream
 const criticalOptions = {
   base: 'build/',
   inline: true,
-  minify: true,
   width: 1440,
   height: 1024
 }
