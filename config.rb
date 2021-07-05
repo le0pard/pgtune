@@ -77,5 +77,5 @@ configure :build do
 end
 
 after_build do
-  system('yarn run critical')
+  # nothing
 end
