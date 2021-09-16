@@ -7,3 +7,11 @@ build/
 .tmp/
 node_modules/
 yarn-error.log
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

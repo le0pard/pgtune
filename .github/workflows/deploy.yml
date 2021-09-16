@@ -24,17 +24,21 @@ jobs:
         with:
           node-version: '16.3.0'
 
-      - name: Restore node_modules cache
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+      - name: Restore yarn cache
         uses: actions/cache@v2
-        id: yarn-cache
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: node_modules
-          key: v2-${{ runner.os }}-${{steps.versions.outputs.node_version}}-yarn-${{ hashFiles('yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: v1-${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            v2-${{ runner.os }}-${{steps.versions.outputs.node_version}}-yarn-
+            v1-${{ runner.os }}-yarn-
 
       - name: Install Javascript dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Check tests
         run: yarn run test
