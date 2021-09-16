@@ -38,7 +38,7 @@ jobs:
             v1-${{ runner.os }}-yarn-
 
       - name: Install Javascript dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install --immutable
 
       - name: Check tests
         run: yarn run test
