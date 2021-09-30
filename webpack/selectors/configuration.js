@@ -39,7 +39,6 @@ const getDbDefaultValues = createSelector(
   [getDBVersion],
   (dbVersion) => (
     {
-      9.4: {},
       9.5: {
         ['max_worker_processes']: 8
       },
