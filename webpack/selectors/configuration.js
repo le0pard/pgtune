@@ -65,6 +65,11 @@ const getDbDefaultValues = createSelector(
         ['max_worker_processes']: 8,
         ['max_parallel_workers_per_gather']: 2,
         ['max_parallel_workers']: 8
+      },
+      14: {
+        ['max_worker_processes']: 8,
+        ['max_parallel_workers_per_gather']: 2,
+        ['max_parallel_workers']: 8
       }
     }[dbVersion]
   )
