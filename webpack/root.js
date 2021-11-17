@@ -1,15 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Provider} from 'react-redux'
-import {HashRouter} from 'react-router-dom'
-import {renderRoutes} from 'react-router-config'
-import {routes} from './routes'
+import {BrowserRouter as Router} from 'react-router-dom'
+import AppWrapper from './appWrapper'
 
 const Root = ({store}) => (
   <Provider store={store} key="provider">
-    <HashRouter>
-      {renderRoutes(routes)}
-    </HashRouter>
+    <Router>
+      <AppWrapper />
+    </Router>
   </Provider>
 )
 

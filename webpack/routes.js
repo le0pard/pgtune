@@ -1,20 +1,19 @@
-import App from './pages/app'
+import React from 'react'
+import AppLayout from './pages/app'
 import Dashboard from './pages/dashboard'
 import AboutPage from './pages/about'
 
 // routes
 export const routes = [{
-  component: App,
-  routes: [
+  element: <AppLayout />,
+  children: [
     {
       path: '/',
-      exact: true,
-      component: Dashboard
+      element: <Dashboard />
     },
     {
-      path: '/about',
-      exact: true,
-      component: AboutPage
+      path: '/about.html',
+      element: <AboutPage />
     }
   ]
 }]

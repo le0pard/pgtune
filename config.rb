@@ -20,6 +20,8 @@ page '/404.html', layout: false
 require "lib/pgtune_helpers"
 helpers PgtuneHelpers
 
+proxy '/about.html', '/index.html'
+
 assets_dir = File.expand_path('.tmp/dist', __dir__)
 
 activate :external_pipeline,
