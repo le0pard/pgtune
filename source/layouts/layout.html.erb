@@ -8,30 +8,17 @@
     <meta name="keywords" content="<%= default_keywords_helper %>" />
     <meta name="description" content="<%= default_description_helper %>" />
     <meta name="theme-color" content="#fdf6e3" />
-    <link rel="manifest" href="/manifest.json" />
     <link type="text/plain" rel="author" href="/humans.txt" />
     <title>
       <%= current_page.data.title || "PGTune - calculate configuration for PostgreSQL based on the maximum performance for a given hardware configuration" %>
     </title>
     <%= stylesheet_pack_tag "app" %>
 
-    <!-- For third-generation iPad with high-resolution Retina display: -->
-    <link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-touch-icon-152x152-precomposed.png" />
-    <!-- For third-generation iPad with high-resolution Retina display: -->
-    <link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-touch-icon-144x144-precomposed.png" />
-    <!-- For iPhone with high-resolution Retina display: -->
-    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-touch-icon-120x120-precomposed.png" />
-    <!-- For iPhone with high-resolution Retina display: -->
-    <link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-touch-icon-114x114-precomposed.png" />
-    <!-- For first- and second-generation iPad: -->
-    <link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-touch-icon-76x76-precomposed.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-touch-icon-72x72-precomposed.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-touch-icon-60x60-precomposed.png" />
-    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-    <link rel="apple-touch-icon" href="/images/favicons/apple-touch-icon-precomposed.png" />
-    <!-- favicon -->
-    <link rel="shortcut icon" href="/images/favicons/favicon.png" />
-    <link rel="icon" type="image/ico" href="/images/favicons/favicon.ico" />
+    <!-- favicons -->
+    <link rel="icon" href="/favicon.ico" sizes="any" /><!-- 32×32 -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" /><!-- 180×180 -->
+    <link rel="manifest" href="/manifest.json" />
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
