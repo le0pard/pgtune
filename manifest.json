@@ -1,28 +1,28 @@
 {
   "short_name": "PGTune",
   "name": "PGTune",
+  "display": "standalone",
+  "start_url": "/",
+  "theme_color": "#fdf6e3",
+  "background_color": "#fdf6e3",
   "icons": [
     {
-      "src": "/images/favicons/launcher-icon-192x192.png",
+      "src": "/icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any"
     },
     {
-      "src": "/images/favicons/launcher-icon-512x512.png",
+      "src": "/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
     },
     {
-      "src": "/images/favicons/maskable_icon.png",
+      "src": "/maskable_icon.png",
       "type": "image/png",
       "sizes": "1024x1024",
       "purpose": "maskable"
     }
-  ],
-  "display": "standalone",
-  "start_url": "/",
-  "theme_color": "#fdf6e3",
-  "background_color": "#fdf6e3"
+  ]
 }
