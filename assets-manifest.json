@@ -25,10 +25,10 @@
   },
   "sw.js": {
     "src": "/sw.js",
-    "integrity": "sha256-tgbCCIxUMHooicdi8mD7Du45VeG3kFQ5xmjRFyeQjds="
+    "integrity": "sha256-QRw7E3EYoLaMW0PybXEG9xOypQ97nyPV49VVkNTCEak="
   },
   "sw.js.map": {
     "src": "/sw.js.map",
-    "integrity": "sha256-QWKStOBWkNeGeQHJtiIyEBvFPvxXnFKopLjBC0P46qM="
+    "integrity": "sha256-GOjUHRkoVRVh9/L0MDy4heMnRmO0iszWCnCveFr/K7g="
   }
 }
