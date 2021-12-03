@@ -16,6 +16,20 @@ const sha256 = (message) => {
   })
 }
 
+const JSONstringifyOrder = (obj) => {
+  let allKeys = []
+  let seen = {}
+  JSON.stringify(obj, (key, value) => {
+    if (!(key in seen)) {
+      allKeys.push(key)
+      seen[key] = null
+    }
+    return value
+  })
+  allKeys.sort()
+  return JSON.stringify(obj, allKeys)
+}
+
 const cachedAssets = self.__WB_MANIFEST
 
 self.addEventListener('message', event => {
@@ -27,7 +41,7 @@ self.addEventListener('message', event => {
 clientsClaim()
 cleanupOutdatedCaches()
 
-sha256(JSON.stringify(cachedAssets)).then((rev) => {
+sha256(JSONstringifyOrder(cachedAssets)).then((rev) => {
   precacheAndRoute([
     {url: '/index.html', revision: `${rev}-v1`},
     {url: '/manifest.json', revision: `${rev}-v1`}
