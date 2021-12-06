@@ -1,11 +1,11 @@
 {
-  "app-b1af42621144b085a13f.js.LICENSE.txt": {
-    "src": "/app-b1af42621144b085a13f.js.LICENSE.txt",
+  "app-c00f7fcc3224a245dd64.js.LICENSE.txt": {
+    "src": "/app-c00f7fcc3224a245dd64.js.LICENSE.txt",
     "integrity": "sha256-aULd5jivuZKtmQBeUM8Ky1uRaWFUMmUjRAXeREzoL1Q="
   },
-  "app-b1af42621144b085a13f.js.map": {
-    "src": "/app-b1af42621144b085a13f.js.map",
-    "integrity": "sha256-QY2mXM8mjs8GAQbL9dcR6ICOYHKMuinjrmlGPNAYiRw="
+  "app-c00f7fcc3224a245dd64.js.map": {
+    "src": "/app-c00f7fcc3224a245dd64.js.map",
+    "integrity": "sha256-8tr4VMuAw6Rt1ooxXY1wlLbvOKEnLCWqX/3HVPt9DA8="
   },
   "app-c9c7fc776bd0e392a3d7.css.map": {
     "src": "/app-c9c7fc776bd0e392a3d7.css.map",
@@ -16,8 +16,8 @@
     "integrity": "sha256-VUJ8NIswSoaH6Ag9zRR6MXGBWBDTU9gYBENd967WuiE="
   },
   "app.js": {
-    "src": "/app-b1af42621144b085a13f.js",
-    "integrity": "sha256-4VUAx1fVBfloCr2C+vUEClCLAmUTQAI2XKv3LIbF5/8="
+    "src": "/app-c00f7fcc3224a245dd64.js",
+    "integrity": "sha256-FVvACG5RiLqna6i1i00kBD09zqRcJpircVXvMtiCY6I="
   },
   "assets/logo.svg": {
     "src": "/assets/logo-3f7fb7a22a208c46d6e5.svg",
@@ -25,7 +25,7 @@
   },
   "sw.js": {
     "src": "/sw.js",
-    "integrity": "sha256-rBK1YKP9oisMQq6S7DFjm5/iTXvzajFnQ3eOLRuZg/k="
+    "integrity": "sha256-kGzeVb6+P1qddIBOxb5wRQLqxtqtlceuxUVY26Lyouk="
   },
   "sw.js.map": {
     "src": "/sw.js.map",
