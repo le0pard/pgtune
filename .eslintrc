@@ -130,7 +130,7 @@
     "react/self-closing-comp": 2,
     "react/sort-comp": 0,
     "react/jsx-wrap-multilines": 2,
-    "import/extensions": [2, "never", {"sass": "always"}],
+    "import/extensions": [2, "never", {"css": "always"}],
     "react-hooks/rules-of-hooks": 2,
     "react-hooks/exhaustive-deps": 2
   },

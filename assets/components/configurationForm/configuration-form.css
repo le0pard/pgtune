@@ -1,0 +1,25 @@
+.configuration-form-btn-wrapper {
+  lost-flex-container: row;
+}
+
+.configuration-form-btn {
+  lost-column: 1/1;
+  lost-align: center;
+  text-align: center;
+  background-color: var(--headsColor);
+  color: var(--baseColor);
+  border: 1px solid var(--commentColor);
+  height: 2.6rem;
+}
+.configuration-form-btn--disabled {
+  background-color: var(--commentColor);
+}
+.configuration-form-btn:focus:not(:focus-visible) {
+  outline: 0;
+}
+.configuration-form-btn:hover {
+  background-color: var(--buttonHover);
+}
+.configuration-form-btn:active {
+  border-width: 2px;
+}

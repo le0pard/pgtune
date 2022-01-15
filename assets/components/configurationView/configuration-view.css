@@ -1,0 +1,39 @@
+.configuration-view-tabs-wrapper {
+  lost-flex-container: row;
+}
+
+.configuration-view-tab {
+  lost-column: 1/2 2 0;
+  lost-align: center;
+  text-align: center;
+  height: 2rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.configuration-view-tab--active {
+  border-bottom: 2px solid #cb4b16;
+  background-color: var(--headsColor);
+}
+
+.configuration-view-copy-wrapper {
+  lost-flex-container: row;
+}
+
+.configuration-view-copy-button {
+  lost-column: 1/1;
+  lost-align: center;
+  text-align: center;
+  background-color: var(--headsColor);
+  color: var(--baseColor);
+  border: 1px solid var(--commentColor);
+  height: 2.6rem;
+}
+.configuration-view-copy-button:focus {
+  outline: 0;
+}
+.configuration-view-copy-button:hover {
+  background-color: var(--buttonHover);
+}
+.configuration-view-copy-button:active {
+  border-width: 2px;
+}

@@ -1,0 +1,62 @@
+.toggle-hidden-block {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.toggle-wrapper {
+  width: 4rem;
+  display: block;
+}
+
+.toggle {
+  background: var(--baseColor);
+  border-radius: 40px;
+  padding: 0.5rem;
+  position: relative;
+  transition: background 0.5s ease;
+  cursor: pointer;
+}
+
+.toggle::before {
+  content: "";
+  display: block;
+  height: 1.22rem;
+  width: 1.22rem;
+  border-radius: 30px;
+  background: var(--headsColor);
+  position: absolute;
+  top: 0.33rem;
+  z-index: 2;
+  transform: translate(0);
+  transition: transform 0.5s ease, background 0.5s ease;
+}
+
+.toggle__dark::before {
+  transform: translateX(1.8rem);
+}
+
+.toggle input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+}
+
+.toggle-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  margin: 0 5px;
+}
+
+.toggle .toggle-icons svg {
+  fill: var(--headsColor);
+  height: 0.9rem;
+  width: 0.9rem;
+  z-index: 0;
+}

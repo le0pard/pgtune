@@ -22,7 +22,7 @@ helpers PgtuneHelpers
 
 proxy '/about.html', '/index.html'
 
-assets_dir = File.expand_path('.tmp/dist', __dir__)
+assets_dir = File.expand_path('.assets-build', __dir__)
 
 activate :external_pipeline,
   name: :webpack,

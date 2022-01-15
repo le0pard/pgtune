@@ -1,0 +1,42 @@
+.app {
+  lost-center: 1140px;
+  background-color: var(--bgColor);
+}
+
+.app__main {
+  lost-column: 1;
+  border: 1px solid var(--commentColor);
+}
+
+.app__navigation {
+  lost-flex-container: row;
+}
+
+.app__navigation__item {
+  lost-column: 1/4 4 0;
+  lost-align: center;
+  text-align: center;
+  height: 2.3rem;
+}
+.app__navigation__item--active {
+  background-color: var(--headsColor);
+}
+
+.app__navigation__big-item {
+  lost-column: 1/2 4 0;
+  lost-align: center;
+  text-align: center;
+  height: 2.3rem;
+}
+
+.app__navigation__link {
+  line-height: 2.5;
+  display: inline-block;
+  width: 100%;
+}
+
+.app__navigation__active-item {
+  line-height: 2.5;
+  display: inline-block;
+  width: 100%;
+}

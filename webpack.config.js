@@ -9,8 +9,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
-const browserList = require('./browserslist.config');
-
 // set NODE_ENV=production on the environment to add asset fingerprints
 const currentEnv = process.env.NODE_ENV || 'development';
 const isProduction = currentEnv === 'production';
@@ -36,44 +34,7 @@ const cssLoaders = [
   {
     loader: 'postcss-loader',
     options: {
-      sourceMap: true,
-      postcssOptions: (loaderContext) => {
-        const plugins = [
-          ['postcss-import'],
-          ['postcss-preset-env', {
-            stage: 1,
-            browsers: browserList,
-            features: {
-              'custom-properties': {
-                strict: false,
-                warnings: false,
-                preserve: true
-              }
-            }
-          }],
-          ['lost', {
-            flexbox: 'flex'
-          }],
-          ['rucksack-css'],
-          ['postcss-browser-reporter'],
-          ['postcss-reporter']
-        ];
-
-        return {plugins};
-      }
-    }
-  },
-  {
-    loader: 'sass-loader',
-    options: {
-      sourceMap: true,
-      webpackImporter: true,
-      implementation: require('sass'),
-      sassOptions: {
-        includePaths: [
-          path.join(__dirname, 'webpack', 'css')
-        ]
-      }
+      sourceMap: true
     }
   }
 ];
@@ -85,7 +46,7 @@ const config = {
     hints: false
   },
   entry: {
-    'app': preScriptsEnv.concat(['./webpack/app.js'])
+    app: preScriptsEnv.concat(['./assets/app.js'])
   },
 
   output: {
@@ -93,18 +54,19 @@ const config = {
     // that all webpacked assets start with webpack/
 
     // must match config.webpack.output_dir
-    path: path.join(__dirname, '.tmp', 'dist'),
+    path: path.join(__dirname, '.assets-build'),
     publicPath: '/',
     filename: isProduction ? '[name]-[contenthash].js' : '[name].js',
-    assetModuleFilename: 'assets/[name]-[contenthash][ext]'
+    assetModuleFilename: 'assets/[name]-[contenthash][ext]',
+    clean: true
   },
 
   resolve: {
     modules: [
-      path.join(__dirname, 'webpack'),
+      path.join(__dirname, 'assets'),
       path.join(__dirname, 'node_modules')
     ],
-    extensions: ['.js', '.jsx', '.json', '.css', '.sass']
+    extensions: ['.js', '.json', '.css']
   },
 
   module: {
@@ -126,7 +88,7 @@ const config = {
         }
       },
       {
-        test: /\.(css|scss|sass)$/,
+        test: /\.css$/,
         use: cssLoaders
       }
     ]
@@ -142,8 +104,8 @@ const config = {
     splitChunks: {
       cacheGroups: {
         styles: {
-          name: 'styles',
-          test: /\.css$/,
+          name: 'app',
+          type: 'css/mini-extract',
           chunks: 'all',
           enforce: true
         }
@@ -189,14 +151,14 @@ if (isProduction) {
 
 config.plugins.push(
   new WebpackAssetsManifest({
-    output: 'assets-manifest.json',
+    output: 'manifest.json',
     publicPath: config.output.publicPath,
     writeToDisk: true,
     integrity: true,
     integrityHashes: ['sha256']
   }),
   new WorkboxPlugin.InjectManifest({
-    swSrc: './webpack/sw.js',
+    swSrc: './assets/sw.js',
     swDest: 'sw.js',
     compileSrc: true,
     maximumFileSizeToCacheInBytes: (isProduction ? 2097152 : 15730000)

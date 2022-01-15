@@ -1,10 +1,9 @@
 .bundle
 .cache
 .DS_Store
-.sass-cache
-.s3_sync
-build/
-.tmp/
+/.sass-cache
+/build
+/.assets-build
 node_modules/
 yarn-error.log
 

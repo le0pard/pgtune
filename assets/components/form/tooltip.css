@@ -1,0 +1,55 @@
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-button {
+  display: inline-block;
+  box-sizing: border-box;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #b58900;
+}
+
+.tooltip-block {
+  color: var(--inputColor);
+  position: absolute;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  bottom: 50%;
+  left: 0%;
+  transform: translateX(-50%);
+  min-height: 20px;
+  border-radius: 0;
+  background-color: #b58900;
+  border: 1px solid var(--inputBorder);
+  white-space: nowrap;
+}
+.tooltip-block__visible {
+  transform: translateY(0) translateX(-50%);
+  opacity: 1;
+  visibility: visible;
+  transition: transform 300ms ease, opacity 300ms, visibility 300ms 0s;
+}
+.tooltip-block__visible:after {
+  top: 100%;
+}
+.tooltip-block__hidden {
+  transform: translateY(100%) translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 300ms ease, opacity 300ms, visibility 300ms 300ms;
+}
+.tooltip-block__hidden:after {
+  top: 0;
+}
+
+@media (width <= 640px) {
+  .tooltip-block {
+    white-space: normal;
+  }
+  .tooltip-block:after {
+    left: 90%;
+  }
+}

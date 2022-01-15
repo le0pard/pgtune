@@ -12,7 +12,7 @@ module PgtuneHelpers
   def assets_manifest
     public_manifest_path = File.expand_path File.join(
       File.dirname(__FILE__),
-      '../.tmp/dist/assets-manifest.json'
+      '../.assets-build/manifest.json'
     )
     if File.exist?(public_manifest_path)
       JSON.parse(File.read(public_manifest_path))
