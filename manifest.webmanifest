@@ -1,0 +1,28 @@
+{
+  "short_name": "PGTune",
+  "name": "PGTune",
+  "display": "standalone",
+  "start_url": "/",
+  "theme_color": "#fdf6e3",
+  "background_color": "#fdf6e3",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/maskable_icon.png",
+      "type": "image/png",
+      "sizes": "1024x1024",
+      "purpose": "maskable"
+    }
+  ]
+}

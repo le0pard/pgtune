@@ -1,28 +1,34 @@
 {
-  "short_name": "PGTune",
-  "name": "PGTune",
-  "display": "standalone",
-  "start_url": "/",
-  "theme_color": "#fdf6e3",
-  "background_color": "#fdf6e3",
-  "icons": [
-    {
-      "src": "/icon-192x192.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any"
-    },
-    {
-      "src": "/icon-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any"
-    },
-    {
-      "src": "/maskable_icon.png",
-      "type": "image/png",
-      "sizes": "1024x1024",
-      "purpose": "maskable"
-    }
-  ]
+  "app-d6d00b4ea6e0d2528e1c.js.LICENSE.txt": {
+    "src": "/app-d6d00b4ea6e0d2528e1c.js.LICENSE.txt",
+    "integrity": "sha256-RCrvdcEyzPz8PGwHkFnvZH4EP3kkvRm0lJXPmluGplw="
+  },
+  "app-d6d00b4ea6e0d2528e1c.js.map": {
+    "src": "/app-d6d00b4ea6e0d2528e1c.js.map",
+    "integrity": "sha256-40jbWrjTLrF48noh3JgusdgpvG8eRLboOAxDFdeXkLE="
+  },
+  "app-f8c2192c63eb996b8b46.css.map": {
+    "src": "/app-f8c2192c63eb996b8b46.css.map",
+    "integrity": "sha256-b1KsvtMo1bhT7sxCCQnkJPQyKPzT92EPZs5rtX/Pkek="
+  },
+  "app.css": {
+    "src": "/app-f8c2192c63eb996b8b46.css",
+    "integrity": "sha256-9YyAArNX5uoaB81XjBJDFrIccvDMcTx4LIDh0ULn0JM="
+  },
+  "app.js": {
+    "src": "/app-d6d00b4ea6e0d2528e1c.js",
+    "integrity": "sha256-0Nf8hh71IWP4wOI+6NaWs4jMjtfIww8pBcSrIAbf8mA="
+  },
+  "assets/logo.svg": {
+    "src": "/assets/logo-3f7fb7a22a208c46d6e5.svg",
+    "integrity": "sha256-NEsm99ACKcY/EHyd7MXJ94iiLeIcUf0CZuwD3EBWeCA="
+  },
+  "sw.js": {
+    "src": "/sw.js",
+    "integrity": "sha256-dDlm5UphmhMFux+rp4uNBfu/1R47TBNK1xNFqpzcbg0="
+  },
+  "sw.js.map": {
+    "src": "/sw.js.map",
+    "integrity": "sha256-PGz7p+pYGKWnJgHPqbgSviCal0UMETiAQRfEfq2E/Yg="
+  }
 }
