@@ -66,7 +66,7 @@ GEM
     erubis (2.7.0)
     execjs (2.8.1)
     fastimage (2.2.6)
-    ffi (1.15.4)
+    ffi (1.15.5)
     generator (0.0.1)
     haml (5.2.2)
       temple (>= 0.8.0)
@@ -80,7 +80,7 @@ GEM
     kramdown (2.3.1)
       rexml
     lazy_priority_queue (0.1.1)
-    listen (3.7.0)
+    listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
