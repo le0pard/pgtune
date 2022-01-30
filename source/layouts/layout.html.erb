@@ -12,7 +12,7 @@
     <title>
       <%= current_page.data.title || "PGTune - calculate configuration for PostgreSQL based on the maximum performance for a given hardware configuration" %>
     </title>
-    <%= stylesheet_pack_tag "app" %>
+    <%= external_pipeline_stylesheet_tag :webpack, ['app.css', 'src'], media: 'all' %>
 
     <!-- favicons -->
     <link rel="icon" href="/favicon.ico" sizes="any" /><!-- 32×32 -->
@@ -31,6 +31,6 @@
   </head>
   <body>
     <%= yield %>
-    <%= javascript_pack_tag "app" %>
+    <%= external_pipeline_javascript_tag :webpack, ['app.js', 'src'], defer: 'defer' %>
   </body>
 </html>

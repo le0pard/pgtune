@@ -26,12 +26,11 @@ assets_dir = File.expand_path('.assets-build', __dir__)
 
 activate :external_pipeline,
   name: :webpack,
-  command: build? ?
-    "yarn run assets:build" :
-    'yarn run assets:watch',
+  command: "yarn run assets:#{build? ? 'build' : 'watch'}",
   source: assets_dir,
   latency: 2,
-  ignore_exit_code: true
+  ignore_exit_code: true,
+  manifest_json: File.expand_path('manifest.json', assets_dir)
 
 # With alternative layout
 # page '/path/to/file.html', layout: 'other_layout'

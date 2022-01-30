@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 97ddbc52eac7a937adcc7d418fa9c2fb4a0a1a1e
+  revision: 1c07f72839b6b9e2e8303e084c3954aab3553fdc
   specs:
     middleman (5.0.0.rc.2)
-      coffee-script (~> 2.2)
+      coffee-script (~> 2.4)
       haml (>= 4.0.5)
       kramdown (~> 2.3)
       middleman-cli (= 5.0.0.rc.2)
@@ -13,28 +13,28 @@ GIT
       thor (>= 0.17.0, < 2.0)
     middleman-core (5.0.0.rc.2)
       activesupport (>= 5.0.0)
-      addressable (~> 2.3)
+      addressable (~> 2)
       bundler
-      contracts (~> 0.16.0)
+      contracts (~> 0.17)
       dotenv
       erubis
-      execjs (~> 2.0)
-      fastimage (~> 2.0)
-      hamster (~> 3.0)
-      hashie (~> 4.0)
-      i18n (~> 0.9.0)
-      listen (~> 3.0)
-      memoist (~> 0.14)
-      oj (~> 3.7)
-      padrino-helpers (~> 0.14.4)
+      execjs (~> 2)
+      fastimage (~> 2)
+      hamster (~> 3)
+      hashie (~> 5)
+      i18n (~> 1)
+      listen (~> 3)
+      memoist (~> 0)
+      oj (~> 3)
+      padrino-helpers (~> 0.15.0)
       parallel
       rack (>= 1.4.5, < 3)
-      rgl (~> 0.5.3)
-      sassc (~> 2.0)
+      rgl (~> 0.5)
+      sassc (~> 2)
       servolux
+      terser (~> 1.1)
       tilt (~> 2.0.9)
       toml
-      uglifier (~> 4.1)
       webrick
 
 GIT
@@ -48,12 +48,11 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.0.4.4)
+    activesupport (7.0.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (>= 0.7, < 2)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
-      zeitwerk (~> 2.2, >= 2.2.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     coffee-script (2.4.1)
@@ -61,7 +60,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.9)
-    contracts (0.16.1)
+    contracts (0.17)
     dotenv (2.7.6)
     erubis (2.7.0)
     execjs (2.8.1)
@@ -73,9 +72,9 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashie (4.1.0)
+    hashie (5.0.0)
     htmlcompressor (0.4.0)
-    i18n (0.9.5)
+    i18n (1.9.1)
       concurrent-ruby (~> 1.0)
     kramdown (2.3.1)
       rexml
@@ -86,11 +85,11 @@ GEM
     memoist (0.16.2)
     minitest (5.15.0)
     oj (3.13.11)
-    padrino-helpers (0.14.4)
-      i18n (~> 0.6, >= 0.6.7)
-      padrino-support (= 0.14.4)
+    padrino-helpers (0.15.1)
+      i18n (>= 0.6.7, < 2)
+      padrino-support (= 0.15.1)
       tilt (>= 1.4.1, < 3)
-    padrino-support (0.14.4)
+    padrino-support (0.15.1)
     parallel (1.21.0)
     parslet (2.0.0)
     public_suffix (4.0.6)
@@ -109,17 +108,15 @@ GEM
     stream (0.5.3)
       generator
     temple (0.8.2)
+    terser (1.1.8)
+      execjs (>= 0.3.0, < 3)
     thor (1.2.1)
-    thread_safe (0.3.6)
     tilt (2.0.10)
     toml (0.3.0)
       parslet (>= 1.8.0, < 3.0.0)
-    tzinfo (1.2.9)
-      thread_safe (~> 0.1)
-    uglifier (4.2.0)
-      execjs (>= 0.3.0, < 3)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
     webrick (1.7.0)
-    zeitwerk (2.5.4)
 
 PLATFORMS
   ruby
@@ -134,4 +131,4 @@ DEPENDENCIES
   wdm (~> 0.1)
 
 BUNDLED WITH
-   2.2.22
+   2.3.4
