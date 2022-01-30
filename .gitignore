@@ -4,6 +4,7 @@
 /.sass-cache
 /build
 /.assets-build
+/tmp
 node_modules/
 yarn-error.log
 

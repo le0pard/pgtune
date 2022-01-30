@@ -74,9 +74,16 @@ const config = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader'
-        ]
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheCompression: true,
+            cacheDirectory: path.resolve(
+              __dirname,
+              'tmp/cache/babel-loader'
+            )
+          }
+        }
       },
       {
         test: /\.(gif|jpg|png|woff|woff2|eot|ttf|svg|ico)$/,
@@ -102,6 +109,7 @@ const config = {
 
   optimization: {
     splitChunks: {
+      chunks: 'async',
       cacheGroups: {
         styles: {
           name: 'app',
@@ -111,6 +119,25 @@ const config = {
         }
       }
     }
+  },
+
+  cache: {
+    type: 'filesystem',
+    compression: 'gzip',
+    hashAlgorithm: 'md4',
+    allowCollectingMemory: true,
+    cacheDirectory: path.resolve(__dirname, 'tmp/cache/webpack'),
+    buildDependencies: {
+      config: [__filename],
+      lockfile: [path.resolve(__dirname, 'yarn.lock')]
+    }
+  },
+
+  snapshot: {
+    module: {timestamp: true, hash: Boolean(process.env.CI)},
+    resolve: {timestamp: true, hash: Boolean(process.env.CI)},
+    buildDependencies: {timestamp: true, hash: true},
+    resolveBuildDependencies: {timestamp: true, hash: true}
   }
 };
 
@@ -125,7 +152,29 @@ if (isProduction) {
   config.optimization = config.optimization || {};
   config.optimization.minimizer = [
     new TerserPlugin({
-      parallel: 2
+      parallel: true,
+      terserOptions: {
+        toplevel: true,
+        parse: {
+          // Let terser parse ecma 8 code but always output
+          // ES6+ compliant code for older browsers
+          ecma: 8
+        },
+        compress: {
+          ecma: 2016,
+          warnings: false,
+          comparisons: false
+        },
+        mangle: {
+          toplevel: true,
+          safari10: false
+        },
+        output: {
+          ecma: 2016,
+          comments: false,
+          ascii_only: true
+        }
+      }
     }),
     new CssMinimizerPlugin({
       minimizerOptions: {
