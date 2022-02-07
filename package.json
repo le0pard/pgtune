@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "engines": {
-    "node": "16.3.0"
+    "node": "16.9.1"
   },
   "scripts": {
     "lint": "eslint --ext .jsx,.js assets/",
