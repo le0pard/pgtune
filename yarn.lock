@@ -7964,6 +7964,8 @@ __metadata:
     webpack: 5.68.0
     webpack-assets-manifest: 5.1.0
     webpack-cli: 4.9.2
+    workbox-core: ^6.4.2
+    workbox-precaching: ^6.4.2
     workbox-webpack-plugin: 6.4.2
     workbox-window: 6.4.2
     yup: 0.32.11
@@ -10574,7 +10576,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"workbox-core@npm:6.4.2":
+"workbox-core@npm:6.4.2, workbox-core@npm:^6.4.2":
   version: 6.4.2
   resolution: "workbox-core@npm:6.4.2"
   checksum: bbdf4346e85d775d7162a49710957083bfa2b8cfc50b475bce02fcb62879ef1619ff381b00c969553a48b0c64c8b5ef7d9fce23fd5a64df1df8ed8f78667f23a
@@ -10612,7 +10614,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"workbox-precaching@npm:6.4.2":
+"workbox-precaching@npm:6.4.2, workbox-precaching@npm:^6.4.2":
   version: 6.4.2
   resolution: "workbox-precaching@npm:6.4.2"
   dependencies:
