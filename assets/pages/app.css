@@ -1,32 +1,91 @@
 .app {
-  lost-center: 1140px;
   background-color: var(--bgColor);
+  display: flex;
+  flex-flow: row wrap;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1140px;
 }
 
 .app__main {
-  lost-column: 1;
   border: 1px solid var(--commentColor);
+  flex-basis: 99.9%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  max-width: 99.9%;
+  width: 99.9%;
+}
+
+.app__main:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 30px;
+}
+
+.app__main:last-child {
+  margin-right: 0;
 }
 
 .app__navigation {
-  lost-flex-container: row;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .app__navigation__item {
-  lost-column: 1/4 4 0;
-  lost-align: center;
-  text-align: center;
+  display: flex;
+  flex-basis: 24.975%;
+  flex-grow: 0;
+  flex-shrink: 0;
   height: 2.3rem;
+  max-width: 24.975%;
+  text-align: center;
+  width: 24.975%;
+  align-items: center;
+  justify-content: center;
 }
+
+.app__navigation__item:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.app__navigation__item:last-child {
+  margin-right: 0;
+}
+
+.app__navigation__item:nth-child(4n) {
+  margin-left: auto;
+  margin-right: 0;
+}
+
 .app__navigation__item--active {
   background-color: var(--headsColor);
 }
 
 .app__navigation__big-item {
-  lost-column: 1/2 4 0;
-  lost-align: center;
-  text-align: center;
+  display: flex;
+  flex-basis: 49.95%;
+  flex-grow: 0;
+  flex-shrink: 0;
   height: 2.3rem;
+  max-width: 49.95%;
+  text-align: center;
+  width: 49.95%;
+  align-items: center;
+  justify-content: center;
+}
+
+.app__navigation__big-item:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.app__navigation__big-item:last-child {
+  margin-right: 0;
+}
+
+.app__navigation__big-item:nth-child(4n) {
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .app__navigation__link {

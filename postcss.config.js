@@ -5,9 +5,6 @@ module.exports = {
     require('postcss-import')({
       path: ['assets/css']
     }),
-    require('lost')({
-      flexbox: 'flex'
-    }),
     require('postcss-preset-env')({
       stage: 1,
       browsers: browserlist,

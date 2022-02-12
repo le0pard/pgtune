@@ -1,16 +1,38 @@
 .configuration-form-btn-wrapper {
-  lost-flex-container: row;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .configuration-form-btn {
-  lost-column: 1/1;
-  lost-align: center;
-  text-align: center;
   background-color: var(--headsColor);
-  color: var(--baseColor);
   border: 1px solid var(--commentColor);
+  color: var(--baseColor);
+  display: flex;
+  flex-basis: 99.9%;
+  flex-grow: 0;
+  flex-shrink: 0;
   height: 2.6rem;
+  max-width: 99.9%;
+  text-align: center;
+  width: 99.9%;
+  align-items: center;
+  justify-content: center;
 }
+
+.configuration-form-btn:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 30px;
+}
+
+.configuration-form-btn:last-child {
+  margin-right: 0;
+}
+
+.configuration-form-btn:nth-child(1n) {
+  margin-left: auto;
+  margin-right: 0;
+}
+
 .configuration-form-btn--disabled {
   background-color: var(--commentColor);
 }

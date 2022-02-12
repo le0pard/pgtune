@@ -1,33 +1,77 @@
 .configuration-view-tabs-wrapper {
-  lost-flex-container: row;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .configuration-view-tab {
-  lost-column: 1/2 2 0;
-  lost-align: center;
-  text-align: center;
-  height: 2rem;
   cursor: pointer;
+  display: flex;
+  flex-basis: 49.95%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 2rem;
   margin-top: 1rem;
+  max-width: 49.95%;
+  text-align: center;
+  width: 49.95%;
+  align-items: center;
+  justify-content: center;
 }
+
+.configuration-view-tab:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.configuration-view-tab:last-child {
+  margin-right: 0;
+}
+
+.configuration-view-tab:nth-child(2n) {
+  margin-left: auto;
+  margin-right: 0;
+}
+
 .configuration-view-tab--active {
   border-bottom: 2px solid #cb4b16;
   background-color: var(--headsColor);
 }
 
 .configuration-view-copy-wrapper {
-  lost-flex-container: row;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .configuration-view-copy-button {
-  lost-column: 1/1;
-  lost-align: center;
-  text-align: center;
   background-color: var(--headsColor);
-  color: var(--baseColor);
   border: 1px solid var(--commentColor);
+  color: var(--baseColor);
+  display: flex;
+  flex-basis: 99.9%;
+  flex-grow: 0;
+  flex-shrink: 0;
   height: 2.6rem;
+  max-width: 99.9%;
+  text-align: center;
+  width: 99.9%;
+  align-items: center;
+  justify-content: center;
 }
+
+.configuration-view-copy-button:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 30px;
+}
+
+.configuration-view-copy-button:last-child {
+  margin-right: 0;
+}
+
+.configuration-view-copy-button:nth-child(1n) {
+  margin-left: auto;
+  margin-right: 0;
+}
+
 .configuration-view-copy-button:focus {
   outline: 0;
 }
