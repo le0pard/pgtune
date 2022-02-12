@@ -12,8 +12,7 @@ const AboutPage = () => (
     <h3>Useful links</h3>
     <ul className="about-page-list">
       <li><a href="https://github.com/le0pard/pgtune">Source code</a></li>
-      <li><a href="http://postgresql.leopard.in.ua/">Free PostgreSQL book (Russian language)</a></li>
-      <li><a href="http://leopard.in.ua/">My blog</a></li>
+      <li><a href="https://twitter.com/leopard_me">My twitter</a></li>
     </ul>
   </div>
 )
