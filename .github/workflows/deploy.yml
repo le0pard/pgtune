@@ -38,6 +38,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-builder-cache-
 
+      - name: Check lints
+        run: yarn run lint
+
       - name: Check tests
         run: yarn run test
 
