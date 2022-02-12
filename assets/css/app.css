@@ -28,9 +28,22 @@
   --buttonHover: #021014;
 }
 
+:root {
+  font-size: 18px;
+}
+
+@media (min-width: 420px) and (max-width: 980px) {
+  :root {
+    font-size: calc( 18px + (22 - 18) * ( (100vw - 420px) / ( 980 - 420) ));
+  }
+}
+@media (min-width: 980px) {
+  :root {
+    font-size: 22px;
+  }
+}
+
 html {
-  font-size: responsive 18px 22px;
-  font-range: 420px 980px;
   background-color: var(--headsColor);
   color: var(--baseColor);
 }

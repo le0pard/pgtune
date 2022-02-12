@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 1c07f72839b6b9e2e8303e084c3954aab3553fdc
+  revision: 2a0ec8f71ad37b8d2d0ba8b49f719b03dbb1dd84
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -48,7 +48,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.1)
+    activesupport (7.0.2.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -95,7 +95,7 @@ GEM
     public_suffix (4.0.6)
     rack (2.2.3)
     rake (13.0.6)
-    rb-fsevent (0.11.0)
+    rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rexml (3.2.5)

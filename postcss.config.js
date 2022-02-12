@@ -5,7 +5,6 @@ module.exports = {
     require('postcss-import')({
       path: ['assets/css']
     }),
-    require('rucksack-css'),
     require('lost')({
       flexbox: 'flex'
     }),
@@ -20,7 +19,6 @@ module.exports = {
         }
       }
     }),
-    require('postcss-browser-reporter'),
     require('postcss-reporter')
   ]
 }
