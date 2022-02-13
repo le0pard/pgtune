@@ -37,7 +37,7 @@
     "postcss": "8.4.6",
     "postcss-import": "14.0.2",
     "postcss-loader": "6.2.1",
-    "postcss-preset-env": "7.3.1",
+    "postcss-preset-env": "7.3.2",
     "postcss-reporter": "7.0.5",
     "prop-types": "15.8.1",
     "react": "17.0.2",
