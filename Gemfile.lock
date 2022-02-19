@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 2a0ec8f71ad37b8d2d0ba8b49f719b03dbb1dd84
+  revision: fda46ad4f7b5d79454fd083ee95f6b0edc38447b
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -74,7 +74,7 @@ GEM
       concurrent-ruby (~> 1.0)
     hashie (5.0.0)
     htmlcompressor (0.4.0)
-    i18n (1.9.1)
+    i18n (1.10.0)
       concurrent-ruby (~> 1.0)
     kramdown (2.3.1)
       rexml
