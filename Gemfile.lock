@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 11c8c21738446a8bd9a0bfc728ff4185e1ea0a01
+  revision: 604d6b2f1570c06c1b23a36d23fa1df10403982f
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -48,7 +48,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.2.2)
+    activesupport (7.0.2.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -59,7 +59,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.1.10)
     contracts (0.17)
     dotenv (2.7.6)
     erubis (2.7.0)
@@ -76,7 +76,7 @@ GEM
     htmlcompressor (0.4.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
-    kramdown (2.3.1)
+    kramdown (2.3.2)
       rexml
     lazy_priority_queue (0.1.1)
     listen (3.7.1)
@@ -90,7 +90,7 @@ GEM
       padrino-support (= 0.15.1)
       tilt (>= 1.4.1, < 3)
     padrino-support (0.15.1)
-    parallel (1.21.0)
+    parallel (1.22.0)
     parslet (2.0.0)
     public_suffix (4.0.6)
     rack (2.2.3)
