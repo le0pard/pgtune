@@ -7,9 +7,10 @@ import LocalStorage from 'lib/localStorage'
 import {initializeStore} from './redux/store'
 import {initServiceWorker} from './swWindow'
 // render app
-const renderApp = (Component, root, store) => {
+const renderApp = (Component, appRoot, store) => {
   initServiceWorker(store)
 
+  const root = createRoot(appRoot)
   root.render(
     <Component store={store} />
   )
@@ -31,6 +32,6 @@ const prepareStoreData = () => {
   }
 }
 // init store and start app
-const appRoot = createRoot(document.getElementById('app-root'))
+const appRoot = document.getElementById('app-root')
 const store = initializeStore(prepareStoreData())
 renderApp(Root, appRoot, store)
