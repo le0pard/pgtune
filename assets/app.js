@@ -1,21 +1,18 @@
 import './init'
 import React from 'react'
-import ReactDom from 'react-dom'
+import {createRoot} from 'react-dom/client'
 import Root from './root'
 import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings/constants'
 import LocalStorage from 'lib/localStorage'
 import {initializeStore} from './redux/store'
 import {initServiceWorker} from './swWindow'
 // render app
-const renderApp = (Component, appRoot, store) => {
+const renderApp = (Component, root, store) => {
   initServiceWorker(store)
 
-  ReactDom.render(
-    <Component store={store} />,
-    appRoot, () => {
-      // need to make this for feature tests - application ready for testing
-      window.__isAppReady = true
-    })
+  root.render(
+    <Component store={store} />
+  )
 }
 
 const prepareStoreData = () => {
@@ -34,6 +31,6 @@ const prepareStoreData = () => {
   }
 }
 // init store and start app
-const appRoot = document.getElementById('app-root')
+const appRoot = createRoot(document.getElementById('app-root'))
 const store = initializeStore(prepareStoreData())
 renderApp(Root, appRoot, store)
