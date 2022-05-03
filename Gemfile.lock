@@ -48,7 +48,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.2.3)
+    activesupport (7.0.2.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -76,7 +76,7 @@ GEM
     htmlcompressor (0.4.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
-    kramdown (2.3.2)
+    kramdown (2.4.0)
       rexml
     lazy_priority_queue (0.1.1)
     listen (3.7.1)
