@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 5d95105ca39d5198201792b952184f1d4562d25b
+  revision: 7348f1c2a043b297551e58732321acb797b3881e
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -48,7 +48,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.2.4)
+    activesupport (7.0.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -84,7 +84,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
     minitest (5.15.0)
-    oj (3.13.11)
+    oj (3.13.13)
     padrino-helpers (0.15.1)
       i18n (>= 0.6.7, < 2)
       padrino-support (= 0.15.1)
@@ -93,7 +93,7 @@ GEM
     parallel (1.22.1)
     parslet (2.0.0)
     public_suffix (4.0.7)
-    rack (2.2.3)
+    rack (2.2.3.1)
     rake (13.0.6)
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
@@ -108,7 +108,7 @@ GEM
     stream (0.5.3)
       generator
     temple (0.8.2)
-    terser (1.1.8)
+    terser (1.1.9)
       execjs (>= 0.3.0, < 3)
     thor (1.2.1)
     tilt (2.0.10)
