@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 7348f1c2a043b297551e58732321acb797b3881e
+  revision: f930b594fadd605059792be0716b39b0fc1c6b65
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -83,7 +83,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
-    minitest (5.15.0)
+    minitest (5.16.0)
     oj (3.13.14)
     padrino-helpers (0.15.1)
       i18n (>= 0.6.7, < 2)
@@ -109,7 +109,7 @@ GEM
     stream (0.5.4)
       generator
     temple (0.8.2)
-    terser (1.1.9)
+    terser (1.1.10)
       execjs (>= 0.3.0, < 3)
     thor (1.2.1)
     tilt (2.0.10)
