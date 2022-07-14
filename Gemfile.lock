@@ -48,7 +48,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.3)
+    activesupport (7.0.3.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -74,7 +74,7 @@ GEM
       concurrent-ruby (~> 1.0)
     hashie (5.0.0)
     htmlcompressor (0.4.0)
-    i18n (1.10.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     kramdown (2.4.0)
       rexml
@@ -83,8 +83,8 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
-    minitest (5.16.1)
-    oj (3.13.14)
+    minitest (5.16.2)
+    oj (3.13.16)
     padrino-helpers (0.15.1)
       i18n (>= 0.6.7, < 2)
       padrino-support (= 0.15.1)
@@ -93,7 +93,7 @@ GEM
     parallel (1.22.1)
     parslet (2.0.0)
     public_suffix (4.0.7)
-    rack (2.2.3.1)
+    rack (2.2.4)
     rake (13.0.6)
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
@@ -109,7 +109,7 @@ GEM
     stream (0.5.4)
       generator
     temple (0.8.2)
-    terser (1.1.10)
+    terser (1.1.11)
       execjs (>= 0.3.0, < 3)
     thor (1.2.1)
     tilt (2.0.10)
