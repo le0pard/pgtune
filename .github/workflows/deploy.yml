@@ -21,7 +21,7 @@ jobs:
           bundler-cache: true
 
       - name: Install Node.JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           check-latest: true
           cache: 'yarn'
