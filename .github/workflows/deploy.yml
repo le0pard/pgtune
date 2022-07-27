@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           persist-credentials: false
 
@@ -30,7 +30,7 @@ jobs:
         run: yarn install --immutable
 
       - name: FE build cache cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             tmp/cache
@@ -48,7 +48,7 @@ jobs:
         run: bundle exec middleman build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.2.3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages # The branch the action should deploy to.
