@@ -73,5 +73,6 @@
     "jest": "27.5.1",
     "jest-cli": "27.5.1",
     "webpack-cli": "4.10.0"
-  }
+  },
+  "packageManager": "yarn@3.2.2"
 }
