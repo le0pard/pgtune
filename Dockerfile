@@ -9,10 +9,5 @@ RUN yarn install --immutable \
   && bundle install \
   && bundle exec middleman build
 
-# FROM jekyll/minimal
-# COPY --from=builder /code/build/* /srv/jekyll/
-# RUN gem install --no-document webrick
-# CMD ["jekyll", "serve"]
-
 FROM nginx:alpine
 COPY --from=builder /code/build/* /usr/share/nginx/html/
