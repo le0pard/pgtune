@@ -1,5 +1,5 @@
-import {Workbox, messageSW} from 'workbox-window'
-import {readyToUpdated} from 'reducers/sw'
+import { Workbox, messageSW } from 'workbox-window'
+import { readyToUpdated } from 'reducers/sw'
 
 let wb = null
 let wbRegistration = null
@@ -10,7 +10,7 @@ export const skipWaitingMessageAndReload = () => {
   if (wbRegistration && wbRegistration.waiting) {
     // Send a message to the waiting service worker,
     // instructing it to activate.
-    messageSW(wbRegistration.waiting, {type: 'SKIP_WAITING'})
+    messageSW(wbRegistration.waiting, { type: 'SKIP_WAITING' })
   }
 }
 

@@ -1,5 +1,5 @@
-import {routes} from './routes'
-import {useRoutes} from 'react-router-dom'
+import { routes } from './routes'
+import { useRoutes } from 'react-router-dom'
 
 const AppWrapper = () => {
   const element = useRoutes(routes)

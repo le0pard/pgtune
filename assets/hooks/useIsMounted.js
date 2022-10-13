@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react'
+import { useEffect, useRef } from 'react'
 
 export const useIsMounted = () => {
   const mounted = useRef(false)

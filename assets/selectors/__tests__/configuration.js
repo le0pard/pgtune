@@ -161,30 +161,22 @@ describe('parallelSettings', () => {
   it('less 2 cpu provided', () => {
     expect(parallelSettings({
       configuration: {
-        dbVersion: 9.6,
+        dbVersion: 14,
         cpuNum: 1
       }
     })).toEqual([])
   })
-  it('postgresql 9.5', () => {
+  it('postgresql 13', () => {
     expect(parallelSettings({
       configuration: {
-        dbVersion: 9.5,
+        dbVersion: 13,
         cpuNum: 12
       }
     })).toEqual([
-      {key: 'max_worker_processes', value: 12}
-    ])
-  })
-  it('postgresql 9.6', () => {
-    expect(parallelSettings({
-      configuration: {
-        dbVersion: 9.6,
-        cpuNum: 12
-      }
-    })).toEqual([
-      {key: 'max_worker_processes', value: 12},
-      {key: 'max_parallel_workers_per_gather', value: 4}
+      { key: 'max_worker_processes', value: 12 },
+      { key: 'max_parallel_workers_per_gather', value: 4 },
+      { key: 'max_parallel_workers', value: 12 },
+      { key: 'max_parallel_maintenance_workers', value: 4 }
     ])
   })
   it('postgresql 10', () => {
@@ -194,9 +186,9 @@ describe('parallelSettings', () => {
         cpuNum: 12
       }
     })).toEqual([
-      {key: 'max_worker_processes', value: 12},
-      {key: 'max_parallel_workers_per_gather', value: 4},
-      {key: 'max_parallel_workers', value: 12}
+      { key: 'max_worker_processes', value: 12 },
+      { key: 'max_parallel_workers_per_gather', value: 4 },
+      { key: 'max_parallel_workers', value: 12 }
     ])
   })
 
@@ -207,9 +199,9 @@ describe('parallelSettings', () => {
         cpuNum: 31
       }
     })).toEqual([
-      {key: 'max_worker_processes', value: 31},
-      {key: 'max_parallel_workers_per_gather', value: 4},
-      {key: 'max_parallel_workers', value: 31}
+      { key: 'max_worker_processes', value: 31 },
+      { key: 'max_parallel_workers_per_gather', value: 4 },
+      { key: 'max_parallel_workers', value: 31 }
     ])
   })
 
@@ -221,10 +213,10 @@ describe('parallelSettings', () => {
         dbType: 'dw'
       }
     })).toEqual([
-      {key: 'max_worker_processes', value: 31},
-      {key: 'max_parallel_workers_per_gather', value: 16},
-      {key: 'max_parallel_workers', value: 31},
-      {key: 'max_parallel_maintenance_workers', value: 4}
+      { key: 'max_worker_processes', value: 31 },
+      { key: 'max_parallel_workers_per_gather', value: 16 },
+      { key: 'max_parallel_workers', value: 31 },
+      { key: 'max_parallel_maintenance_workers', value: 4 }
     ])
   })
 })

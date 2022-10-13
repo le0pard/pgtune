@@ -1,4 +1,4 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 import {
   OS_WINDOWS,
   OS_MAC,
@@ -39,13 +39,6 @@ const getDbDefaultValues = createSelector(
   [getDBVersion],
   (dbVersion) => (
     {
-      9.5: {
-        ['max_worker_processes']: 8
-      },
-      9.6: {
-        ['max_worker_processes']: 8,
-        ['max_parallel_workers_per_gather']: 0
-      },
       10: {
         ['max_worker_processes']: 8,
         ['max_parallel_workers_per_gather']: 2,
@@ -67,6 +60,11 @@ const getDbDefaultValues = createSelector(
         ['max_parallel_workers']: 8
       },
       14: {
+        ['max_worker_processes']: 8,
+        ['max_parallel_workers_per_gather']: 2,
+        ['max_parallel_workers']: 8
+      },
+      15: {
         ['max_worker_processes']: 8,
         ['max_parallel_workers_per_gather']: 2,
         ['max_parallel_workers']: 8
@@ -157,45 +155,30 @@ export const maintenanceWorkMem = createSelector(
 )
 
 export const checkpointSegments = createSelector(
-  [getDBVersion, getDBType],
-  (dbVersion, dbType) => {
-    if (dbVersion < 9.5) {
-      return [
-        {
-          key: 'checkpoint_segments',
-          value: ({
-            [DB_TYPE_WEB]: 32,
-            [DB_TYPE_OLTP]: 64,
-            [DB_TYPE_DW]: 128,
-            [DB_TYPE_DESKTOP]: 3,
-            [DB_TYPE_MIXED]: 32
-          }[dbType])
-        }
-      ]
-    } else {
-      return [
-        {
-          key: 'min_wal_size',
-          value: ({
-            [DB_TYPE_WEB]: (1024 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
-            [DB_TYPE_OLTP]: (2048 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
-            [DB_TYPE_DW]: (4096 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
-            [DB_TYPE_DESKTOP]: (100 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
-            [DB_TYPE_MIXED]: (1024 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])
-          }[dbType])
-        },
-        {
-          key: 'max_wal_size',
-          value: ({
-            [DB_TYPE_WEB]: (4096 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
-            [DB_TYPE_OLTP]: (8192 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
-            [DB_TYPE_DW]: (16384 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
-            [DB_TYPE_DESKTOP]: (2048 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
-            [DB_TYPE_MIXED]: (4096 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])
-          }[dbType])
-        }
-      ]
-    }
+  [getDBType],
+  (dbType) => {
+    return [
+      {
+        key: 'min_wal_size',
+        value: ({
+          [DB_TYPE_WEB]: (1024 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
+          [DB_TYPE_OLTP]: (2048 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
+          [DB_TYPE_DW]: (4096 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
+          [DB_TYPE_DESKTOP]: (100 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
+          [DB_TYPE_MIXED]: (1024 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])
+        }[dbType])
+      },
+      {
+        key: 'max_wal_size',
+        value: ({
+          [DB_TYPE_WEB]: (4096 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
+          [DB_TYPE_OLTP]: (8192 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
+          [DB_TYPE_DW]: (16384 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
+          [DB_TYPE_DESKTOP]: (2048 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB']),
+          [DB_TYPE_MIXED]: (4096 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])
+        }[dbType])
+      }
+    ]
   }
 )
 
@@ -266,29 +249,26 @@ export const effectiveIoConcurrency = createSelector(
 export const parallelSettings = createSelector(
   [getDBVersion, getDBType, getCPUNum],
   (dbVersion, dbType, cpuNum) => {
-    if (dbVersion < 9.5 || cpuNum < 2) {
+    if (cpuNum < 4) {
       return []
+    }
+
+    let workersPerGather = Math.ceil(cpuNum / 2)
+
+    if (dbType !== DB_TYPE_DW && workersPerGather > 4) {
+      workersPerGather = 4 // no clear evidence, that each new worker will provide big benefit for each noew core
     }
 
     let config = [
       {
         key: 'max_worker_processes',
         value: cpuNum
-      }
-    ]
-
-    if (dbVersion >= 9.6) {
-      let workersPerGather = Math.ceil(cpuNum / 2)
-
-      if (dbType !== DB_TYPE_DW && workersPerGather > 4) {
-        workersPerGather = 4 // no clear evidence, that each new worker will provide big benefit for each noew core
-      }
-
-      config.push({
+      },
+      {
         key: 'max_parallel_workers_per_gather',
         value: workersPerGather
-      })
-    }
+      }
+    ]
 
     if (dbVersion >= 10) {
       config.push({

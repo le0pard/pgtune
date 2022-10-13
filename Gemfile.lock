@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 5902a84004f6aa1b023cbb029ae1cc04e78e770a
+  revision: 038f4f606ff6cfc75cbe5c8690c5eae2e34f78f3
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -66,8 +66,9 @@ GEM
     execjs (2.8.1)
     fastimage (2.2.6)
     ffi (1.15.5)
-    haml (5.2.2)
-      temple (>= 0.8.0)
+    haml (6.0.6)
+      temple (>= 0.8.2)
+      thor
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)

@@ -1,13 +1,13 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {updating} from 'reducers/sw'
-import {skipWaitingMessageAndReload} from 'swWindow'
+import { useDispatch, useSelector } from 'react-redux'
+import { updating } from 'reducers/sw'
+import { skipWaitingMessageAndReload } from 'swWindow'
 
 import './app-update.css'
 
 const AppUpdate = () => {
   const dispatch = useDispatch()
-  const isNewVersionAvailable = useSelector(({sw}) => sw.isNewVersionAvailable)
+  const isNewVersionAvailable = useSelector(({ sw }) => sw.isNewVersionAvailable)
 
   const reloadPage = (e) => {
     e.preventDefault()

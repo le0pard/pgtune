@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Field} from 'formik'
+import { Field } from 'formik'
 import Tooltip from 'components/form/tooltip'
 import FormSimpleField from 'components/form/simpleField'
 import FormSimpleDropdown from 'components/form/simpleDropdown'
@@ -24,7 +24,7 @@ const totalMemoryUnitOptions = () => (
   ]
 )
 
-const TotalMemoryInput = ({tooltip}) => {
+const TotalMemoryInput = ({ tooltip }) => {
   const inputID = 'TotalMemoryId'
 
   return (

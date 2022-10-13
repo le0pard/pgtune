@@ -1,6 +1,6 @@
-import {combineReducers} from 'redux'
-import {createAction, createReducer} from 'redux-act'
-import {submitConfiguration} from 'reducers/configuration'
+import { combineReducers } from 'redux'
+import { createAction, createReducer } from 'redux-act'
+import { submitConfiguration } from 'reducers/configuration'
 import {
   APP_THEMES_LIGHT,
   APP_THEMES_DARK,

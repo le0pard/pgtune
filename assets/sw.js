@@ -1,6 +1,6 @@
-import {clientsClaim} from 'workbox-core'
-import {precacheAndRoute} from 'workbox-precaching/precacheAndRoute'
-import {cleanupOutdatedCaches} from 'workbox-precaching/cleanupOutdatedCaches'
+import { clientsClaim } from 'workbox-core'
+import { precacheAndRoute } from 'workbox-precaching/precacheAndRoute'
+import { cleanupOutdatedCaches } from 'workbox-precaching/cleanupOutdatedCaches'
 
 const sha256 = (message) => {
   // encode as UTF-8
@@ -29,9 +29,9 @@ cleanupOutdatedCaches()
 
 sha256(JSON.stringify(cachedAssets.sort())).then((rev) => {
   precacheAndRoute([
-    {url: '/index.html', revision: `${rev}-v1`},
-    {url: '/about.html', revision: `${rev}-v1`},
-    {url: '/manifest.webmanifest', revision: `${rev}-v1`}
+    { url: '/index.html', revision: `${rev}-v1` },
+    { url: '/about.html', revision: `${rev}-v1` },
+    { url: '/manifest.webmanifest', revision: `${rev}-v1` }
   ])
 })
 

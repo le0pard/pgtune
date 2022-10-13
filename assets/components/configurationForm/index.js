@@ -1,12 +1,12 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import classnames from 'classnames'
-import {Formik, Field, Form} from 'formik'
+import { Formik, Field, Form } from 'formik'
 import FormField from 'components/form/field'
 import FormDropdown from 'components/form/dropdown'
 import TotalMemoryInput from './totalMemoryInput'
-import {submitConfiguration} from 'reducers/configuration'
-import {validationSchema} from './validation'
+import { submitConfiguration } from 'reducers/configuration'
+import { validationSchema } from './validation'
 import {
   DEFAULT_DB_VERSION,
   DB_VERSIONS,
@@ -95,7 +95,7 @@ const hdTypeOptions = () => (
 const ConfigurationForm = () => {
   const dispatch = useDispatch()
 
-  const handleGenerateConfig = (values, {setSubmitting}) => {
+  const handleGenerateConfig = (values, { setSubmitting }) => {
     dispatch(submitConfiguration(values))
     setSubmitting(false)
   }
@@ -114,7 +114,7 @@ const ConfigurationForm = () => {
         hdType: HARD_DRIVE_SSD
       }}
       validationSchema={validationSchema}
-    >{({isSubmitting}) => (
+    >{({ isSubmitting }) => (
         <Form>
           <Field
             name="dbVersion"

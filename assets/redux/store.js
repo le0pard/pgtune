@@ -1,7 +1,7 @@
 import config from 'config'
-import {createStore, applyMiddleware} from 'redux'
-import {createLogger} from 'redux-logger'
-import {loggers} from 'redux-act'
+import { createStore, applyMiddleware } from 'redux'
+import { createLogger } from 'redux-logger'
+import { loggers } from 'redux-act'
 import rootReducer from './rootReducer'
 
 export const initializeStore = (preloadedState = null) => {

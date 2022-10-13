@@ -3,8 +3,8 @@ import GithubCorner from 'components/githubCorner'
 import AppUpdate from 'components/appUpdate'
 import ThemeSwitcher from 'components/themeSwitcher'
 import classnames from 'classnames'
-import {matchPath} from 'react-router'
-import {Link, useLocation, Outlet} from 'react-router-dom'
+import { matchPath } from 'react-router'
+import { Link, useLocation, Outlet } from 'react-router-dom'
 
 import './app.css'
 

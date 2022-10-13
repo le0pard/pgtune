@@ -1,11 +1,11 @@
 import './init'
 import React from 'react'
-import {createRoot} from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import Root from './root'
-import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings/constants'
+import { APP_THEMES_LIGHT, APP_THEMES_DARK } from 'reducers/settings/constants'
 import LocalStorage from 'lib/localStorage'
-import {initializeStore} from './redux/store'
-import {initServiceWorker} from './swWindow'
+import { initializeStore } from './redux/store'
+import { initServiceWorker } from './swWindow'
 // render app
 const renderApp = (Component, appRoot, store) => {
   initServiceWorker(store)

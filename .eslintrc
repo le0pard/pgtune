@@ -88,7 +88,7 @@
     "no-use-before-define": [2, "nofunc"],
     "no-var": 2,
     "no-warning-comments": [2, {"terms": ["todo", "fixme"]}],
-    "object-curly-spacing": 2,
+    "object-curly-spacing": [2, "always"],
     "padded-blocks": [2, "never"],
     "quote-props": [0, "as-needed"],
     "quotes": [2, "single", "avoid-escape"],

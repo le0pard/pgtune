@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
-import {useDispatch, useSelector} from 'react-redux'
-import {Light as SyntaxHighlighter} from 'react-syntax-highlighter'
+import { useDispatch, useSelector } from 'react-redux'
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
 import iniLang from 'react-syntax-highlighter/dist/cjs/languages/hljs/ini'
 import sqlLang from 'react-syntax-highlighter/dist/cjs/languages/hljs/sql'
 import solarizedLight from 'react-syntax-highlighter/dist/cjs/styles/hljs/solarized-light'
@@ -27,7 +27,7 @@ import {
   workMem,
   warningInfoMessages
 } from 'selectors/configuration'
-import {openConfigTab} from 'reducers/settings'
+import { openConfigTab } from 'reducers/settings'
 
 import './configuration-view.css'
 
@@ -71,14 +71,14 @@ const ConfigurationView = () => {
   const dispatch = useDispatch()
 
   // hardware configuration
-  const dbVersion = useSelector(({configuration}) => configuration.dbVersion)
-  const osType = useSelector(({configuration}) => configuration.osType)
-  const dbType = useSelector(({configuration}) => configuration.dbType)
-  const totalMemory = useSelector(({configuration}) => configuration.totalMemory)
-  const totalMemoryUnit = useSelector(({configuration}) => configuration.totalMemoryUnit)
-  const cpuNum = useSelector(({configuration}) => configuration.cpuNum)
-  const connectionNum = useSelector(({configuration}) => configuration.connectionNum)
-  const hdType = useSelector(({configuration}) => configuration.hdType)
+  const dbVersion = useSelector(({ configuration }) => configuration.dbVersion)
+  const osType = useSelector(({ configuration }) => configuration.osType)
+  const dbType = useSelector(({ configuration }) => configuration.dbType)
+  const totalMemory = useSelector(({ configuration }) => configuration.totalMemory)
+  const totalMemoryUnit = useSelector(({ configuration }) => configuration.totalMemoryUnit)
+  const cpuNum = useSelector(({ configuration }) => configuration.cpuNum)
+  const connectionNum = useSelector(({ configuration }) => configuration.connectionNum)
+  const hdType = useSelector(({ configuration }) => configuration.hdType)
   // computed settings
   const maxConnectionsVal = useSelector(maxConnections)
   const sharedBuffersVal = useSelector(sharedBuffers)
@@ -95,9 +95,9 @@ const ConfigurationView = () => {
   // warnings
   const warningInfoMessagesVal = useSelector(warningInfoMessages)
   // tab state
-  const tabState = useSelector(({settings}) => settings.tabState)
+  const tabState = useSelector(({ settings }) => settings.tabState)
   // app theme
-  const theme = useSelector(({settings}) => settings.theme)
+  const theme = useSelector(({ settings }) => settings.theme)
   // tab click state
   const handleClickTab = (tab) => dispatch(openConfigTab(tab))
 

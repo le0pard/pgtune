@@ -1,5 +1,5 @@
-import {combineReducers} from 'redux'
-import {createAction, createReducer} from 'redux-act'
+import { combineReducers } from 'redux'
+import { createAction, createReducer } from 'redux-act'
 import {
   DEFAULT_DB_VERSION,
   OS_LINUX,

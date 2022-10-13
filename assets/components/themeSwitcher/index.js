@@ -1,16 +1,16 @@
-import React, {useEffect, useRef} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {settingsToggleTheme} from 'reducers/settings'
+import React, { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { settingsToggleTheme } from 'reducers/settings'
 import classnames from 'classnames'
 import LocalStorage from 'lib/localStorage'
-import {APP_THEMES_LIGHT, APP_THEMES_DARK} from 'reducers/settings/constants'
+import { APP_THEMES_LIGHT, APP_THEMES_DARK } from 'reducers/settings/constants'
 
 import './theme-switcher.css'
 
 const ThemeSwitcher = () => {
   const htmlRoot = useRef()
   const dispatch = useDispatch()
-  const theme = useSelector(({settings}) => settings.theme)
+  const theme = useSelector(({ settings }) => settings.theme)
 
   useEffect(() => {
     htmlRoot.current = document.querySelector(':root')
