@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 038f4f606ff6cfc75cbe5c8690c5eae2e34f78f3
+  revision: 9833b4682048617ccca9e26dc46d2e99105971ed
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -66,7 +66,7 @@ GEM
     execjs (2.8.1)
     fastimage (2.2.6)
     ffi (1.15.5)
-    haml (6.0.6)
+    haml (6.0.9)
       temple (>= 0.8.2)
       thor
       tilt
@@ -83,7 +83,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
     minitest (5.16.3)
-    oj (3.13.21)
+    oj (3.13.23)
     padrino-helpers (0.15.1)
       i18n (>= 0.6.7, < 2)
       padrino-support (= 0.15.1)
@@ -107,7 +107,7 @@ GEM
       ffi (~> 1.9)
     servolux (0.13.0)
     stream (0.5.5)
-    temple (0.8.2)
+    temple (0.9.1)
     terser (1.1.12)
       execjs (>= 0.3.0, < 3)
     thor (1.2.1)
