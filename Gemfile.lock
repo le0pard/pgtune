@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 70374b0b17f2d379a2d9ad8aad52bb944b726772
+  revision: 50f76c2984c4f82b243b0a5e3f860aeaf63e07d5
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -66,7 +66,7 @@ GEM
     execjs (2.8.1)
     fastimage (2.2.6)
     ffi (1.15.5)
-    haml (6.0.10)
+    haml (6.1.1)
       temple (>= 0.8.2)
       thor
       tilt
@@ -92,7 +92,7 @@ GEM
     pairing_heap (1.0.0)
     parallel (1.22.1)
     parslet (2.0.0)
-    public_suffix (5.0.0)
+    public_suffix (5.0.1)
     rack (2.2.4)
     rake (13.0.6)
     rb-fsevent (0.11.2)
@@ -108,7 +108,7 @@ GEM
     servolux (0.13.0)
     stream (0.5.5)
     temple (0.9.1)
-    terser (1.1.12)
+    terser (1.1.13)
       execjs (>= 0.3.0, < 3)
     thor (1.2.1)
     tilt (2.0.11)
