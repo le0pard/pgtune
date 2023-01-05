@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 50f76c2984c4f82b243b0a5e3f860aeaf63e07d5
+  revision: 7ca4c426a286f492fcd42df4315224869aaf1dc5
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -82,7 +82,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
-    minitest (5.16.3)
+    minitest (5.17.0)
     oj (3.13.23)
     padrino-helpers (0.15.2)
       i18n (>= 0.6.7, < 2)
@@ -99,7 +99,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rexml (3.2.5)
-    rgl (0.5.9)
+    rgl (0.5.10)
       pairing_heap (>= 0.3.0)
       rexml (~> 3.2, >= 3.2.4)
       stream (~> 0.5.3)
