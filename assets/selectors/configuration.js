@@ -142,7 +142,7 @@ export const maintenanceWorkMem = createSelector(
     }[dbType]
     // Cap maintenance RAM at 2GB on servers with lots of memory
     const memoryLimit = 2 * SIZE_UNIT_MAP['GB'] / SIZE_UNIT_MAP['KB']
-    if (maintenanceWorkMemValue > memoryLimit) {
+    if (maintenanceWorkMemValue >= memoryLimit) {
       if (OS_WINDOWS === osType) {
         // 2048MB (2 GB) will raise error at Windows, so we need remove 1 MB from it
         maintenanceWorkMemValue = memoryLimit - (1 * SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])
