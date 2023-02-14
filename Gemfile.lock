@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/middleman/middleman
-  revision: 7ca4c426a286f492fcd42df4315224869aaf1dc5
+  revision: 1ea31166fdd10b3ec7e4534b1648f2bd0cfdd4b5
   specs:
     middleman (5.0.0.rc.2)
       coffee-script (~> 2.4)
@@ -48,7 +48,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.4.1)
+    activesupport (7.0.4.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -59,7 +59,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.0)
     contracts (0.17)
     dotenv (2.8.1)
     erubis (2.7.0)
@@ -83,13 +83,13 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     memoist (0.16.2)
     minitest (5.17.0)
-    oj (3.13.23)
+    oj (3.14.2)
     padrino-helpers (0.15.2)
       i18n (>= 0.6.7, < 2)
       padrino-support (= 0.15.2)
       tilt (>= 1.4.1, < 3)
     padrino-support (0.15.2)
-    pairing_heap (2.0.0)
+    pairing_heap (3.0.0)
     parallel (1.22.1)
     parslet (2.0.0)
     public_suffix (5.0.1)
@@ -107,16 +107,16 @@ GEM
       ffi (~> 1.9)
     servolux (0.13.0)
     stream (0.5.5)
-    temple (0.9.1)
+    temple (0.10.0)
     terser (1.1.13)
       execjs (>= 0.3.0, < 3)
     thor (1.2.1)
     tilt (2.0.11)
     toml (0.3.0)
       parslet (>= 1.8.0, < 3.0.0)
-    tzinfo (2.0.5)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    webrick (1.7.0)
+    webrick (1.8.1)
 
 PLATFORMS
   ruby
@@ -131,4 +131,4 @@ DEPENDENCIES
   wdm (~> 0.1)
 
 BUNDLED WITH
-   2.4.1
+   2.4.6
