@@ -55,7 +55,7 @@
     "terser-webpack-plugin": "5.3.6",
     "text-encoding": "0.7.0",
     "url-loader": "4.1.1",
-    "webpack": "5.75.0",
+    "webpack": "5.76.0",
     "webpack-assets-manifest": "5.1.0",
     "workbox-core": "^6.5.4",
     "workbox-precaching": "^6.5.4",
