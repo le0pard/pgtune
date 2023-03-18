@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-gem 'middleman', github: 'middleman/middleman'
+gem 'middleman', github: 'middleman/middleman', branch: '5.x'
 gem 'middleman-minify-html', github: 'middleman/middleman-minify-html' # min html
 
 gem 'oj', '>= 2.10.4'           # faster JSON
