@@ -30,11 +30,11 @@ const AppLayout = () => {
           </div>
           <div
             className={classnames('app__navigation__big-item', {
-              'app__navigation__item--active': isActive('/about.html')
+              'app__navigation__item--active': isActive('/about')
             })}>
-            {isActive('/about.html') ?
+            {isActive('/about') ?
               <div className="app__navigation__active-item">How it works</div> :
-              <Link className="app__navigation__link" to="/about.html">How it works</Link>}
+              <Link className="app__navigation__link" to="/about">How it works</Link>}
           </div>
           <div className="app__navigation__item">
             <ThemeSwitcher className="app__navigation__link" />

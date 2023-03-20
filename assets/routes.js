@@ -12,6 +12,10 @@ export const routes = [{
       element: <Dashboard />
     },
     {
+      path: '/about',
+      element: <AboutPage />
+    },
+    {
       path: '/about.html',
       element: <AboutPage />
     }
