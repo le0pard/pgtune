@@ -60,11 +60,15 @@ export const validationSchema = Yup.object().shape({
     .required('Required')
     .oneOf(HARD_DRIVE_TYPES, 'Unsupported hard drive'),
   cpuNum: Yup.number()
+    .transform((value) => (isNaN(value) ? null : value))
+    .nullable()
     .notRequired()
     .integer('Must be an integer')
     .min(1, 'Must be greater than zero')
     .max(MAX_INTEGER, `Must be less than or equal to ${MAX_INTEGER}`),
   connectionNum: Yup.number()
+    .transform((value) => (isNaN(value) ? null : value))
+    .nullable()
     .notRequired()
     .integer('Must be an integer')
     .min(20, 'Must be greater than or equal to 20')
