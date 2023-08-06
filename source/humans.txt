@@ -3,7 +3,6 @@
 
 /* TEAM */
   Developer: Alexey Vasiliev
-  Contact: leopard_ne [at] inbox.ru
   Twitter: @leopard_me
 
   Web designer: Anna Rotar
