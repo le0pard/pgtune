@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import classnames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import hljs from 'highlight.js/lib/core'
@@ -75,6 +75,21 @@ const formatValue = (value) => {
   return `${result.value}${result.unit}`
 }
 
+const renderCodeInlineCss = (codeHighlightStyle) => {
+  return Object.keys(codeHighlightStyle).map((className) => {
+    const content = codeHighlightStyle[className]
+    const body = Object.keys(content)
+      .map((key) => `${key}: ${content[key]};`)
+      .join('')
+
+    return `.${className} { ${body} }`
+  })
+}
+
+const renderHightlightedCode = (code, isAlterSystem) => {
+  return hljs.highlight(code, { language: isAlterSystem ? 'sql' : 'ini' }).value
+}
+
 const ConfigurationView = () => {
   const dispatch = useDispatch()
 
@@ -107,11 +122,12 @@ const ConfigurationView = () => {
   // app theme
   const theme = useSelector(selectThemeSettings)
   // tab click state
-  const handleClickTab = (tab) => dispatch(openConfigTab(tab))
-
-  const warningInfo = () => warningInfoMessagesVal.join('\n')
+  const handleClickTab = useCallback((tab) => dispatch(openConfigTab(tab)), [dispatch])
 
   const isAlterSystem = TAB_ALTER_SYSTEM === tabState
+
+  const warningInfo = () =>
+    warningInfoMessagesVal.map((item) => `${isAlterSystem ? '--' : '#'} ${item}`).join('\n')
 
   const hardwareConfiguration = () =>
     [
@@ -138,8 +154,6 @@ const ConfigurationView = () => {
   const getParallelSettings = () => parallelSettingsVal.map((item) => [item.key, item.value])
 
   const postgresqlConfig = () => {
-    const isRenderAlterSystem = TAB_ALTER_SYSTEM === tabState
-
     const configData = [
       ['max_connections', maxConnectionsVal],
       ['shared_buffers', formatValue(sharedBuffersVal)],
@@ -158,9 +172,7 @@ const ConfigurationView = () => {
     return configData
       .filter((item) => !!item[1])
       .map((item) =>
-        isRenderAlterSystem
-          ? `ALTER SYSTEM SET\n ${item[0]} = '${item[1]}';`
-          : `${item[0]} = ${item[1]}`
+        isAlterSystem ? `ALTER SYSTEM SET\n ${item[0]} = '${item[1]}';` : `${item[0]} = ${item[1]}`
       )
       .join('\n')
   }
@@ -197,21 +209,6 @@ const ConfigurationView = () => {
     )
   }
 
-  const renderInlineCss = (codeHighlightStyle) => {
-    return Object.keys(codeHighlightStyle).map((className) => {
-      const content = codeHighlightStyle[className]
-      const body = Object.keys(content)
-        .map((key) => `${key}: ${content[key]};`)
-        .join('')
-
-      return `.${className} { ${body} }`
-    })
-  }
-
-  const renderHightlightedCode = (code) => {
-    return hljs.highlight(code, { language: isAlterSystem ? 'sql' : 'ini' }).value
-  }
-
   const renderConfigResult = () => {
     const generatedConfigRes = generateConfig()
 
@@ -231,7 +228,9 @@ const ConfigurationView = () => {
         <pre style={{ display: 'block', overflowX: 'auto', padding: '0.5rem' }}>
           <code
             style={{ whiteSpace: 'pre' }}
-            dangerouslySetInnerHTML={{ __html: renderHightlightedCode(generatedConfigRes) }}
+            dangerouslySetInnerHTML={{
+              __html: renderHightlightedCode(generatedConfigRes, isAlterSystem)
+            }}
           />
         </pre>
         <div className="configuration-view-copy-wrapper">
@@ -251,7 +250,7 @@ const ConfigurationView = () => {
     <div>
       {renderTabs()}
       {renderConfigResult()}
-      <style>{renderInlineCss(codeHighlightStyle)}</style>
+      <style>{renderCodeInlineCss(codeHighlightStyle)}</style>
     </div>
   )
 }

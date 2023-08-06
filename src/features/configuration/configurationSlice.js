@@ -397,10 +397,10 @@ export const selectWarningInfoMessages = createSelector(
   [selectTotalMemoryInBytes],
   (totalMemory) => {
     if (totalMemory < 256 * SIZE_UNIT_MAP['MB']) {
-      return ['# WARNING', '# this tool not being optimal', '# for low memory systems']
+      return ['WARNING', 'this tool not being optimal', 'for low memory systems']
     }
     if (totalMemory > 100 * SIZE_UNIT_MAP['GB']) {
-      return ['# WARNING', '# this tool not being optimal', '# for very high memory systems']
+      return ['WARNING', 'this tool not being optimal', 'for very high memory systems']
     }
     return []
   }
