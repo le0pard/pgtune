@@ -1,7 +1,7 @@
 export default {
   hljs: {
     display: 'block',
-    overflowX: 'auto',
+    'overflow-x': 'auto',
     padding: '0.5em',
     background: '#fdf6e3',
     color: '#657b83'
@@ -106,9 +106,9 @@ export default {
     background: '#eee8d5'
   },
   'hljs-emphasis': {
-    fontStyle: 'italic'
+    'font-style': 'italic'
   },
   'hljs-strong': {
-    fontWeight: 'bold'
+    'font-weight': 'bold'
   }
 }
