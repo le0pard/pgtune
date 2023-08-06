@@ -111,6 +111,8 @@ const ConfigurationView = () => {
 
   const warningInfo = () => warningInfoMessagesVal.join('\n')
 
+  const isAlterSystem = TAB_ALTER_SYSTEM === tabState
+
   const hardwareConfiguration = () =>
     [
       ['DB Version', dbVersion],
@@ -122,7 +124,7 @@ const ConfigurationView = () => {
       ['Data Storage', hdType]
     ]
       .filter((item) => !!item[1])
-      .map((item) => `# ${item[0]}: ${item[1]}`)
+      .map((item) => `${isAlterSystem ? '--' : '#'} ${item[0]}: ${item[1]}`)
       .join('\n')
 
   const getCheckpointSegments = () =>
@@ -205,8 +207,6 @@ const ConfigurationView = () => {
       return `.${className} { ${body} }`
     })
   }
-
-  const isAlterSystem = TAB_ALTER_SYSTEM === tabState
 
   const renderHightlightedCode = (code) => {
     return hljs.highlight(code, { language: isAlterSystem ? 'sql' : 'ini' }).value
