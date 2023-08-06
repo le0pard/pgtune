@@ -10,6 +10,6 @@ export default {
     '^@css/(.*)': '<rootDir>/src/css/$1',
     '^@common/(.*)': '<rootDir>/src/common/$1',
     '^@features/(.*)': '<rootDir>/src/features/$1',
-    '^@hooks/(.*)': '<rootDir>/src/hooks/$1',
+    '^@hooks/(.*)': '<rootDir>/src/hooks/$1'
   }
 }

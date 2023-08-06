@@ -10,8 +10,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "pnpify run prettier --check src postcss.config.js && eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "format": "pnpify run prettier --write src postcss.config.js",
+    "lint": "pnpify run prettier --check src postcss.config.js jest.config.js && eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "format": "pnpify run prettier --write src postcss.config.js jest.config.js",
     "test": "node --experimental-vm-modules $(yarn bin jest) -c jest.config.js"
   },
   "dependencies": {
