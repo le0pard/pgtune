@@ -1,13 +1,11 @@
-const browserlist = require('./browserslist.config')
-
-module.exports = {
-  plugins: [
-    require('postcss-import')({
-      path: ['assets/css']
-    }),
-    require('postcss-preset-env')({
+export default {
+  plugins: {
+    'postcss-import': {
+      path: ['src/css']
+    },
+    'postcss-preset-env': {
       stage: 1,
-      browsers: browserlist,
+      browsers: ['>0.3%', 'Firefox ESR', 'not dead', 'not op_mini all'],
       features: {
         'custom-properties': {
           strict: false,
@@ -15,7 +13,6 @@ module.exports = {
           preserve: true
         }
       }
-    }),
-    require('postcss-reporter')
-  ]
+    }
+  }
 }

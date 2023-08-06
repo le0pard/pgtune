@@ -1,0 +1,123 @@
+.form-field {
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 1rem;
+}
+
+.form-field-label {
+  flex-basis: calc(62.4375% - 11.25px);
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  max-width: calc(62.4375% - 11.25px);
+  width: calc(62.4375% - 11.25px);
+}
+
+.form-field-label:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 30px;
+}
+
+.form-field-label:last-child {
+  margin-right: 0;
+}
+
+.form-field-label:nth-child(2n) {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.form-field-tooltip {
+  flex-basis: calc(37.4625% - 18.75px);
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  max-width: calc(37.4625% - 18.75px);
+  text-align: right;
+  width: calc(37.4625% - 18.75px);
+}
+
+.form-field-tooltip:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 30px;
+}
+
+.form-field-tooltip:last-child {
+  margin-right: 0;
+}
+
+.form-field-tooltip:nth-child(2n) {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.form-field-tooltip__button {
+  border-bottom: 1px dotted #b58900;
+  text-decoration: none;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.form-field-wrapper {
+  flex-basis: 99.9%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  max-width: 99.9%;
+  width: 99.9%;
+}
+
+.form-field-wrapper:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 30px;
+}
+
+.form-field-wrapper:last-child {
+  margin-right: 0;
+}
+
+.form-field-wrapper:nth-child(1n) {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.form-field-wrapper__input {
+  width: 100%;
+  font-size: 1.3rem;
+  color: var(--inputColor);
+  border-radius: 0;
+  border: 1px solid var(--inputBorder);
+  background-color: var(--inputBg);
+  padding: 2px 1px;
+  box-sizing: border-box;
+}
+.form-field-wrapper__input:placeholder {
+  font-size: 1.2rem;
+  color: var(--inputColorPlaceholder);
+}
+.form-field-wrapper__input:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.form-field-error {
+  color: #dc322f;
+  flex-basis: 99.9%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  max-width: 99.9%;
+  width: 99.9%;
+}
+
+.form-field-error:nth-child(1n) {
+  margin-left: 0;
+  margin-right: 30px;
+}
+
+.form-field-error:last-child {
+  margin-right: 0;
+}
+
+.form-field-error:nth-child(1n) {
+  margin-left: auto;
+  margin-right: 0;
+}
