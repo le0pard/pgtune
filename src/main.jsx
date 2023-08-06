@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { configureAppStore } from '@app/store'
 import { initServiceWorker } from '@features/sw/swWindow'
 import { LocalStorage } from '@common/utils/localStorage'
+import { onDomReady } from '@common/utils/onDomReady'
 import { APP_THEMES_LIGHT, APP_THEMES_DARK } from '@features/settings/constants'
 import App from './App.jsx'
 
@@ -44,4 +45,4 @@ const start = () => {
   )
 }
 
-start()
+onDomReady(start)
