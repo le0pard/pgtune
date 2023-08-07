@@ -21,6 +21,7 @@
   "devDependencies": {
     "@reduxjs/toolkit": "next",
     "@vitejs/plugin-react": "^4.0.4",
+    "@vituum/vite-plugin-liquid": "^1.0.0",
     "@yarnpkg/pnpify": "^4.0.0-rc.48",
     "classnames": "^2.3.2",
     "clipboard": "^2.0.11",
@@ -47,6 +48,7 @@
     "redux-logger": "^3.0.6",
     "vite": "^4.4.8",
     "vite-plugin-pwa": "^0.16.4",
+    "vituum": "^1.0.0",
     "workbox-core": "^7.0.0",
     "workbox-precaching": "^7.0.0",
     "workbox-webpack-plugin": "^7.0.0",

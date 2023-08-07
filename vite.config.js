@@ -1,21 +1,21 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import vituum from 'vituum'
+import liquid from '@vituum/vite-plugin-liquid'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     cssCodeSplit: false,
-    sourcemap: true,
-    rollupOptions: {
-      input: {
-        index: resolve(__dirname, 'index.html'),
-        about: resolve(__dirname, 'about.html')
-      }
-    }
+    sourcemap: true
   },
   plugins: [
+    vituum(),
+    liquid({
+      root: './src'
+    }),
     react(),
     VitePWA({
       injectRegister: null,
@@ -25,7 +25,14 @@ export default defineConfig({
       filename: 'sw.js',
       base: '/',
       scope: '/',
-      includeAssets: ['favicon.svg', 'favicon.ico', 'icon-192x192.png', 'icon-512x512.png', 'maskable_icon.png', 'about.html'],
+      includeAssets: [
+        'favicon.svg',
+        'favicon.ico',
+        'icon-192x192.png',
+        'icon-512x512.png',
+        'maskable_icon.png',
+        'about.html'
+      ],
       injectManifest: {
         globPatterns: ['**/*.{css,js,html,png,svg,ico}']
       },
