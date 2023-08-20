@@ -143,6 +143,12 @@ export const selectMaxConnections = createSelector(
         }[dbType]
 )
 
+export const selectHugePages = createSelector(
+  [selectTotalMemoryInKb],
+  // more 32GB - better also have huge page
+  (totalMemoryKBytes) => (totalMemoryKBytes >= 33554432 ? 'try' : 'off')
+)
+
 export const selectSharedBuffers = createSelector(
   [selectTotalMemoryInKb, selectDBType, selectOSType, selectDBVersion],
   (totalMemoryKb, dbType, osType, dbVersion) => {

@@ -18,6 +18,7 @@ import {
   selectConnectionNum,
   selectHDType,
   selectMaxConnections,
+  selectHugePages,
   selectSharedBuffers,
   selectEffectiveCacheSize,
   selectMaintenanceWorkMem,
@@ -104,6 +105,7 @@ const ConfigurationView = () => {
   const hdType = useSelector(selectHDType)
   // computed settings
   const maxConnectionsVal = useSelector(selectMaxConnections)
+  const hugePagesVal = useSelector(selectHugePages)
   const sharedBuffersVal = useSelector(selectSharedBuffers)
   const effectiveCacheSizeVal = useSelector(selectEffectiveCacheSize)
   const maintenanceWorkMemVal = useSelector(selectMaintenanceWorkMem)
@@ -164,7 +166,8 @@ const ConfigurationView = () => {
       ['default_statistics_target', defaultStatisticsTargetVal],
       ['random_page_cost', randomPageCostVal],
       ['effective_io_concurrency', effectiveIoConcurrencyVal],
-      ['work_mem', formatValue(workMemVal)]
+      ['work_mem', formatValue(workMemVal)],
+      ['huge_pages', hugePagesVal]
     ]
       .concat(getCheckpointSegments())
       .concat(getParallelSettings())
