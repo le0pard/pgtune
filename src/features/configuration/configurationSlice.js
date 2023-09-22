@@ -23,6 +23,14 @@ const SIZE_UNIT_MAP = {
   TB: 1099511627776
 }
 
+const DEFAULT_DB_SETTINGS = {
+  default: {
+    ['max_worker_processes']: 8,
+    ['max_parallel_workers_per_gather']: 2,
+    ['max_parallel_workers']: 8
+  }
+}
+
 // redux
 
 const initialState = {
@@ -89,39 +97,7 @@ const selectTotalMemoryInKb = createSelector(
 
 const selectDbDefaultValues = createSelector(
   [selectDBVersion],
-  (dbVersion) =>
-    ({
-      10: {
-        ['max_worker_processes']: 8,
-        ['max_parallel_workers_per_gather']: 2,
-        ['max_parallel_workers']: 8
-      },
-      11: {
-        ['max_worker_processes']: 8,
-        ['max_parallel_workers_per_gather']: 2,
-        ['max_parallel_workers']: 8
-      },
-      12: {
-        ['max_worker_processes']: 8,
-        ['max_parallel_workers_per_gather']: 2,
-        ['max_parallel_workers']: 8
-      },
-      13: {
-        ['max_worker_processes']: 8,
-        ['max_parallel_workers_per_gather']: 2,
-        ['max_parallel_workers']: 8
-      },
-      14: {
-        ['max_worker_processes']: 8,
-        ['max_parallel_workers_per_gather']: 2,
-        ['max_parallel_workers']: 8
-      },
-      15: {
-        ['max_worker_processes']: 8,
-        ['max_parallel_workers_per_gather']: 2,
-        ['max_parallel_workers']: 8
-      }
-    })[dbVersion]
+  (dbVersion) => DEFAULT_DB_SETTINGS[dbVersion] || DEFAULT_DB_SETTINGS.default
 )
 
 export const selectIsConfigured = createSelector(
