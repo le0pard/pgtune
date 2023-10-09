@@ -22,9 +22,9 @@ const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors 
       />
       <div className="form-dropdown-wrapper">
         <select
-          className="form-dropdown-wrapper__select"
           {...field}
           {...rest}
+          className="form-dropdown-wrapper__select"
           aria-describedby={`tooltip${dropdownID}Content`}
           id={dropdownID}
         >
