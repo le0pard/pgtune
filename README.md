@@ -6,12 +6,11 @@ Tuning PostgreSQL config by your hardware. Based on original [pgtune](https://gi
 
 ## Development
 
-Web app build on top of [middleman](http://middlemanapp.com/). To start it in development mode, you need install ruby, node.js and run in terminal:
+To start it in development mode, you need install node.js, yarn and run in terminal:
 
 ```bash
-$ bundle # get all ruby deps
 $ yarn # get all node.js deps
-$ middleman server # start server on 4567 port
+$ yarn dev # start server on 5173 port
 ```
 
 ## Contributing
