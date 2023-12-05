@@ -46,7 +46,7 @@
     "react-router": "^6.20.1",
     "react-router-dom": "^6.20.1",
     "redux-logger": "^3.0.6",
-    "vite": "^5.0.4",
+    "vite": "^5.0.5",
     "vite-plugin-pwa": "^0.17.2",
     "vituum": "^1.1.0",
     "workbox-core": "^7.0.0",

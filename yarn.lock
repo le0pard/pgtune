@@ -7268,7 +7268,7 @@ __metadata:
     react-router: "npm:^6.20.1"
     react-router-dom: "npm:^6.20.1"
     redux-logger: "npm:^3.0.6"
-    vite: "npm:^5.0.4"
+    vite: "npm:^5.0.5"
     vite-plugin-pwa: "npm:^0.17.2"
     vituum: "npm:^1.1.0"
     workbox-core: "npm:^7.0.0"
@@ -9231,7 +9231,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0, vite@npm:^5.0.4":
+"vite@npm:^5.0":
   version: 5.0.4
   resolution: "vite@npm:5.0.4"
   dependencies:
@@ -9268,6 +9268,46 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 3d1726e5ee09c99ca8f57ebb34428ceb23e51705cd9e39ee97cb123870caaff1e65fbeaed00658f8112dd6ac658e90cd020bd33c090ecd190fb962e43cc8d64c
+  languageName: node
+  linkType: hard
+
+"vite@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "vite@npm:5.0.5"
+  dependencies:
+    esbuild: "npm:^0.19.3"
+    fsevents: "npm:~2.3.3"
+    postcss: "npm:^8.4.32"
+    rollup: "npm:^4.2.0"
+  peerDependencies:
+    "@types/node": ^18.0.0 || >=20.0.0
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: f4cd6e6e38448bdb6dd4dc36c0b34a5c42944d88961b9df246e75a4c3237196b1c64b1afc563524405d1fe3f34e728b9dbfd8cbc5af4e0a03371033d8057fdfe
   languageName: node
   linkType: hard
 
