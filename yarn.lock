@@ -94,7 +94,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.23.3":
+"@babel/core@npm:^7.23.5":
   version: 7.23.5
   resolution: "@babel/core@npm:7.23.5"
   dependencies:
@@ -1437,7 +1437,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.8.4":
   version: 7.23.2
   resolution: "@babel/runtime@npm:7.23.2"
   dependencies:
@@ -2536,23 +2536,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reduxjs/toolkit@npm:^2.0.0-rc.3":
-  version: 2.0.0-rc.3
-  resolution: "@reduxjs/toolkit@npm:2.0.0-rc.3"
+"@reduxjs/toolkit@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@reduxjs/toolkit@npm:2.0.1"
   dependencies:
     immer: "npm:^10.0.3"
-    redux: "npm:^5.0.0-rc.1"
-    redux-thunk: "npm:^3.0.0-rc.0"
-    reselect: "npm:^5.0.0-rc.1"
+    redux: "npm:^5.0.0"
+    redux-thunk: "npm:^3.1.0"
+    reselect: "npm:^5.0.1"
   peerDependencies:
     react: ^16.9.0 || ^17.0.0 || ^18
-    react-redux: ^7.2.1 || ^8.1.3 || ^9.0.0-rc.0
+    react-redux: ^7.2.1 || ^8.1.3 || ^9.0.0
   peerDependenciesMeta:
     react:
       optional: true
     react-redux:
       optional: true
-  checksum: edbb642fd62b2c0da1952fca911bdea32c00c9dad7e4537c2467330ce37ab5f98afa5ad080456c4f19faf131986fd78f5242bd06517b25fc1e55afbdd388d300
+  checksum: a385264a2c584e863f3d469d11edeae26f262c68fca6b0b7603479c7f68302b9388e07f2570e67bb84870c174fa300fccb03d392859b7cc154a9b100fcd2bb63
   languageName: node
   linkType: hard
 
@@ -2771,7 +2771,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__core@npm:^7.20.4":
+"@types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
   dependencies:
@@ -3017,18 +3017,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "@vitejs/plugin-react@npm:4.2.0"
+"@vitejs/plugin-react@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "@vitejs/plugin-react@npm:4.2.1"
   dependencies:
-    "@babel/core": "npm:^7.23.3"
+    "@babel/core": "npm:^7.23.5"
     "@babel/plugin-transform-react-jsx-self": "npm:^7.23.3"
     "@babel/plugin-transform-react-jsx-source": "npm:^7.23.3"
-    "@types/babel__core": "npm:^7.20.4"
+    "@types/babel__core": "npm:^7.20.5"
     react-refresh: "npm:^0.14.0"
   peerDependencies:
     vite: ^4.2.0 || ^5.0.0
-  checksum: 989d465f92588ed16902b822e1efe5c33bb13594b25d8d9d2ec4e7b23dd54847ff232b4318c0309c08acf38e1f27c182774bccf37122a4d04d0cba41c2ef7e67
+  checksum: d7fa6dacd3c246bcee482ff4b7037b2978b6ca002b79780ad4921e91ae4bc85ab234cfb94f8d4d825fed8488a0acdda2ff02b47c27b3055187c0727b18fc725e
   languageName: node
   linkType: hard
 
@@ -4550,12 +4550,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-refresh@npm:^0.4.4":
-  version: 0.4.4
-  resolution: "eslint-plugin-react-refresh@npm:0.4.4"
+"eslint-plugin-react-refresh@npm:^0.4.5":
+  version: 0.4.5
+  resolution: "eslint-plugin-react-refresh@npm:0.4.5"
   peerDependencies:
     eslint: ">=7"
-  checksum: d6c4571362ceca3c71c4f88ce60a646204da9d278e5d1b7390e5327ec23fe963fee4cb070814e1dc869d385f7ba96923f9c1889f0688029ebb0f3e8b49ca0ffb
+  checksum: f1526f55829f7eb4d9031fa082cb967f0bc578e8e2a3dfb9e5a47fc31cb0785bfa58ae717157f57241f7086a8790a88a6ec82743eaa5ca392a6b0fdb379169f8
   languageName: node
   linkType: hard
 
@@ -5286,7 +5286,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.2":
+"hoist-non-react-statics@npm:^3.3.0":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -7239,8 +7239,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pgtune@workspace:."
   dependencies:
-    "@reduxjs/toolkit": "npm:^2.0.0-rc.3"
-    "@vitejs/plugin-react": "npm:^4.2.0"
+    "@reduxjs/toolkit": "npm:^2.0.1"
+    "@vitejs/plugin-react": "npm:^4.2.1"
     "@vituum/vite-plugin-liquid": "npm:^1.1.0"
     "@yarnpkg/pnpify": "npm:^4.0.1"
     classnames: "npm:^2.3.2"
@@ -7250,7 +7250,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.0.1"
     eslint-plugin-react: "npm:^7.33.2"
     eslint-plugin-react-hooks: "npm:^4.6.0"
-    eslint-plugin-react-refresh: "npm:^0.4.4"
+    eslint-plugin-react-refresh: "npm:^0.4.5"
     formik: "npm:^2.4.5"
     highlight.js: "npm:^11.9.0"
     jest: "npm:^29.7.0"
@@ -7258,18 +7258,18 @@ __metadata:
     normalize.css: "npm:^8.0.1"
     postcss: "npm:^8.4.32"
     postcss-import: "npm:^15.1.0"
-    postcss-load-config: "npm:^5.0.0"
+    postcss-load-config: "npm:^5.0.2"
     postcss-preset-env: "npm:^9.3.0"
     prettier: "npm:^3.1.0"
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    react-redux: "npm:^8.1.3"
+    react-redux: "npm:^9.0.2"
     react-router: "npm:^6.20.1"
     react-router-dom: "npm:^6.20.1"
     redux-logger: "npm:^3.0.6"
-    vite: "npm:^5.0.4"
-    vite-plugin-pwa: "npm:^0.17.2"
+    vite: "npm:^5.0.6"
+    vite-plugin-pwa: "npm:^0.17.4"
     vituum: "npm:^1.1.0"
     workbox-core: "npm:^7.0.0"
     workbox-precaching: "npm:^7.0.0"
@@ -7515,9 +7515,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-load-config@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "postcss-load-config@npm:5.0.0"
+"postcss-load-config@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "postcss-load-config@npm:5.0.2"
   dependencies:
     lilconfig: "npm:^3.0.0"
     yaml: "npm:^2.3.4"
@@ -7529,7 +7529,7 @@ __metadata:
       optional: true
     postcss:
       optional: true
-  checksum: e56a39d7f5c4995da04c378f74490b94900ea273be39a9644adfc46b8e6ca690fc147baa07cc0a7c23534f1bbaa980c416ab4c075ef48867835c8d64862055c3
+  checksum: f5519426707a7c31baaabcedf4aea0376dfdef517b69895db2ce274811ee609d0bd566a3170bf477703bd1c910f09163a299112a3d07b4537552037c8257a4c5
   languageName: node
   linkType: hard
 
@@ -7911,23 +7911,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-redux@npm:^8.1.3":
-  version: 8.1.3
-  resolution: "react-redux@npm:8.1.3"
+"react-redux@npm:^9.0.2":
+  version: 9.0.2
+  resolution: "react-redux@npm:9.0.2"
   dependencies:
-    "@babel/runtime": "npm:^7.12.1"
-    "@types/hoist-non-react-statics": "npm:^3.3.1"
     "@types/use-sync-external-store": "npm:^0.0.3"
-    hoist-non-react-statics: "npm:^3.3.2"
-    react-is: "npm:^18.0.0"
     use-sync-external-store: "npm:^1.0.0"
   peerDependencies:
-    "@types/react": ^16.8 || ^17.0 || ^18.0
-    "@types/react-dom": ^16.8 || ^17.0 || ^18.0
-    react: ^16.8 || ^17.0 || ^18.0
-    react-dom: ^16.8 || ^17.0 || ^18.0
-    react-native: ">=0.59"
-    redux: ^4 || ^5.0.0-beta.0
+    "@types/react": ^18.2.41
+    "@types/react-dom": ^18.2.17
+    react: ^18.0
+    react-dom: ^18.0
+    react-native: ">=0.71"
+    redux: ^5.0.0
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -7939,7 +7935,7 @@ __metadata:
       optional: true
     redux:
       optional: true
-  checksum: c4c7586cff3abeb784e73598d330f5301116a4e9942fd36895f2bccd8990001709c6c3ea1817edb75ee477470d6c67c9113e05a7f86b2b68a3950c9c29fe20cb
+  checksum: 9f9ef00f84a86c3ab6fc8fb1c51eac26f9dff733aa5f4ae573bb2bb34dfb40ec3c6fc107b6db9946f511b21a816d0505aed424ec6831d3d16bca719735fef85e
   languageName: node
   linkType: hard
 
@@ -8010,19 +8006,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux-thunk@npm:^3.0.0-rc.0":
-  version: 3.0.0-rc.0
-  resolution: "redux-thunk@npm:3.0.0-rc.0"
+"redux-thunk@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "redux-thunk@npm:3.1.0"
   peerDependencies:
-    redux: ^5.0.0-rc.0
-  checksum: 24ddf5ebfd372b548b16b8d05e57ff01d6d7c01bafb58d7122bb0c0415668949f7529f047443cee50892495e019ffb4c10562ac2509699ef337c416e5d1332fe
+    redux: ^5.0.0
+  checksum: 38c563db5f0bbec90d2e65cc27f3c870c1b6102e0c071258734fac41cb0e51d31d894125815c2f4133b20aff231f51f028ad99bccc05a7e3249f1a5d5a959ed3
   languageName: node
   linkType: hard
 
-"redux@npm:^5.0.0-rc.1":
-  version: 5.0.0-rc.1
-  resolution: "redux@npm:5.0.0-rc.1"
-  checksum: 34a91d79ba9019fc4a0536bae14a6a74d3dd710fe39ec0cb9a84a48e24d46e8edf632d24f1d42c168c8afbd90b3e3ff0adcb844a344e3adac2743d0638cb7548
+"redux@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "redux@npm:5.0.0"
+  checksum: a316de394977a5a0b6aa36c439efb6773710f9a8b3642590b17ec12987825b3aca9e21d64ee0200e35551e0ac4226a228e917f6911949bd7db6a314458c9cedc
   languageName: node
   linkType: hard
 
@@ -8122,10 +8118,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reselect@npm:^5.0.0-rc.1":
-  version: 5.0.0-rc.1
-  resolution: "reselect@npm:5.0.0-rc.1"
-  checksum: c3458fef3935ac9aa69848d6a67b26684ea6fcda42ddacb12b0b2aea69dddfd77e9cd8be518cbf85db338e98856c3c549299b934ed8605e2b9c5cc844e30082f
+"reselect@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "reselect@npm:5.0.1"
+  checksum: 32ab562f00afb9441903bd3290e392b411d07d504899d0731d0dbd62de0bad467ff7301edab418d08a2ea4dbfa6e51400646ea64af86a811e71560558c92a5b4
   languageName: node
   linkType: hard
 
@@ -9214,9 +9210,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-pwa@npm:^0.17.2":
-  version: 0.17.2
-  resolution: "vite-plugin-pwa@npm:0.17.2"
+"vite-plugin-pwa@npm:^0.17.4":
+  version: 0.17.4
+  resolution: "vite-plugin-pwa@npm:0.17.4"
   dependencies:
     debug: "npm:^4.3.4"
     fast-glob: "npm:^3.3.2"
@@ -9227,11 +9223,11 @@ __metadata:
     vite: ^3.1.0 || ^4.0.0 || ^5.0.0
     workbox-build: ^7.0.0
     workbox-window: ^7.0.0
-  checksum: 147d77d2aa77dbe3eeb9e6fab112b6dc4dca27e5b76cd717405ebbd02c5cd2e5df8bdafb83bb1d2aa889cfcf56e7dcd396445210fe00387ff11ca5f93b318870
+  checksum: 4dc3764f074e523dbb620399d4c83637b3219be3fe9cb3dd18664eaa8a39c6aa8c639d83f14127876cae4c0cdb1c7ded7910c26546c38b066f4514e4b58d4849
   languageName: node
   linkType: hard
 
-"vite@npm:^5.0, vite@npm:^5.0.4":
+"vite@npm:^5.0":
   version: 5.0.4
   resolution: "vite@npm:5.0.4"
   dependencies:
@@ -9268,6 +9264,46 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 3d1726e5ee09c99ca8f57ebb34428ceb23e51705cd9e39ee97cb123870caaff1e65fbeaed00658f8112dd6ac658e90cd020bd33c090ecd190fb962e43cc8d64c
+  languageName: node
+  linkType: hard
+
+"vite@npm:^5.0.6":
+  version: 5.0.6
+  resolution: "vite@npm:5.0.6"
+  dependencies:
+    esbuild: "npm:^0.19.3"
+    fsevents: "npm:~2.3.3"
+    postcss: "npm:^8.4.32"
+    rollup: "npm:^4.2.0"
+  peerDependencies:
+    "@types/node": ^18.0.0 || >=20.0.0
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: c4647591c76ad5a3b818efef37fb23d793512be832b7daa6c54719f24b0dbadfe383b18cf0896e2c4eaf9d1acab031b3caeaa36570b79ce9da2be6a328d27a1e
   languageName: node
   linkType: hard
 
