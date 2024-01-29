@@ -2529,12 +2529,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reduxjs/toolkit@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@reduxjs/toolkit@npm:2.0.1"
+"@reduxjs/toolkit@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@reduxjs/toolkit@npm:2.1.0"
   dependencies:
     immer: "npm:^10.0.3"
-    redux: "npm:^5.0.0"
+    redux: "npm:^5.0.1"
     redux-thunk: "npm:^3.1.0"
     reselect: "npm:^5.0.1"
   peerDependencies:
@@ -2545,7 +2545,7 @@ __metadata:
       optional: true
     react-redux:
       optional: true
-  checksum: a385264a2c584e863f3d469d11edeae26f262c68fca6b0b7603479c7f68302b9388e07f2570e67bb84870c174fa300fccb03d392859b7cc154a9b100fcd2bb63
+  checksum: 5f0cb39771595282e366931a55121676fb113d131343ebc42ecf2b96ffaf17691ce40032018e1aa75fbe72e347c4fd22601a6737d3906b9a618c0a60e096a2a9
   languageName: node
   linkType: hard
 
@@ -7066,7 +7066,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pgtune@workspace:."
   dependencies:
-    "@reduxjs/toolkit": "npm:^2.0.1"
+    "@reduxjs/toolkit": "npm:^2.1.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
     "@vituum/vite-plugin-liquid": "npm:^1.1.0"
     "@yarnpkg/pnpify": "npm:^4.0.1"
@@ -7096,7 +7096,7 @@ __metadata:
     react-router-dom: "npm:^6.21.3"
     redux-logger: "npm:^3.0.6"
     vite: "npm:^5.0.12"
-    vite-plugin-pwa: "npm:^0.17.4"
+    vite-plugin-pwa: "npm:^0.17.5"
     vituum: "npm:^1.1.0"
     workbox-core: "npm:^7.0.0"
     workbox-precaching: "npm:^7.0.0"
@@ -7847,10 +7847,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "redux@npm:5.0.0"
-  checksum: a316de394977a5a0b6aa36c439efb6773710f9a8b3642590b17ec12987825b3aca9e21d64ee0200e35551e0ac4226a228e917f6911949bd7db6a314458c9cedc
+"redux@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "redux@npm:5.0.1"
+  checksum: a373f9ed65693ead58bea5ef61c1d6bef39da9f2706db3be6f84815f3a1283230ecd1184efb1b3daa7f807d8211b0181564ca8f336fc6ee0b1e2fa0ba06737c2
   languageName: node
   linkType: hard
 
@@ -9012,9 +9012,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-pwa@npm:^0.17.4":
-  version: 0.17.4
-  resolution: "vite-plugin-pwa@npm:0.17.4"
+"vite-plugin-pwa@npm:^0.17.5":
+  version: 0.17.5
+  resolution: "vite-plugin-pwa@npm:0.17.5"
   dependencies:
     debug: "npm:^4.3.4"
     fast-glob: "npm:^3.3.2"
@@ -9025,7 +9025,7 @@ __metadata:
     vite: ^3.1.0 || ^4.0.0 || ^5.0.0
     workbox-build: ^7.0.0
     workbox-window: ^7.0.0
-  checksum: 4dc3764f074e523dbb620399d4c83637b3219be3fe9cb3dd18664eaa8a39c6aa8c639d83f14127876cae4c0cdb1c7ded7910c26546c38b066f4514e4b58d4849
+  checksum: 6f3aa5929bd2a3b2ddaca0c61b5930c37044c310fbbe03d032125480ad580f8d687f0c6c8c96ffa99b0da21e902a357e4b80e2ef666bb632c40f4fbc17af4dab
   languageName: node
   linkType: hard
 
