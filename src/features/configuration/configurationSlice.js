@@ -388,5 +388,23 @@ export const selectWarningInfoMessages = createSelector(
   }
 )
 
+export const selectWalLevel = createSelector([selectDBType], (dbType) => {
+  if (dbType === DB_TYPE_DESKTOP) {
+    return [
+      {
+        key: 'wal_level',
+        value: 'minimal'
+      },
+      // max_wal_senders must be 0 when wal_level=minimal
+      {
+        key: 'max_wal_senders',
+        value: '0'
+      }
+    ]
+  }
+
+  return []
+})
+
 // Export the slice reducer as the default export
 export default configurationSlice.reducer

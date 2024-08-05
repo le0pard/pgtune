@@ -4,7 +4,8 @@ import {
   selectDefaultStatisticsTarget,
   selectRandomPageCost,
   selectEffectiveIoConcurrency,
-  selectParallelSettings
+  selectParallelSettings,
+  selectWalLevel
 } from '../configurationSlice'
 
 describe('selectIsConfigured', () => {
@@ -266,5 +267,30 @@ describe('selectParallelSettings', () => {
       { key: 'max_parallel_workers', value: 31 },
       { key: 'max_parallel_maintenance_workers', value: 4 }
     ])
+  })
+})
+
+describe('selectWalLevel', () => {
+  it('desktop app', () => {
+    expect(
+      selectWalLevel({
+        configuration: {
+          dbType: 'desktop'
+        }
+      })
+    ).toEqual([
+      { key: 'wal_level', value: 'minimal' },
+      { key: 'max_wal_senders', value: '0' }
+    ])
+  })
+
+  it('web app', () => {
+    expect(
+      selectWalLevel({
+        configuration: {
+          dbType: 'web'
+        }
+      })
+    ).toEqual([])
   })
 })

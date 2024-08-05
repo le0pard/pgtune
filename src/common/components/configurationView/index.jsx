@@ -30,7 +30,8 @@ import {
   selectEffectiveIoConcurrency,
   selectParallelSettings,
   selectWorkMem,
-  selectWarningInfoMessages
+  selectWarningInfoMessages,
+  selectWalLevel
 } from '@features/configuration/configurationSlice'
 import {
   openConfigTab,
@@ -110,6 +111,7 @@ const ConfigurationView = () => {
   const effectiveCacheSizeVal = useSelector(selectEffectiveCacheSize)
   const maintenanceWorkMemVal = useSelector(selectMaintenanceWorkMem)
   const checkpointSegmentsVal = useSelector(selectCheckpointSegments)
+  const walLevelVal = useSelector(selectWalLevel)
   const checkpointCompletionTargetVal = useSelector(selectCheckpointCompletionTarget)
   const walBuffersVal = useSelector(selectWalBuffers)
   const defaultStatisticsTargetVal = useSelector(selectDefaultStatisticsTarget)
@@ -153,6 +155,8 @@ const ConfigurationView = () => {
       return [item.key, formatValue(item.value)]
     })
 
+  const getWalLevel = () => walLevelVal.map((item) => [item.key, item.value])
+
   const getParallelSettings = () => parallelSettingsVal.map((item) => [item.key, item.value])
 
   const postgresqlConfig = () => {
@@ -171,6 +175,7 @@ const ConfigurationView = () => {
     ]
       .concat(getCheckpointSegments())
       .concat(getParallelSettings())
+      .concat(getWalLevel())
 
     return configData
       .filter((item) => !!item[1])
