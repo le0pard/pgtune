@@ -99,13 +99,15 @@ const hdTypeOptions = () => [
   }
 ]
 
-const filterFormParams = (params = {}) =>
-  Object.keys(params).reduce((arr, key) => {
-    if (FORM_FIELDS.includes(key)) {
+const filterFormParams = (params = {}) => {
+  const paramKeys = Object.keys(params)
+  return FORM_FIELDS.reduce((arr, key) => {
+    if (paramKeys.includes(key)) {
       arr[key] = params[key]
     }
     return arr
   }, {})
+}
 
 const ConfigurationForm = () => {
   const dispatch = useDispatch()
