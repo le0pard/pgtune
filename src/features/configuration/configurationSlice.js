@@ -4,7 +4,6 @@ import {
   DEFAULT_DB_VERSION,
   OS_LINUX,
   OS_WINDOWS,
-  OS_MAC,
   DB_TYPE_WEB,
   DB_TYPE_OLTP,
   DB_TYPE_DW,
@@ -81,8 +80,8 @@ export const selectOSType = (state) => selectConfiguration(state).osType
 export const selectDBType = (state) => selectConfiguration(state).dbType
 export const selectTotalMemory = (state) => selectConfiguration(state).totalMemory
 export const selectTotalMemoryUnit = (state) => selectConfiguration(state).totalMemoryUnit
-export const selectCPUNum = (state) => selectConfiguration(state).cpuNum
-export const selectConnectionNum = (state) => selectConfiguration(state).connectionNum
+export const selectCPUNum = (state) => selectConfiguration(state).cpuNum || null
+export const selectConnectionNum = (state) => selectConfiguration(state).connectionNum || null
 export const selectHDType = (state) => selectConfiguration(state).hdType
 
 const selectTotalMemoryInBytes = createSelector(
@@ -246,20 +245,18 @@ export const selectDefaultStatisticsTarget = createSelector(
     })[dbType]
 )
 
-export const selectRandomPageCost = createSelector(
-  [selectHDType],
-  (hdType) =>
-    ({
-      [HARD_DRIVE_HDD]: 4,
-      [HARD_DRIVE_SSD]: 1.1,
-      [HARD_DRIVE_SAN]: 1.1
-    })[hdType]
-)
+export const selectRandomPageCost = createSelector([selectHDType], (hdType) => {
+  return {
+    [HARD_DRIVE_HDD]: 4,
+    [HARD_DRIVE_SSD]: 1.1,
+    [HARD_DRIVE_SAN]: 1.1
+  }[hdType]
+})
 
 export const selectEffectiveIoConcurrency = createSelector(
   [selectOSType, selectHDType],
   (osType, hdType) => {
-    if ([OS_WINDOWS, OS_MAC].indexOf(osType) >= 0) {
+    if (osType !== OS_LINUX) {
       return null
     }
     return {
@@ -273,7 +270,7 @@ export const selectEffectiveIoConcurrency = createSelector(
 export const selectParallelSettings = createSelector(
   [selectDBVersion, selectDBType, selectCPUNum],
   (dbVersion, dbType, cpuNum) => {
-    if (cpuNum < 4) {
+    if (!cpuNum || cpuNum < 4) {
       return []
     }
 

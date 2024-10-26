@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
+import { useSearchParams } from 'react-router-dom'
 import classnames from 'classnames'
 import { Formik, Field, Form } from 'formik'
 import FormField from '@common/components/form/field'
@@ -25,6 +26,19 @@ import {
 } from '@features/configuration/constants'
 
 import './configuration-form.css'
+
+const FORM_DEFAULTS = {
+  dbVersion: DEFAULT_DB_VERSION,
+  osType: OS_LINUX,
+  dbType: DB_TYPE_WEB,
+  cpuNum: '',
+  totalMemory: '',
+  totalMemoryUnit: SIZE_UNIT_GB,
+  connectionNum: '',
+  hdType: HARD_DRIVE_SSD
+}
+
+const FORM_FIELDS = Object.keys(FORM_DEFAULTS)
 
 const dbVersionOptions = () =>
   DB_VERSIONS.map((version) => ({
@@ -85,27 +99,48 @@ const hdTypeOptions = () => [
   }
 ]
 
+const filterFormParams = (params = {}) =>
+  Object.keys(params).reduce((arr, key) => {
+    if (FORM_FIELDS.includes(key)) {
+      arr[key] = params[key]
+    }
+    return arr
+  }, {})
+
 const ConfigurationForm = () => {
   const dispatch = useDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const handleGenerateConfig = (values, { setSubmitting }) => {
-    dispatch(submitConfiguration(values))
+    setSearchParams(new URLSearchParams(values))
     setSubmitting(false)
   }
+
+  const urlParams = useMemo(() => {
+    return filterFormParams(Object.fromEntries(searchParams.entries()))
+  }, [searchParams])
+
+  const formParams = useMemo(() => {
+    let vParams = urlParams
+
+    try {
+      validationSchema.validateSync(vParams)
+    } catch (e) {
+      console.warn('Url params error', e)
+      vParams = {} // back to default
+    }
+
+    return Object.assign({}, FORM_DEFAULTS, vParams)
+  }, [urlParams])
+
+  useEffect(() => {
+    dispatch(submitConfiguration(formParams))
+  }, [dispatch, formParams])
 
   return (
     <Formik
       onSubmit={handleGenerateConfig}
-      initialValues={{
-        dbVersion: DEFAULT_DB_VERSION,
-        osType: OS_LINUX,
-        dbType: DB_TYPE_WEB,
-        cpuNum: '',
-        totalMemory: '',
-        totalMemoryUnit: SIZE_UNIT_GB,
-        connectionNum: '',
-        hdType: HARD_DRIVE_SSD
-      }}
+      initialValues={formParams}
       validationSchema={validationSchema}
     >
       {({ isSubmitting }) => (
