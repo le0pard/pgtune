@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import classnames from 'classnames'
+import { isEmpty } from 'lodash-es'
 import { Formik, Field, Form } from 'formik'
 import FormField from '@common/components/form/field'
 import FormDropdown from '@common/components/form/dropdown'
@@ -123,6 +124,10 @@ const ConfigurationForm = () => {
   }, [searchParams])
 
   const formParams = useMemo(() => {
+    if (isEmpty(urlParams)) {
+      return FORM_DEFAULTS
+    }
+
     let vParams = urlParams
 
     try {

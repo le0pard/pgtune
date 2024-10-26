@@ -7600,7 +7600,7 @@ __metadata:
     formik: "npm:^2.4.6"
     highlight.js: "npm:^11.10.0"
     jest: "npm:^29.7.0"
-    lodash: "npm:^4.17.21"
+    lodash-es: "npm:^4.17.21"
     normalize.css: "npm:^8.0.1"
     postcss: "npm:^8.4.47"
     postcss-import: "npm:^16.1.0"
