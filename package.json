@@ -39,7 +39,7 @@
     "postcss": "^8.4.47",
     "postcss-import": "^16.1.0",
     "postcss-load-config": "^6.0.1",
-    "postcss-preset-env": "^10.0.8",
+    "postcss-preset-env": "^10.0.9",
     "prettier": "^3.3.3",
     "prop-types": "^15.8.1",
     "react-redux": "^9.1.2",
@@ -49,11 +49,11 @@
     "vite": "^5.4.10",
     "vite-plugin-pwa": "^0.20.5",
     "vituum": "^1.1.1",
-    "workbox-core": "^7.1.0",
-    "workbox-precaching": "^7.1.0",
-    "workbox-webpack-plugin": "^7.1.0",
-    "workbox-window": "^7.1.0",
+    "workbox-core": "^7.3.0",
+    "workbox-precaching": "^7.3.0",
+    "workbox-webpack-plugin": "^7.3.0",
+    "workbox-window": "^7.3.0",
     "yup": "^1.4.0"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.5.1"
 }
