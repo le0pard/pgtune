@@ -11,6 +11,10 @@ export default defineConfig({
     cssCodeSplit: false,
     sourcemap: true
   },
+  server: {
+    host: process.env.VITE_HOST || 'localhost',
+    port: process.env.VITE_PORT || 5173
+  },
   plugins: [
     vituum(),
     liquid({
