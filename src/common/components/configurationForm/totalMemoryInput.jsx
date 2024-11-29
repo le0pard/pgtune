@@ -48,8 +48,8 @@ const TotalMemoryInput = ({ tooltip }) => {
         required="required"
         min={1}
         max={MAX_NUMERIC_VALUE}
-        step="any"
-        pattern="[0-9]+([.][0-9]+)?"
+        step={1}
+        pattern="[0-9]{1,6}"
         placeholder="Memory size (RAM, required)"
       />
       <Field

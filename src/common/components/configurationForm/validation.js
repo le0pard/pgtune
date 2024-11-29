@@ -32,11 +32,10 @@ export const validationSchema = Yup.object().shape({
     .oneOf([SIZE_UNIT_MB, SIZE_UNIT_GB], 'Unsupported unit'),
   totalMemory: Yup.number()
     .required('Required')
+    .integer('Must be an integer')
     .when('totalMemoryUnit', (totalMemoryUnit, schema) => {
       if (totalMemoryUnit === SIZE_UNIT_MB) {
-        return schema
-          .min(MIN_MB_MEMORY, `Must be greater than or equal to ${MIN_MB_MEMORY} MB`)
-          .integer()
+        return schema.min(MIN_MB_MEMORY, `Must be greater than or equal to ${MIN_MB_MEMORY} MB`)
       }
       return schema.min(1, 'Must be greater than zero')
     })
