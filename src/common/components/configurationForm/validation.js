@@ -13,10 +13,10 @@ import {
   SIZE_UNIT_GB,
   HARD_DRIVE_HDD,
   HARD_DRIVE_SSD,
-  HARD_DRIVE_SAN
+  HARD_DRIVE_SAN,
+  MAX_NUMERIC_VALUE
 } from '@features/configuration/constants'
 
-const MAX_INTEGER = 9999
 const MIN_MB_MEMORY = 512
 
 const DB_TYPES = [DB_TYPE_WEB, DB_TYPE_OLTP, DB_TYPE_DW, DB_TYPE_DESKTOP, DB_TYPE_MIXED]
@@ -39,7 +39,7 @@ export const validationSchema = Yup.object().shape({
       }
       return schema.min(1, 'Must be greater than zero')
     })
-    .max(MAX_INTEGER, `Must be less than or equal to ${MAX_INTEGER}`),
+    .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`),
   hdType: Yup.string().required('Required').oneOf(HARD_DRIVE_TYPES, 'Unsupported hard drive'),
   cpuNum: Yup.number()
     .transform((value) => (isNaN(value) ? null : value))
@@ -47,12 +47,12 @@ export const validationSchema = Yup.object().shape({
     .notRequired()
     .integer('Must be an integer')
     .min(1, 'Must be greater than zero')
-    .max(MAX_INTEGER, `Must be less than or equal to ${MAX_INTEGER}`),
+    .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`),
   connectionNum: Yup.number()
     .transform((value) => (isNaN(value) ? null : value))
     .nullable()
     .notRequired()
     .integer('Must be an integer')
     .min(20, 'Must be greater than or equal to 20')
-    .max(MAX_INTEGER, `Must be less than or equal to ${MAX_INTEGER}`)
+    .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`)
 })

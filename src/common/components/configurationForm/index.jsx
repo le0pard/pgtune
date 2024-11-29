@@ -23,7 +23,8 @@ import {
   HARD_DRIVE_SSD,
   HARD_DRIVE_SAN,
   HARD_DRIVE_HDD,
-  SIZE_UNIT_GB
+  SIZE_UNIT_GB,
+  MAX_NUMERIC_VALUE
 } from '@features/configuration/constants'
 
 import './configuration-form.css'
@@ -182,9 +183,9 @@ const ConfigurationForm = () => {
             autoCorrect="off"
             autoCapitalize="none"
             min={1}
-            max={9999}
+            max={MAX_NUMERIC_VALUE}
             step={1}
-            pattern="[0-9]{1,4}"
+            pattern="[0-9]{1,6}"
             placeholder="Number of CPUs (optional)"
             label="Number of CPUs"
             tooltip={
@@ -203,9 +204,9 @@ const ConfigurationForm = () => {
             autoCorrect="off"
             autoCapitalize="none"
             min={20}
-            max={9999}
+            max={MAX_NUMERIC_VALUE}
             step={1}
-            pattern="[0-9]{1,4}"
+            pattern="[0-9]{1,6}"
             placeholder="Number of Connections (optional)"
             label="Number of Connections"
             tooltip="Maximum number of PostgreSQL client connections"
