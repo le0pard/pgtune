@@ -19,7 +19,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@reduxjs/toolkit": "^2.5.0",
+    "@reduxjs/toolkit": "^2.5.1",
     "@vitejs/plugin-react": "^4.3.4",
     "@vituum/vite-plugin-liquid": "^1.1.0",
     "@yarnpkg/pnpify": "^4.1.3",
