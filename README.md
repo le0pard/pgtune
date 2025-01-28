@@ -1,4 +1,4 @@
-# [PgTune](https://pgtune.leopard.in.ua/) ![Build and Deploy](https://github.com/le0pard/pgtune/workflows/Build%20and%20Deploy/badge.svg?branch=master)
+# [PgTune](https://pgtune.leopard.in.ua/) [![Build and Deploy](https://github.com/le0pard/pgtune/actions/workflows/deploy.yml/badge.svg)](https://github.com/le0pard/pgtune/actions/workflows/deploy.yml)
 
 [![PGTune](https://repository-images.githubusercontent.com/17980400/ff62f200-e3ae-11e9-9169-fcdbb1cbdb20 "PGTune")](https://pgtune.leopard.in.ua/)
 
