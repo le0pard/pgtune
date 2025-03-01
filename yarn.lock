@@ -7466,6 +7466,7 @@ __metadata:
     react-router: "npm:^7.2.0"
     react-router-dom: "npm:^7.2.0"
     redux-logger: "npm:^3.0.6"
+    terser: "npm:^5.39.0"
     vite: "npm:^6.2.0"
     vite-plugin-pwa: "npm:^0.21.1"
     vituum: "npm:^1.1.1"
@@ -9168,7 +9169,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:^5.17.4":
+"terser@npm:^5.17.4, terser@npm:^5.39.0":
   version: 5.39.0
   resolution: "terser@npm:5.39.0"
   dependencies:

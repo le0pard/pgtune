@@ -9,7 +9,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   build: {
     cssCodeSplit: false,
-    sourcemap: true
+    sourcemap: true,
+    minify: 'terser'
   },
   server: {
     host: process.env.VITE_HOST || 'localhost',
