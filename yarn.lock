@@ -7467,7 +7467,7 @@ __metadata:
     react-router-dom: "npm:^7.2.0"
     redux-logger: "npm:^3.0.6"
     terser: "npm:^5.39.0"
-    vite: "npm:^6.2.0"
+    vite: "npm:^6.2.3"
     vite-plugin-pwa: "npm:^0.21.1"
     vituum: "npm:^1.1.1"
     workbox-core: "npm:^7.3.0"
@@ -9615,9 +9615,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "vite@npm:6.2.0"
+"vite@npm:^6.2.3":
+  version: 6.2.3
+  resolution: "vite@npm:6.2.3"
   dependencies:
     esbuild: "npm:^0.25.0"
     fsevents: "npm:~2.3.3"
@@ -9663,7 +9663,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/5ffa8bb22881276d12cc38d15feaf7df6c95f902ac6c4cd983f27af1cdb6929cf9e3ef9d6dfe74e8af27f1c1adf4cdfeeeed7fada8a53011575241bdaf0ca6e5
+  checksum: 10/3cd7b3a8d9a31c8eb7141004ddb1c9489afa0cdaf0ccbf41dacee121a8f13062d0fb2cee160589aaf1c534a02402aac674f1b1618876ba0bd299b55f69b2b495
   languageName: node
   linkType: hard
 
