@@ -334,29 +334,29 @@ export const selectWorkMem = createSelector(
   ) => {
     const parallelForWorkMem = (() => {
       if (parallelSettingsValue.length) {
-        const maxParallelWorkersPerGather = parallelSettingsValue.find(
-          (param) => param['key'] === 'max_parallel_workers_per_gather'
+        const maxWorkerProcesses = parallelSettingsValue.find(
+          (param) => param['key'] === 'max_worker_processes'
         )
         if (
-          maxParallelWorkersPerGather &&
-          maxParallelWorkersPerGather['value'] &&
-          maxParallelWorkersPerGather['value'] > 0
+          maxWorkerProcesses &&
+          maxWorkerProcesses['value'] &&
+          maxWorkerProcesses['value'] > 0
         ) {
-          return maxParallelWorkersPerGather['value']
+          return maxWorkerProcesses['value']
         }
       }
       if (
-        dbDefaultValues['max_parallel_workers_per_gather'] &&
-        dbDefaultValues['max_parallel_workers_per_gather'] > 0
+        dbDefaultValues['max_worker_processes'] &&
+        dbDefaultValues['max_worker_processes'] > 0
       ) {
-        return dbDefaultValues['max_parallel_workers_per_gather']
+        return dbDefaultValues['max_worker_processes']
       }
       return 1
     })()
     // work_mem is assigned any time a query calls for a sort, or a hash, or any other structure that needs a space allocation, which can happen multiple times per query. So you're better off assuming max_connections * 2 or max_connections * 3 is the amount of RAM that will actually use in reality. At the very least, you need to subtract shared_buffers from the amount you're distributing to connections in work_mem.
-    // The other thing to consider is that there's no reason to run on the edge of available memory. If you do that, there's a very high risk the out-of-memory killer will come along and start killing PostgreSQL backends. Always leave a buffer of some kind in case of spikes in memory usage. So your maximum amount of memory available in work_mem should be ((RAM - shared_buffers) / (max_connections * 3) / max_parallel_workers_per_gather).
+    // The other thing to consider is that there's no reason to run on the edge of available memory. If you do that, there's a very high risk the out-of-memory killer will come along and start killing PostgreSQL backends. Always leave a buffer of some kind in case of spikes in memory usage. So your maximum amount of memory available in work_mem should be (RAM - shared_buffers) / ((max_connections + max_worker_processes) * 3).
     const workMemValue =
-      (totalMemoryKb - sharedBuffersValue) / (maxConnectionsValue * 3) / parallelForWorkMem
+      (totalMemoryKb - sharedBuffersValue) / ((maxConnectionsValue + parallelForWorkMem) * 3)
     let workMemResult = {
       [DB_TYPE_WEB]: Math.floor(workMemValue),
       [DB_TYPE_OLTP]: Math.floor(workMemValue),
