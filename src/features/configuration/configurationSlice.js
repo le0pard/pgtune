@@ -337,18 +337,11 @@ export const selectWorkMem = createSelector(
         const maxWorkerProcesses = parallelSettingsValue.find(
           (param) => param['key'] === 'max_worker_processes'
         )
-        if (
-          maxWorkerProcesses &&
-          maxWorkerProcesses['value'] &&
-          maxWorkerProcesses['value'] > 0
-        ) {
+        if (maxWorkerProcesses && maxWorkerProcesses['value'] && maxWorkerProcesses['value'] > 0) {
           return maxWorkerProcesses['value']
         }
       }
-      if (
-        dbDefaultValues['max_worker_processes'] &&
-        dbDefaultValues['max_worker_processes'] > 0
-      ) {
+      if (dbDefaultValues['max_worker_processes'] && dbDefaultValues['max_worker_processes'] > 0) {
         return dbDefaultValues['max_worker_processes']
       }
       return 1
