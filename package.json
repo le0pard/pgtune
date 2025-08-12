@@ -14,10 +14,6 @@
     "format": "pnpify run prettier --write src postcss.config.js jest.config.js",
     "test": "node --experimental-vm-modules $(yarn bin jest) -c jest.config.js"
   },
-  "dependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
-  },
   "devDependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "@vitejs/plugin-react": "^4.7.0",
@@ -27,7 +23,7 @@
     "clipboard": "^2.0.11",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.2",
-    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
@@ -42,12 +38,14 @@
     "postcss-preset-env": "^10.2.4",
     "prettier": "^3.6.2",
     "prop-types": "^15.8.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "react-redux": "^9.2.0",
-    "react-router": "^7.7.1",
-    "react-router-dom": "^7.7.1",
+    "react-router": "^7.8.0",
+    "react-router-dom": "^7.8.0",
     "redux-logger": "^3.0.6",
     "terser": "^5.43.1",
-    "vite": "^7.0.6",
+    "vite": "^7.1.2",
     "vite-plugin-pwa": "^1.0.2",
     "vituum": "^1.2.0",
     "workbox-core": "^7.3.0",
@@ -56,5 +54,5 @@
     "workbox-window": "^7.3.0",
     "yup": "^1.7.0"
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.9.2"
 }
