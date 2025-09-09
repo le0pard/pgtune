@@ -45,7 +45,7 @@
     "react-router-dom": "^7.8.0",
     "redux-logger": "^3.0.6",
     "terser": "^5.43.1",
-    "vite": "^7.1.2",
+    "vite": "^7.1.5",
     "vite-plugin-pwa": "^1.0.2",
     "vituum": "^1.2.0",
     "workbox-core": "^7.3.0",
