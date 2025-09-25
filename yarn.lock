@@ -5339,12 +5339,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-refresh@npm:^0.4.20":
-  version: 0.4.20
-  resolution: "eslint-plugin-react-refresh@npm:0.4.20"
+"eslint-plugin-react-refresh@npm:^0.4.22":
+  version: 0.4.22
+  resolution: "eslint-plugin-react-refresh@npm:0.4.22"
   peerDependencies:
     eslint: ">=8.40"
-  checksum: 10/88aec8eeaf96f1a09df72a2134dc36dd8ef22a3ceb1ccba7865e63a128596e6be31942925edf896dcd12d0d51b8cb77530293ef4e738b600955a5a5c913f52d8
+  checksum: 10/73e488bb0200a039c293efbe9707ff8e99de47f5bad4c7970a8b93e1900aa4435dc39a053d6603b4b592151bc6ad8047dbb3741b13e0b339d6432ff0f9b05be6
   languageName: node
   linkType: hard
 
@@ -8021,7 +8021,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.5.4"
     eslint-plugin-react: "npm:^7.37.5"
     eslint-plugin-react-hooks: "npm:^5.2.0"
-    eslint-plugin-react-refresh: "npm:^0.4.20"
+    eslint-plugin-react-refresh: "npm:^0.4.22"
     formik: "npm:^2.4.6"
     highlight.js: "npm:^11.11.1"
     jest: "npm:^30.1.3"
@@ -8036,8 +8036,8 @@ __metadata:
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
     react-redux: "npm:^9.2.0"
-    react-router: "npm:^7.9.1"
-    react-router-dom: "npm:^7.9.1"
+    react-router: "npm:^7.9.2"
+    react-router-dom: "npm:^7.9.2"
     redux-logger: "npm:^3.0.6"
     terser: "npm:^5.44.0"
     vite: "npm:^7.1.7"
@@ -8741,21 +8741,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.9.1":
-  version: 7.9.1
-  resolution: "react-router-dom@npm:7.9.1"
+"react-router-dom@npm:^7.9.2":
+  version: 7.9.2
+  resolution: "react-router-dom@npm:7.9.2"
   dependencies:
-    react-router: "npm:7.9.1"
+    react-router: "npm:7.9.2"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10/84525d182d913d74299213a60da8d2a49b233aa626dd9216f68e513a81cb33a19d1c50eaf09684b9283ae2d5d8cd0cdcc2ae6cd554ea5d8e4e016b442252ddc9
+  checksum: 10/7fce2675c64be54c2ed49a81a118c893602809cdc27ca46d44fb40be1e6122b8e6659a3b6db428d136cc40f36227356a336e9996db970e531d4f3e04aa9109c3
   languageName: node
   linkType: hard
 
-"react-router@npm:7.9.1, react-router@npm:^7.9.1":
-  version: 7.9.1
-  resolution: "react-router@npm:7.9.1"
+"react-router@npm:7.9.2, react-router@npm:^7.9.2":
+  version: 7.9.2
+  resolution: "react-router@npm:7.9.2"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -8765,7 +8765,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10/f15aa70bfe95bf05f755283c2b67d3316cd037c99aebf5cc6b4fd49db99a5a4a36ba0664661a84bf7d60a7643dd0457f1835896891dbf7b8f16e670e79e80491
+  checksum: 10/57ab6beafef6bb6374ef81a4db0262bd687affa5c3336acf211d4d52890ee3ab815183f3fddbf3ef8a4d04dec76cf4941e30d1adacfdbc3fefc6795ff6bf81b5
   languageName: node
   linkType: hard
 
