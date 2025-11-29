@@ -2379,20 +2379,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/compat@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@eslint/compat@npm:2.0.0"
-  dependencies:
-    "@eslint/core": "npm:^1.0.0"
-  peerDependencies:
-    eslint: ^8.40 || 9
-  peerDependenciesMeta:
-    eslint:
-      optional: true
-  checksum: 10/b1f63053ac643d47ce44d354a65e095e2b59f6b6aee4d6ca08cfa3b0800fc784bbd6895494ba726479faf9591e8e2887dc13c7a776f0d9627f0fdbf7faa34fdb
-  languageName: node
-  linkType: hard
-
 "@eslint/config-array@npm:^0.21.1":
   version: 0.21.1
   resolution: "@eslint/config-array@npm:0.21.1"
@@ -2422,16 +2408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/core@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@eslint/core@npm:1.0.0"
-  dependencies:
-    "@types/json-schema": "npm:^7.0.15"
-  checksum: 10/0e2fc001ec3a12a9d6cd5de8eaf6c9eb1deec892777fed04e59eae0f3073c69988451eda32623524db76adaa7075747a8de5aa39b91b9084c711db452194eae9
-  languageName: node
-  linkType: hard
-
-"@eslint/eslintrc@npm:^3.3.1, @eslint/eslintrc@npm:^3.3.3":
+"@eslint/eslintrc@npm:^3.3.1":
   version: 3.3.3
   resolution: "@eslint/eslintrc@npm:3.3.3"
   dependencies:
@@ -8217,8 +8194,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pgtune@workspace:."
   dependencies:
-    "@eslint/compat": "npm:^2.0.0"
-    "@eslint/eslintrc": "npm:^3.3.3"
     "@eslint/js": "npm:^9.39.1"
     "@reduxjs/toolkit": "npm:^2.11.0"
     "@vitejs/plugin-react": "npm:^5.1.1"
