@@ -8,6 +8,12 @@ import js from '@eslint/js'
 
 export default defineConfig([
   globalIgnores(['**/dist', '**/.yarn/**', '**/.pnp.**']),
+  js.configs.recommended,
+  reactPlugin.configs.flat.recommended,
+  reactPlugin.configs.flat['jsx-runtime'],
+  reactRefresh.configs.recommended,
+  reactHooks.configs.flat.recommended,
+  eslintPluginPrettierRecommended,
   {
     files: ['**/*.js', '**/*.jsx'],
     languageOptions: {
@@ -29,14 +35,6 @@ export default defineConfig([
         version: 'detect'
       }
     },
-    extends: [
-      js.configs.recommended,
-      reactPlugin.configs.flat.recommended,
-      reactPlugin.configs.flat['jsx-runtime'],
-      reactRefresh.configs.recommended,
-      reactHooks.configs.flat.recommended,
-      eslintPluginPrettierRecommended
-    ],
     rules: {
       'react-refresh/only-export-components': [
         'warn',
