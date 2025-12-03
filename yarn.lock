@@ -8217,16 +8217,16 @@ __metadata:
     postcss-import: "npm:^16.1.1"
     postcss-load-config: "npm:^6.0.1"
     postcss-preset-env: "npm:^10.4.0"
-    prettier: "npm:^3.7.2"
+    prettier: "npm:^3.7.4"
     prop-types: "npm:^15.8.1"
-    react: "npm:^19.2.0"
-    react-dom: "npm:^19.2.0"
+    react: "npm:^19.2.1"
+    react-dom: "npm:^19.2.1"
     react-redux: "npm:^9.2.0"
-    react-router: "npm:^7.9.6"
-    react-router-dom: "npm:^7.9.6"
+    react-router: "npm:^7.10.0"
+    react-router-dom: "npm:^7.10.0"
     redux-logger: "npm:^3.0.6"
     terser: "npm:^5.44.1"
-    vite: "npm:^7.2.4"
+    vite: "npm:^7.2.6"
     vite-plugin-pwa: "npm:^1.2.0"
     vituum: "npm:^1.2.0"
     workbox-core: "npm:^7.4.0"
@@ -8753,12 +8753,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.7.2":
-  version: 3.7.2
-  resolution: "prettier@npm:3.7.2"
+"prettier@npm:^3.7.4":
+  version: 3.7.4
+  resolution: "prettier@npm:3.7.4"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10/2d51d3318f2eb80d3339dc884a4425ce7c326722c05be13bc7712403c2b0ddf8b07696776210cb8015e2ede6a737704423749218b2eda27647c92693eda01672
+  checksum: 10/b4d00ea13baed813cb777c444506632fb10faaef52dea526cacd03085f01f6db11fc969ccebedf05bf7d93c3960900994c6adf1b150e28a31afd5cfe7089b313
   languageName: node
   linkType: hard
 
@@ -8869,14 +8869,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.2.0":
-  version: 19.2.0
-  resolution: "react-dom@npm:19.2.0"
+"react-dom@npm:^19.2.1":
+  version: 19.2.1
+  resolution: "react-dom@npm:19.2.1"
   dependencies:
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.0
-  checksum: 10/3dbba071b9b1e7a19eae55f05c100f6b44f88c0aee72397d719ae338248ca66ed5028e6964c1c14870cc3e1abcecc91b22baba6dc2072f819dea81a9fd72f2fd
+    react: ^19.2.1
+  checksum: 10/cceea7104bd3ad52e2f6377f47c4b346244c1263917fd95745e31647ff8ab23b16f719c2bfc8bcf2a6c802ecb9c9e81f08b09e3447e1f49bc27368283ed299ba
   languageName: node
   linkType: hard
 
@@ -8927,21 +8927,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.9.6":
-  version: 7.9.6
-  resolution: "react-router-dom@npm:7.9.6"
+"react-router-dom@npm:^7.10.0":
+  version: 7.10.0
+  resolution: "react-router-dom@npm:7.10.0"
   dependencies:
-    react-router: "npm:7.9.6"
+    react-router: "npm:7.10.0"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10/fd8ecd098abbff9355d17038143fb42db61fd0b28ede3ac5f6a945009cc61dca86745a4da331904b1b7918055844c9d8bdbc6565b934267b516b2db7dea6ab1a
+  checksum: 10/1ae0f00a666506c589c619e2cb199963fec743939990cf95bf5eb84fcc73a69cd642dc919e939c03bd9b9e989993c002c7d9915f4988e49d0502cbf7db981aef
   languageName: node
   linkType: hard
 
-"react-router@npm:7.9.6, react-router@npm:^7.9.6":
-  version: 7.9.6
-  resolution: "react-router@npm:7.9.6"
+"react-router@npm:7.10.0, react-router@npm:^7.10.0":
+  version: 7.10.0
+  resolution: "react-router@npm:7.10.0"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -8951,14 +8951,14 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10/f34714b3701caf689c306631f5326a9fdab585799021c234aa3eee75bed6bfcea9250f0867e984e4e3c43c77d947c41bd47b70c0601d76c4290e03247fb7ac23
+  checksum: 10/0e44d71f4b3d8c86eb20da4d6037f2283ce35f6723bc7571d8ec7ed6d899b1d6227d6065d7a317b2533fd324d1e1dec0f88b711cedf13cbfe7c939873a07f5a3
   languageName: node
   linkType: hard
 
-"react@npm:^19.2.0":
-  version: 19.2.0
-  resolution: "react@npm:19.2.0"
-  checksum: 10/e13bcdb8e994c3cfa922743cb75ca8deb60531bf02f584d2d8dab940a8132ce8a2e6ef16f8ed7f372b4072e7a7eeff589b2812dabbedfa73e6e46201dac8a9d0
+"react@npm:^19.2.1":
+  version: 19.2.1
+  resolution: "react@npm:19.2.1"
+  checksum: 10/7c7ab0f40b98e87e1466bea8c28564c5f3c384506cbda93d24788d32b40bf6059c991687c7e90a396b11f09223a779a81b1188af9acd839aaa0a672987c13107
   languageName: node
   linkType: hard
 
@@ -10499,9 +10499,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^7.2.4":
-  version: 7.2.4
-  resolution: "vite@npm:7.2.4"
+"vite@npm:^7.2.6":
+  version: 7.2.6
+  resolution: "vite@npm:7.2.6"
   dependencies:
     esbuild: "npm:^0.25.0"
     fdir: "npm:^6.5.0"
@@ -10550,7 +10550,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/25962e65159e62fa6b643ac5bc79457c61c9b2cec9a1a17763b067b1e5ecac6483ad84247d6d457d81e25c5d1f8c553372bedf71dee09d8c1bd41af6c7b016a5
+  checksum: 10/c640ed9c91957749287af2f483f5b5024a56718ba7cf32b0e2c398772fdf7fdb9fd5f97665c41712d4e9422c14009e283d0b69ac1b64b4f91474625bebe324de
   languageName: node
   linkType: hard
 
