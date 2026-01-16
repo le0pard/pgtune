@@ -1674,9 +1674,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/postcss-alpha-function@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@csstools/postcss-alpha-function@npm:2.0.0"
+"@csstools/postcss-alpha-function@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@csstools/postcss-alpha-function@npm:2.0.1"
   dependencies:
     "@csstools/css-color-parser": "npm:^4.0.0"
     "@csstools/css-parser-algorithms": "npm:^4.0.0"
@@ -1685,7 +1685,7 @@ __metadata:
     "@csstools/utilities": "npm:^3.0.0"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10/75aef3669c427ef8abdd63685e963fbd637a440de502cab087caf50bef5de083e80da77280cb7f90b79e7fe7b03e60d42b346c7a798d501f76d1cdfc83d438f3
+  checksum: 10/e4a2116e2bf0c31b4baaa0507c892c6146461932e5a1ea312e4d7d17931690c7cbe65904af5e462bd73591d874164eb0ed257a9d51c391768d8b1e4adffae2d9
   languageName: node
   linkType: hard
 
@@ -8556,7 +8556,7 @@ __metadata:
     postcss: "npm:^8.5.6"
     postcss-import: "npm:^16.1.1"
     postcss-load-config: "npm:^6.0.1"
-    postcss-preset-env: "npm:^11.1.0"
+    postcss-preset-env: "npm:^11.1.1"
     prettier: "npm:^3.8.0"
     prop-types: "npm:^15.8.1"
     react: "npm:^19.2.3"
@@ -8565,7 +8565,7 @@ __metadata:
     react-router: "npm:^7.12.0"
     react-router-dom: "npm:^7.12.0"
     redux-logger: "npm:^3.0.6"
-    terser: "npm:^5.44.1"
+    terser: "npm:^5.46.0"
     vite: "npm:^7.3.1"
     vite-plugin-pwa: "npm:^1.2.0"
     vituum: "npm:^1.2.0"
@@ -8930,11 +8930,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-preset-env@npm:^11.1.0":
-  version: 11.1.0
-  resolution: "postcss-preset-env@npm:11.1.0"
+"postcss-preset-env@npm:^11.1.1":
+  version: 11.1.1
+  resolution: "postcss-preset-env@npm:11.1.1"
   dependencies:
-    "@csstools/postcss-alpha-function": "npm:^2.0.0"
+    "@csstools/postcss-alpha-function": "npm:^2.0.1"
     "@csstools/postcss-cascade-layers": "npm:^6.0.0"
     "@csstools/postcss-color-function": "npm:^5.0.0"
     "@csstools/postcss-color-function-display-p3-linear": "npm:^2.0.0"
@@ -9008,7 +9008,7 @@ __metadata:
     postcss-selector-not: "npm:^9.0.0"
   peerDependencies:
     postcss: ^8.4
-  checksum: 10/1233dfa30ab9e473e2c2398924215aa6ff0b955b7b1404e22ca76112ee524e68b6a196f8f844bf2a09baf96e335ed329b5f36aa451a8ca6492d17a5dfa758022
+  checksum: 10/153dc9ad7f6a68225cd64383aec3da242bdc9fc97db3b7f4fc47a1f24d8c428c0280568d1e402a3d26911eaff7afd798b6983f849fd6d51dcca598d4c191afa8
   languageName: node
   linkType: hard
 
@@ -10346,9 +10346,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:^5.44.1":
-  version: 5.44.1
-  resolution: "terser@npm:5.44.1"
+"terser@npm:^5.46.0":
+  version: 5.46.0
+  resolution: "terser@npm:5.46.0"
   dependencies:
     "@jridgewell/source-map": "npm:^0.3.3"
     acorn: "npm:^8.15.0"
@@ -10356,7 +10356,7 @@ __metadata:
     source-map-support: "npm:~0.5.20"
   bin:
     terser: bin/terser
-  checksum: 10/516ece205b7db778c4eddb287a556423cb776b7ca591b06270e558a76aa2d57c8d71d9c3c4410b276d3426beb03516fff7d96ff8b517e10730a72908810c6e33
+  checksum: 10/331e4f5a165d91d16ac6a95b510d4f5ef24679e4bc9e1b4e4182e89b7245f614d24ce0def583e2ca3ca45f82ba810991e0c5b66dd4353a6e0b7082786af6bd35
   languageName: node
   linkType: hard
 
