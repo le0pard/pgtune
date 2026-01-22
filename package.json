@@ -32,7 +32,7 @@
     "globals": "^17.0.0",
     "highlight.js": "^11.11.1",
     "jest": "^30.2.0",
-    "lodash-es": "^4.17.22",
+    "lodash-es": "^4.17.23",
     "normalize.css": "^8.0.1",
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",

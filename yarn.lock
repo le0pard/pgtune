@@ -7832,10 +7832,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash-es@npm:^4.17.22":
-  version: 4.17.22
-  resolution: "lodash-es@npm:4.17.22"
-  checksum: 10/e93bcb57f9105b99269ff0fdcae5c2e6a5b607c7c520a6d8b5270ab608bd0c7e3346b03db5ddd994e569562600b7702615455c5f208418f9e82990aac0b76a91
+"lodash-es@npm:^4.17.23":
+  version: 4.17.23
+  resolution: "lodash-es@npm:4.17.23"
+  checksum: 10/1feae200df22eb0bd93ca86d485e77784b8a9fb1d13e91b66e9baa7a7e5e04be088c12a7e20c2250fc0bd3db1bc0ef0affc7d9e3810b6af2455a3c6bf6dde59e
   languageName: node
   linkType: hard
 
@@ -8551,7 +8551,7 @@ __metadata:
     globals: "npm:^17.0.0"
     highlight.js: "npm:^11.11.1"
     jest: "npm:^30.2.0"
-    lodash-es: "npm:^4.17.22"
+    lodash-es: "npm:^4.17.23"
     normalize.css: "npm:^8.0.1"
     postcss: "npm:^8.5.6"
     postcss-import: "npm:^16.1.1"
