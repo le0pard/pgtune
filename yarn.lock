@@ -7698,14 +7698,14 @@ __metadata:
   linkType: hard
 
 "liquidjs@npm:^10.9":
-  version: 10.21.0
-  resolution: "liquidjs@npm:10.21.0"
+  version: 10.25.0
+  resolution: "liquidjs@npm:10.25.0"
   dependencies:
     commander: "npm:^10.0.0"
   bin:
     liquid: bin/liquid.js
     liquidjs: bin/liquid.js
-  checksum: 10/523e01be293be0ee8c17e99267b0a6e8604aba415dbaa49c8b36bed865a762903981539da220ad6767ac29a13fcd6cf657d2ded8be1e34d77a31e93c618e3fec
+  checksum: 10/f1bbb5c759e1b30f96165d5b1adc4a4a20883bd2e3fe817a491c945418a5a2043de61b9a05fb76fcb2c096e574cfff33dab0f6bd85bb95566e68ed17797288b4
   languageName: node
   linkType: hard
 
