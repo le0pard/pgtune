@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleTheme, selectThemeSettings } from '@features/settings/settingsSlice'
 import classnames from 'classnames'

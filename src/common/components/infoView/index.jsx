@@ -1,5 +1,3 @@
-import React from 'react'
-
 import './info-view.css'
 
 const InfoView = () => (

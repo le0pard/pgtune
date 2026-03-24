@@ -1,6 +1,6 @@
 import '@css/app.css'
 
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { configureAppStore } from '@app/store'
@@ -37,11 +37,11 @@ const start = () => {
   initServiceWorker(store)
 
   ReactDOM.createRoot(rootElement).render(
-    <React.StrictMode>
+    <StrictMode>
       <Provider store={store}>
         <App />
       </Provider>
-    </React.StrictMode>
+    </StrictMode>
   )
 }
 

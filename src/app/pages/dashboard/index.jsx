@@ -1,4 +1,3 @@
-import React from 'react'
 import Configurator from '@common/components/configurator'
 import pgtuneLogo from './pgtune.svg'
 

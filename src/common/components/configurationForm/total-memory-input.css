@@ -91,7 +91,7 @@
   width: 100%;
 }
 
-.total-memory-amount__input:placeholder {
+.total-memory-amount__input::placeholder {
   color: var(--inputColorPlaceholder);
   font-size: 1.2rem;
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import GithubCorner from '@common/components/githubCorner'
 import AppUpdate from '@common/components/appUpdate'
 import ThemeSwitcher from '@common/components/themeSwitcher'

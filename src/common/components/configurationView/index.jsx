@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { Fragment, useCallback } from 'react'
 import classnames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import hljs from 'highlight.js/lib/core'
@@ -221,7 +221,7 @@ const ConfigurationView = () => {
     const generatedConfigRes = generateConfig()
 
     return (
-      <React.Fragment>
+      <Fragment>
         {isAlterSystem ? (
           <p>
             <strong>ALTER SYSTEM</strong> writes the given parameter setting to the{' '}
@@ -248,7 +248,7 @@ const ConfigurationView = () => {
             label="Copy configuration"
           />
         </div>
-      </React.Fragment>
+      </Fragment>
     )
   }
 

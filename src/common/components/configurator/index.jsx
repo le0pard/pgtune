@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIsConfigured, resetConfiguration } from '@features/configuration/configurationSlice'
 import InfoView from '@common/components/infoView'

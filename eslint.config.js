@@ -41,8 +41,7 @@ export default defineConfig([
         {
           allowConstantExport: true
         }
-      ],
-      'react/jsx-uses-react': 'error'
+      ]
     }
   }
 ])

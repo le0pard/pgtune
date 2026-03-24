@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import { camelCase } from 'lodash-es'
 import Tooltip from './tooltip'

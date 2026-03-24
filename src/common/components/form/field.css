@@ -90,10 +90,12 @@
   padding: 2px 1px;
   box-sizing: border-box;
 }
-.form-field-wrapper__input:placeholder {
+
+.form-field-wrapper__input::placeholder {
   font-size: 1.2rem;
   color: var(--inputColorPlaceholder);
 }
+
 .form-field-wrapper__input:focus:not(:focus-visible) {
   outline: none;
 }

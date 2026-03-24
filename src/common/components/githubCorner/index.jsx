@@ -1,4 +1,3 @@
-import React from 'react'
 import { useSelector } from 'react-redux'
 import { selectThemeSettings } from '@features/settings/settingsSlice'
 import { APP_THEMES_LIGHT, APP_THEMES_DARK } from '@features/settings/constants'
