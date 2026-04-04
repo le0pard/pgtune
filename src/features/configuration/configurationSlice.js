@@ -14,7 +14,10 @@ import {
   HARD_DRIVE_SSD,
   HARD_DRIVE_HDD,
   HARD_DRIVE_SAN,
-  HARD_DRIVE_NVME
+  HARD_DRIVE_NVME,
+  DB_SIZE_LESS_RAM,
+  DB_SIZE_MID_RAM,
+  DB_SIZE_GREATER_RAM
 } from './constants'
 
 const SIZE_UNIT_MAP = {
@@ -42,7 +45,8 @@ const initialState = {
   totalMemoryUnit: SIZE_UNIT_GB,
   cpuNum: null,
   connectionNum: null,
-  hdType: HARD_DRIVE_SSD
+  hdType: HARD_DRIVE_SSD,
+  dbSize: DB_SIZE_MID_RAM
 }
 
 const configurationSlice = createSlice({
@@ -65,7 +69,8 @@ const configurationSlice = createSlice({
         totalMemoryUnit: payload.totalMemoryUnit,
         cpuNum: payload.cpuNum ? parseInt(payload.cpuNum, 10) : null,
         connectionNum: payload.connectionNum ? parseInt(payload.connectionNum, 10) : null,
-        hdType: payload.hdType
+        hdType: payload.hdType,
+        dbSize: payload.dbSize
       }
     })
   }
@@ -85,6 +90,7 @@ export const selectTotalMemoryUnit = (state) => selectConfiguration(state).total
 export const selectCPUNum = (state) => selectConfiguration(state).cpuNum || null
 export const selectConnectionNum = (state) => selectConfiguration(state).connectionNum || null
 export const selectHDType = (state) => selectConfiguration(state).hdType
+export const selectDBSize = (state) => selectConfiguration(state).dbSize
 
 const selectTotalMemoryInBytes = createSelector(
   [selectTotalMemory, selectTotalMemoryUnit],
@@ -259,14 +265,23 @@ export const selectDefaultStatisticsTarget = createSelector(
     })[dbType]
 )
 
-export const selectRandomPageCost = createSelector([selectHDType], (hdType) => {
-  return {
-    [HARD_DRIVE_HDD]: 4,
-    [HARD_DRIVE_SSD]: 1.1,
-    [HARD_DRIVE_SAN]: 1.1,
-    [HARD_DRIVE_NVME]: 1.1
-  }[hdType]
-})
+export const selectRandomPageCost = createSelector(
+  [selectHDType, selectDBSize],
+  (hdType, dbSize) => {
+    // If the entire database fits in RAM, all read requests will be served
+    // from the OS page cache. Disk seek time (even for HDD) becomes irrelevant.
+    if (dbSize === DB_SIZE_LESS_RAM) {
+      return 1.1
+    }
+
+    return {
+      [HARD_DRIVE_HDD]: 4,
+      [HARD_DRIVE_SSD]: 1.1,
+      [HARD_DRIVE_SAN]: 1.1,
+      [HARD_DRIVE_NVME]: 1.1
+    }[hdType]
+  }
+)
 
 export const selectEffectiveIoConcurrency = createSelector(
   [selectOSType, selectHDType],
@@ -340,7 +355,8 @@ export const selectWorkMem = createSelector(
     selectDbDefaultValues,
     selectDBType,
     selectOSType,
-    selectDBVersion
+    selectDBVersion,
+    selectDBSize
   ],
   (
     totalMemoryKb,
@@ -350,7 +366,8 @@ export const selectWorkMem = createSelector(
     dbDefaultValues,
     dbType,
     osType,
-    dbVersion
+    dbVersion,
+    dbSize
   ) => {
     const parallelForWorkMem = (() => {
       if (parallelSettingsValue.length) {
@@ -379,6 +396,16 @@ export const selectWorkMem = createSelector(
       [DB_TYPE_DESKTOP]: Math.floor(workMemValue / 6),
       [DB_TYPE_MIXED]: Math.floor(workMemValue / 2)
     }[dbType]
+
+    if (dbSize === DB_SIZE_LESS_RAM) {
+      // OS Cache is underutilized because the DB fits entirely in RAM.
+      // We can safely boost work_mem by 30% to speed up sorts/hashes.
+      workMemResult = Math.floor(workMemResult * 1.3)
+    } else if (dbSize === DB_SIZE_GREATER_RAM) {
+      // OS Cache is under massive pressure. We must protect memory.
+      // Reduce work_mem by 10% to provide a wider safety net against OOM spikes.
+      workMemResult = Math.floor(workMemResult * 0.9)
+    }
 
     // Modern floor limit: 4 MB minimum to prevent disk-spill for simple queries
     const minWorkMem = (4 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']

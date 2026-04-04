@@ -15,7 +15,10 @@ import {
   HARD_DRIVE_SSD,
   HARD_DRIVE_SAN,
   HARD_DRIVE_NVME,
-  MAX_NUMERIC_VALUE
+  MAX_NUMERIC_VALUE,
+  DB_SIZE_LESS_RAM,
+  DB_SIZE_MID_RAM,
+  DB_SIZE_GREATER_RAM
 } from '@features/configuration/constants'
 
 const MIN_MB_MEMORY = 512
@@ -23,6 +26,8 @@ const MIN_MB_MEMORY = 512
 const DB_TYPES = [DB_TYPE_WEB, DB_TYPE_OLTP, DB_TYPE_DW, DB_TYPE_DESKTOP, DB_TYPE_MIXED]
 
 const HARD_DRIVE_TYPES = [HARD_DRIVE_HDD, HARD_DRIVE_SSD, HARD_DRIVE_SAN, HARD_DRIVE_NVME]
+
+const DB_SIZES = [DB_SIZE_LESS_RAM, DB_SIZE_MID_RAM, DB_SIZE_GREATER_RAM]
 
 export const validationSchema = Yup.object().shape({
   dbVersion: Yup.number().required('Required').oneOf(DB_VERSIONS, 'Unsupported database version'),
@@ -42,6 +47,7 @@ export const validationSchema = Yup.object().shape({
     })
     .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`),
   hdType: Yup.string().required('Required').oneOf(HARD_DRIVE_TYPES, 'Unsupported hard drive'),
+  dbSize: Yup.string().required('Required').oneOf(DB_SIZES, 'Unsupported db size'),
   cpuNum: Yup.number()
     .transform((value) => (isNaN(value) ? null : value))
     .nullable()

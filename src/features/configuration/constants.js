@@ -19,5 +19,9 @@ export const HARD_DRIVE_SSD = 'ssd'
 export const HARD_DRIVE_SAN = 'san'
 export const HARD_DRIVE_HDD = 'hdd'
 export const HARD_DRIVE_NVME = 'nvme'
+// database size vs ram
+export const DB_SIZE_LESS_RAM = 'less_ram'
+export const DB_SIZE_MID_RAM = 'mid_ram'
+export const DB_SIZE_GREATER_RAM = 'greater_ram'
 // maximum value for integer fields
 export const MAX_NUMERIC_VALUE = 999999

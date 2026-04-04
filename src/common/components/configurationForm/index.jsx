@@ -24,6 +24,9 @@ import {
   HARD_DRIVE_SAN,
   HARD_DRIVE_HDD,
   HARD_DRIVE_NVME,
+  DB_SIZE_LESS_RAM,
+  DB_SIZE_MID_RAM,
+  DB_SIZE_GREATER_RAM,
   SIZE_UNIT_GB,
   MAX_NUMERIC_VALUE
 } from '@features/configuration/constants'
@@ -38,7 +41,8 @@ const FORM_DEFAULTS = {
   totalMemory: '',
   totalMemoryUnit: SIZE_UNIT_GB,
   connectionNum: '',
-  hdType: HARD_DRIVE_SSD
+  hdType: HARD_DRIVE_SSD,
+  dbSize: DB_SIZE_MID_RAM
 }
 
 const FORM_FIELDS = Object.keys(FORM_DEFAULTS)
@@ -103,6 +107,21 @@ const hdTypeOptions = () => [
   {
     label: 'HDD storage',
     value: HARD_DRIVE_HDD
+  }
+]
+
+const dbSizeOptions = () => [
+  {
+    label: 'Less than RAM',
+    value: DB_SIZE_LESS_RAM
+  },
+  {
+    label: '1x - 3x RAM',
+    value: DB_SIZE_MID_RAM
+  },
+  {
+    label: 'More than 3x RAM',
+    value: DB_SIZE_GREATER_RAM
   }
 ]
 
@@ -222,6 +241,13 @@ const ConfigurationForm = () => {
             label="Data Storage"
             options={hdTypeOptions()}
             tooltip="Type of data storage device"
+          />
+          <Field
+            name="dbSize"
+            component={FormDropdown}
+            label="Total Data Size"
+            options={dbSizeOptions()}
+            tooltip="Estimated total size of your database compared to total server RAM"
           />
           <div className="configuration-form-btn-wrapper">
             <button

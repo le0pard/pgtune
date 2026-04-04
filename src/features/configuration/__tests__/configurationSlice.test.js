@@ -170,6 +170,16 @@ describe('selectRandomPageCost', () => {
       })
     ).toEqual(1.1)
   })
+  it('forces 1.1 for HDD when database fits entirely in RAM', () => {
+    expect(
+      selectRandomPageCost({
+        configuration: {
+          hdType: 'hdd',
+          dbSize: 'less_ram'
+        }
+      })
+    ).toEqual(1.1)
+  })
 })
 
 describe('selectEffectiveIoConcurrency', () => {
@@ -473,6 +483,55 @@ describe('selectWorkMem', () => {
         }
       })
     ).toBeGreaterThan(2096128) // Actually evaluates to 2796202 (~2.6GB)
+  })
+
+  it('safely boosts work_mem by 30% when database size is less than RAM', () => {
+    // A standard calculation might yield 100000 kB. With 'less_ram', it should multiply by 1.3
+    const standardWorkMem = selectWorkMem({
+      configuration: {
+        totalMemory: 64,
+        totalMemoryUnit: 'GB',
+        dbType: 'web',
+        osType: 'linux',
+        dbVersion: 15,
+        dbSize: 'mid_ram'
+      }
+    })
+    const boostedWorkMem = selectWorkMem({
+      configuration: {
+        totalMemory: 64,
+        totalMemoryUnit: 'GB',
+        dbType: 'web',
+        osType: 'linux',
+        dbVersion: 15,
+        dbSize: 'less_ram'
+      }
+    })
+    expect(boostedWorkMem).toEqual(Math.floor(standardWorkMem * 1.3))
+  })
+
+  it('safely reduces work_mem by 10% when database size is > 3x RAM to protect OS cache', () => {
+    const standardWorkMem = selectWorkMem({
+      configuration: {
+        totalMemory: 64,
+        totalMemoryUnit: 'GB',
+        dbType: 'web',
+        osType: 'linux',
+        dbVersion: 15,
+        dbSize: 'mid_ram'
+      }
+    })
+    const reducedWorkMem = selectWorkMem({
+      configuration: {
+        totalMemory: 64,
+        totalMemoryUnit: 'GB',
+        dbType: 'web',
+        osType: 'linux',
+        dbVersion: 15,
+        dbSize: 'greater_ram'
+      }
+    })
+    expect(reducedWorkMem).toEqual(Math.floor(standardWorkMem * 0.9))
   })
 })
 
