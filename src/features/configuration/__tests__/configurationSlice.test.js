@@ -8,7 +8,11 @@ import {
   selectWalLevel,
   selectHugePages,
   selectMaintenanceWorkMem,
-  selectWorkMem
+  selectWorkMem,
+  selectJit,
+  selectWalCompression,
+  selectAutovacuumMaxWorkers,
+  selectAutovacuumWorkMem
 } from '../configurationSlice'
 
 describe('selectIsConfigured', () => {
@@ -447,5 +451,95 @@ describe('selectWorkMem', () => {
         }
       })
     ).toBeGreaterThan(2096128) // Actually evaluates to 2796202 (~2.6GB)
+  })
+})
+
+describe('selectJit', () => {
+  it('turns off JIT for web/oltp workloads on PG12+', () => {
+    expect(selectJit({ configuration: { dbVersion: 12, dbType: 'web' } })).toEqual('off')
+    expect(selectJit({ configuration: { dbVersion: 15, dbType: 'oltp' } })).toEqual('off')
+  })
+
+  it('leaves JIT alone for Data Warehouses (DW) or older PG versions', () => {
+    expect(selectJit({ configuration: { dbVersion: 15, dbType: 'dw' } })).toEqual(null)
+    expect(selectJit({ configuration: { dbVersion: 11, dbType: 'web' } })).toEqual(null)
+  })
+})
+
+describe('selectWalCompression', () => {
+  it('enables wal_compression safely using built-in pglz for PG10 through PG14', () => {
+    expect(selectWalCompression({ configuration: { dbVersion: 10 } })).toEqual('on')
+    expect(selectWalCompression({ configuration: { dbVersion: 14 } })).toEqual('on')
+  })
+
+  it('uses lz4 for PG15+ assuming standard package installations', () => {
+    expect(selectWalCompression({ configuration: { dbVersion: 15 } })).toEqual('lz4')
+    expect(selectWalCompression({ configuration: { dbVersion: 17 } })).toEqual('lz4')
+  })
+})
+
+describe('selectAutovacuumMaxWorkers', () => {
+  it('scales autovacuum workers based on CPU count', () => {
+    expect(selectAutovacuumMaxWorkers({ configuration: { cpuNum: 32 } })).toEqual(5)
+    expect(selectAutovacuumMaxWorkers({ configuration: { cpuNum: 16 } })).toEqual(4)
+    expect(selectAutovacuumMaxWorkers({ configuration: { cpuNum: 8 } })).toEqual(null) // relies on PG default (3)
+  })
+})
+
+describe('selectAutovacuumWorkMem', () => {
+  it('leaves autovacuum_work_mem alone if maintenance_work_mem is small', () => {
+    expect(
+      selectAutovacuumWorkMem({
+        configuration: {
+          totalMemory: 4,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15
+        }
+      })
+    ).toEqual(null)
+  })
+
+  it('caps autovacuum_work_mem at 2GB if maintenance_work_mem is massive', () => {
+    expect(
+      selectAutovacuumWorkMem({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15
+        }
+      })
+    ).toEqual(2097152) // exactly 2GB
+  })
+
+  it('returns null for Windows PG17 or older because maintenance_work_mem is already safely capped below the threshold', () => {
+    expect(
+      selectAutovacuumWorkMem({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'windows',
+          dbVersion: 17
+        }
+      })
+    ).toEqual(null) // Falls back to safely capped maintenance_work_mem
+  })
+
+  it('caps autovacuum_work_mem at 2GB for Windows PG18+ where maintenance_work_mem is allowed to be massive', () => {
+    expect(
+      selectAutovacuumWorkMem({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'windows',
+          dbVersion: 18 // PG18 allows 8GB maintenance_work_mem
+        }
+      })
+    ).toEqual(2097152) // exactly 2GB
   })
 })

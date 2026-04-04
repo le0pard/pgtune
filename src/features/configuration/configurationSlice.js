@@ -385,7 +385,9 @@ export const selectWorkMem = createSelector(
 
     // Windows 64-bit has a strict 2GB limit up to PostgreSQL 17
     if (osType === OS_WINDOWS && dbVersion <= 17) {
-      const winMemoryLimit = (2 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB'] - (1 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
+      const winMemoryLimit =
+        (2 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB'] -
+        (1 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
       if (workMemResult > winMemoryLimit) {
         workMemResult = winMemoryLimit
       }
@@ -425,6 +427,66 @@ export const selectWalLevel = createSelector([selectDBType], (dbType) => {
 
   return []
 })
+
+export const selectJit = createSelector([selectDBVersion, selectDBType], (dbVersion, dbType) => {
+  // JIT compilation is enabled by default in PG 12+. For OLTP/Web workloads,
+  // it routinely causes CPU spikes and slow planning for simple, short queries.
+  // JIT compilation is beneficial primarily for long-running CPU-bound queries. Frequently these will be analytical queries.
+  if (dbVersion >= 12 && [DB_TYPE_WEB, DB_TYPE_OLTP, DB_TYPE_MIXED].includes(dbType)) {
+    return 'off'
+  }
+  return null // Omit for dw/desktop so it uses the PG default
+})
+
+export const selectWalCompression = createSelector([selectDBVersion], (dbVersion) => {
+  // PG 15+ introduced lz4 and zstd support. lz4 is significantly faster
+  // and lighter on CPU than the native pglz algorithm. Standard package
+  // installations compile with lz4 support by default.
+  if (dbVersion >= 15) {
+    return 'lz4'
+  }
+  // For PG 10 through 14, 'on' safely enables pglz compression.
+  if (dbVersion >= 10) {
+    return 'on'
+  }
+  return null
+})
+
+export const selectAutovacuumMaxWorkers = createSelector([selectCPUNum], (cpuNum) => {
+  // PG default is 3. We only safely scale it up on heavier servers.
+  if (!cpuNum) return null
+  if (cpuNum >= 32) return 5
+  if (cpuNum >= 16) return 4
+  return null
+})
+
+export const selectAutovacuumWorkMem = createSelector(
+  [selectMaintenanceWorkMem, selectOSType, selectDBVersion],
+  (maintenanceWorkMemValue, osType, dbVersion) => {
+    let autovacuumWorkMemValue = null
+
+    // By default, autovacuum_work_mem is -1 (uses maintenance_work_mem).
+    // Because we safely raised maintenance_work_mem to up to 8GB, letting 3-5 background
+    // workers each consume 8GB would cause severe OOM risks. We explicitly cap
+    // background vacuum memory to 2GB max per worker.
+    const threshold = (2 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB']
+    if (maintenanceWorkMemValue >= threshold) {
+      autovacuumWorkMemValue = threshold
+    }
+
+    // Windows 64-bit has a strict 2GB limit up to PostgreSQL 17
+    if (autovacuumWorkMemValue !== null && osType === OS_WINDOWS && dbVersion <= 17) {
+      const winMemoryLimit =
+        (2 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB'] -
+        (1 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
+      if (autovacuumWorkMemValue > winMemoryLimit) {
+        autovacuumWorkMemValue = winMemoryLimit
+      }
+    }
+
+    return autovacuumWorkMemValue
+  }
+)
 
 // Export the slice reducer as the default export
 export default configurationSlice.reducer
