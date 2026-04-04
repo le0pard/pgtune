@@ -400,19 +400,6 @@ export const selectWorkMem = createSelector(
   }
 )
 
-export const selectWarningInfoMessages = createSelector(
-  [selectTotalMemoryInBytes],
-  (totalMemory) => {
-    if (totalMemory < 256 * SIZE_UNIT_MAP['MB']) {
-      return ['WARNING', 'this tool not being optimal', 'for low memory systems']
-    }
-    if (totalMemory > 100 * SIZE_UNIT_MAP['GB']) {
-      return ['WARNING', 'this tool not being optimal', 'for very high memory systems']
-    }
-    return []
-  }
-)
-
 export const selectWalLevel = createSelector([selectDBType], (dbType) => {
   if (dbType === DB_TYPE_DESKTOP) {
     return [
@@ -505,6 +492,54 @@ export const selectIoWorkers = createSelector(
 
     // Only explicitly configure it if we are recommending more than the default
     return ioWorkersValue > 3 ? ioWorkersValue : null
+  }
+)
+
+export const selectIoMethod = createSelector(
+  [selectDBVersion, selectOSType],
+  (dbVersion, osType) => {
+    // Asynchronous I/O was introduced in PostgreSQL 18
+    if (dbVersion < 18) {
+      return null
+    }
+
+    // If we assume standard modern packages (compiled with --with-liburing),
+    // io_uring is the absolute best performing AIO method for Linux.
+    if (osType === OS_LINUX) {
+      return 'io_uring'
+    }
+
+    // Windows and macOS do not support io_uring natively, so we fall back
+    // to the safe cross-platform 'worker' processes.
+    return 'worker'
+  }
+)
+
+export const selectWarningInfoMessages = createSelector(
+  [selectTotalMemoryInBytes, selectWalCompression, selectIoMethod],
+  (totalMemory, walCompression, ioMethod) => {
+    let warnings = []
+
+    // Memory warnings
+    if (totalMemory < 256 * SIZE_UNIT_MAP['MB']) {
+      warnings.push('this tool not being optimal', 'for low memory systems')
+    } else if (totalMemory > 100 * SIZE_UNIT_MAP['GB']) {
+      warnings.push('this tool not being optimal', 'for very high memory systems')
+    }
+
+    // Advanced features compilation warnings
+    if (walCompression === 'lz4') {
+      warnings.push('wal_compression = lz4 requires PostgreSQL', 'to be compiled with --with-lz4')
+    }
+
+    if (ioMethod === 'io_uring') {
+      warnings.push(
+        'io_method = io_uring requires PostgreSQL',
+        'to be compiled with --with-liburing'
+      )
+    }
+
+    return warnings.length > 0 ? ['WARNING', ...warnings] : []
   }
 )
 

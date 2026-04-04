@@ -36,7 +36,8 @@ import {
   selectWalCompression,
   selectAutovacuumMaxWorkers,
   selectAutovacuumWorkMem,
-  selectIoWorkers
+  selectIoWorkers,
+  selectIoMethod
 } from '@features/configuration/configurationSlice'
 import {
   openConfigTab,
@@ -128,6 +129,7 @@ const ConfigurationView = () => {
   const walCompressionVal = useSelector(selectWalCompression)
   const autovacuumMaxWorkersVal = useSelector(selectAutovacuumMaxWorkers)
   const autovacuumWorkMemVal = useSelector(selectAutovacuumWorkMem)
+  const ioMethodVal = useSelector(selectIoMethod)
   const ioWorkersVal = useSelector(selectIoWorkers)
   // warnings
   const warningInfoMessagesVal = useSelector(selectWarningInfoMessages)
@@ -186,6 +188,7 @@ const ConfigurationView = () => {
       ['wal_compression', walCompressionVal],
       ['autovacuum_max_workers', autovacuumMaxWorkersVal],
       ['autovacuum_work_mem', autovacuumWorkMemVal ? formatValue(autovacuumWorkMemVal) : null],
+      ['io_method', ioMethodVal],
       ['io_workers', ioWorkersVal]
     ]
       .concat(getCheckpointSegments())

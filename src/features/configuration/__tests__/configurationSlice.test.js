@@ -13,7 +13,9 @@ import {
   selectWalCompression,
   selectAutovacuumMaxWorkers,
   selectAutovacuumWorkMem,
-  selectIoWorkers
+  selectIoWorkers,
+  selectIoMethod,
+  selectWarningInfoMessages
 } from '../configurationSlice'
 
 describe('selectIsConfigured', () => {
@@ -581,5 +583,104 @@ describe('selectIoWorkers', () => {
 
   it('strictly caps at 32 as per PostgreSQL maximum limits', () => {
     expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 256 } })).toEqual(32)
+  })
+})
+
+describe('selectIoMethod', () => {
+  it('returns null for PostgreSQL versions before 18', () => {
+    expect(selectIoMethod({ configuration: { dbVersion: 17, osType: 'linux' } })).toEqual(null)
+  })
+
+  it('returns io_uring for Linux on PostgreSQL 18+, assuming --with-liburing is present', () => {
+    expect(selectIoMethod({ configuration: { dbVersion: 18, osType: 'linux' } })).toEqual(
+      'io_uring'
+    )
+  })
+
+  it('safely falls back to worker for Windows on PostgreSQL 18+', () => {
+    expect(selectIoMethod({ configuration: { dbVersion: 18, osType: 'windows' } })).toEqual(
+      'worker'
+    )
+  })
+
+  it('safely falls back to worker for macOS on PostgreSQL 18+', () => {
+    expect(selectIoMethod({ configuration: { dbVersion: 18, osType: 'mac' } })).toEqual('worker')
+  })
+})
+
+describe('selectWarningInfoMessages', () => {
+  it('returns no warnings for standard configurations', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 4,
+          totalMemoryUnit: 'GB',
+          dbVersion: 14,
+          osType: 'linux'
+        }
+      })
+    ).toEqual([])
+  })
+
+  it('returns warning for low memory systems', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 128,
+          totalMemoryUnit: 'MB',
+          dbVersion: 14,
+          osType: 'linux'
+        }
+      })
+    ).toEqual(['WARNING', 'this tool not being optimal', 'for low memory systems'])
+  })
+
+  it('returns warning for very high memory systems', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbVersion: 14,
+          osType: 'linux'
+        }
+      })
+    ).toEqual(['WARNING', 'this tool not being optimal', 'for very high memory systems'])
+  })
+
+  it('returns compilation warning for lz4 wal_compression', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 4,
+          totalMemoryUnit: 'GB',
+          dbVersion: 15,
+          osType: 'linux'
+        }
+      })
+    ).toEqual([
+      'WARNING',
+      'wal_compression = lz4 requires PostgreSQL',
+      'to be compiled with --with-lz4'
+    ])
+  })
+
+  it('returns compilation warning for io_uring io_method', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 4,
+          totalMemoryUnit: 'GB',
+          dbVersion: 18,
+          osType: 'linux'
+        }
+      })
+    ).toEqual([
+      'WARNING',
+      'wal_compression = lz4 requires PostgreSQL',
+      'to be compiled with --with-lz4',
+      'io_method = io_uring requires PostgreSQL',
+      'to be compiled with --with-liburing'
+    ])
   })
 })
