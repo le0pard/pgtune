@@ -5,7 +5,10 @@ import {
   selectRandomPageCost,
   selectEffectiveIoConcurrency,
   selectParallelSettings,
-  selectWalLevel
+  selectWalLevel,
+  selectHugePages,
+  selectMaintenanceWorkMem,
+  selectWorkMem
 } from '../configurationSlice'
 
 describe('selectIsConfigured', () => {
@@ -292,5 +295,157 @@ describe('selectWalLevel', () => {
         }
       })
     ).toEqual([])
+  })
+})
+
+describe('selectMaintenanceWorkMem', () => {
+  it('caps at 8GB for linux servers with extreme memory', () => {
+    expect(
+      selectMaintenanceWorkMem({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 17
+        }
+      })
+    ).toEqual(8388608) // 8GB in kB
+  })
+
+  it('caps at 2GB minus 1MB for Windows servers on PostgreSQL 17 or older', () => {
+    expect(
+      selectMaintenanceWorkMem({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'windows',
+          dbVersion: 17
+        }
+      })
+    ).toEqual(2096128) // (2GB - 1MB) in kB
+  })
+
+  it('caps at 8GB for Windows servers on PostgreSQL 18 or newer', () => {
+    expect(
+      selectMaintenanceWorkMem({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'windows',
+          dbVersion: 18
+        }
+      })
+    ).toEqual(8388608) // 8GB in kB
+  })
+
+  it('calculates properly below the limit cap', () => {
+    expect(
+      selectMaintenanceWorkMem({
+        configuration: {
+          totalMemory: 16, // 16GB / 16 = 1GB
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15
+        }
+      })
+    ).toEqual(1048576) // 1GB in kB
+  })
+})
+
+describe('selectHugePages', () => {
+  it('returns off when shared_buffers is small (< 2GB)', () => {
+    expect(
+      selectHugePages({
+        configuration: {
+          totalMemory: 4,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15
+        }
+      })
+    ).toEqual('off')
+  })
+
+  it('returns try when shared_buffers is large (>= 2GB)', () => {
+    expect(
+      selectHugePages({
+        configuration: {
+          totalMemory: 16,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15
+        }
+      })
+    ).toEqual('try')
+  })
+
+  it('returns off for macOS regardless of RAM size', () => {
+    expect(
+      selectHugePages({
+        configuration: {
+          totalMemory: 128,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'mac',
+          dbVersion: 15
+        }
+      })
+    ).toEqual('off')
+  })
+})
+
+describe('selectWorkMem', () => {
+  it('protects work_mem by flooring to 4MB during extreme max_connections', () => {
+    expect(
+      selectWorkMem({
+        configuration: {
+          totalMemory: 4,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15,
+          connectionNum: 9999,
+          cpuNum: 4
+        }
+      })
+    ).toEqual(4096) // Floors to 4MB in kB
+  })
+
+  it('caps work_mem at 2GB minus 1MB for Windows servers on PostgreSQL 17 or older', () => {
+    expect(
+      selectWorkMem({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbType: 'web', // 'web' does not divide work_mem by 2 like dw does
+          osType: 'windows',
+          dbVersion: 17,
+          connectionNum: 20, // 20 connections on 256GB RAM forces a huge work_mem (~2.6GB)
+          cpuNum: 4
+        }
+      })
+    ).toEqual(2096128) // Caps at (2GB - 1MB) in kB
+  })
+
+  it('allows work_mem to exceed 2GB for Windows servers on PostgreSQL 18 or newer', () => {
+    expect(
+      selectWorkMem({
+        configuration: {
+          totalMemory: 256,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'windows',
+          dbVersion: 18,
+          connectionNum: 20,
+          cpuNum: 4
+        }
+      })
+    ).toBeGreaterThan(2096128) // Actually evaluates to 2796202 (~2.6GB)
   })
 })
