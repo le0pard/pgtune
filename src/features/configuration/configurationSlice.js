@@ -13,7 +13,8 @@ import {
   SIZE_UNIT_GB,
   HARD_DRIVE_SSD,
   HARD_DRIVE_HDD,
-  HARD_DRIVE_SAN
+  HARD_DRIVE_SAN,
+  HARD_DRIVE_NVME
 } from './constants'
 
 const SIZE_UNIT_MAP = {
@@ -262,7 +263,8 @@ export const selectRandomPageCost = createSelector([selectHDType], (hdType) => {
   return {
     [HARD_DRIVE_HDD]: 4,
     [HARD_DRIVE_SSD]: 1.1,
-    [HARD_DRIVE_SAN]: 1.1
+    [HARD_DRIVE_SAN]: 1.1,
+    [HARD_DRIVE_NVME]: 1.1
   }[hdType]
 })
 
@@ -275,7 +277,8 @@ export const selectEffectiveIoConcurrency = createSelector(
     return {
       [HARD_DRIVE_HDD]: 2,
       [HARD_DRIVE_SSD]: 200,
-      [HARD_DRIVE_SAN]: 300
+      [HARD_DRIVE_SAN]: 300,
+      [HARD_DRIVE_NVME]: 1000
     }[hdType]
   }
 )

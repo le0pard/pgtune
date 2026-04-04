@@ -158,6 +158,15 @@ describe('selectRandomPageCost', () => {
       })
     ).toEqual(1.1)
   })
+  it('nvme', () => {
+    expect(
+      selectRandomPageCost({
+        configuration: {
+          hdType: 'nvme'
+        }
+      })
+    ).toEqual(1.1)
+  })
 })
 
 describe('selectEffectiveIoConcurrency', () => {
@@ -200,6 +209,16 @@ describe('selectEffectiveIoConcurrency', () => {
         }
       })
     ).toEqual(null)
+  })
+  it('nvme', () => {
+    expect(
+      selectEffectiveIoConcurrency({
+        configuration: {
+          osType: 'linux',
+          hdType: 'nvme'
+        }
+      })
+    ).toEqual(1000)
   })
 })
 
