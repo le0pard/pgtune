@@ -35,7 +35,8 @@ import {
   selectJit,
   selectWalCompression,
   selectAutovacuumMaxWorkers,
-  selectAutovacuumWorkMem
+  selectAutovacuumWorkMem,
+  selectIoWorkers
 } from '@features/configuration/configurationSlice'
 import {
   openConfigTab,
@@ -127,6 +128,7 @@ const ConfigurationView = () => {
   const walCompressionVal = useSelector(selectWalCompression)
   const autovacuumMaxWorkersVal = useSelector(selectAutovacuumMaxWorkers)
   const autovacuumWorkMemVal = useSelector(selectAutovacuumWorkMem)
+  const ioWorkersVal = useSelector(selectIoWorkers)
   // warnings
   const warningInfoMessagesVal = useSelector(selectWarningInfoMessages)
   // tab state
@@ -183,7 +185,8 @@ const ConfigurationView = () => {
       ['jit', jitVal],
       ['wal_compression', walCompressionVal],
       ['autovacuum_max_workers', autovacuumMaxWorkersVal],
-      ['autovacuum_work_mem', autovacuumWorkMemVal ? formatValue(autovacuumWorkMemVal) : null]
+      ['autovacuum_work_mem', autovacuumWorkMemVal ? formatValue(autovacuumWorkMemVal) : null],
+      ['io_workers', ioWorkersVal]
     ]
       .concat(getCheckpointSegments())
       .concat(getParallelSettings())

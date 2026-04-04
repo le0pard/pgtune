@@ -491,5 +491,22 @@ export const selectAutovacuumWorkMem = createSelector(
   }
 )
 
+export const selectIoWorkers = createSelector(
+  [selectDBVersion, selectCPUNum],
+  (dbVersion, cpuNum) => {
+    // io_workers was introduced in PG18 for the new Asynchronous I/O subsystem
+    if (dbVersion < 18 || !cpuNum) {
+      return null
+    }
+
+    // Default is 3. We conservatively scale it to ~25% of CPU cores to avoid
+    // lock contention on the AIO queue, capped at PostgreSQL's hard max of 32
+    const ioWorkersValue = Math.min(32, Math.max(3, Math.floor(cpuNum / 4)))
+
+    // Only explicitly configure it if we are recommending more than the default
+    return ioWorkersValue > 3 ? ioWorkersValue : null
+  }
+)
+
 // Export the slice reducer as the default export
 export default configurationSlice.reducer

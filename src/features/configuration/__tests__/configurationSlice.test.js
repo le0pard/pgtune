@@ -12,7 +12,8 @@ import {
   selectJit,
   selectWalCompression,
   selectAutovacuumMaxWorkers,
-  selectAutovacuumWorkMem
+  selectAutovacuumWorkMem,
+  selectIoWorkers
 } from '../configurationSlice'
 
 describe('selectIsConfigured', () => {
@@ -560,5 +561,25 @@ describe('selectAutovacuumWorkMem', () => {
         }
       })
     ).toEqual(2097152) // exactly 2GB
+  })
+})
+
+describe('selectIoWorkers', () => {
+  it('returns null for PostgreSQL versions before 18', () => {
+    expect(selectIoWorkers({ configuration: { dbVersion: 17, cpuNum: 32 } })).toEqual(null)
+  })
+
+  it('returns null if cpuNum is small or missing, deferring to the PG default of 3', () => {
+    expect(selectIoWorkers({ configuration: { dbVersion: 18 } })).toEqual(null)
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 8 } })).toEqual(null) // 8 / 4 = 2, so it stays null
+  })
+
+  it('scales to roughly 25% of CPU cores for large servers', () => {
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 32 } })).toEqual(8)
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 64 } })).toEqual(16)
+  })
+
+  it('strictly caps at 32 as per PostgreSQL maximum limits', () => {
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 256 } })).toEqual(32)
   })
 })
