@@ -31,7 +31,12 @@ import {
   selectParallelSettings,
   selectWorkMem,
   selectWarningInfoMessages,
-  selectWalLevel
+  selectWalLevel,
+  selectJit,
+  selectWalCompression,
+  selectAutovacuumMaxWorkers,
+  selectAutovacuumWorkMem,
+  selectIoWorkers
 } from '@features/configuration/configurationSlice'
 import {
   openConfigTab,
@@ -119,6 +124,11 @@ const ConfigurationView = () => {
   const effectiveIoConcurrencyVal = useSelector(selectEffectiveIoConcurrency)
   const parallelSettingsVal = useSelector(selectParallelSettings)
   const workMemVal = useSelector(selectWorkMem)
+  const jitVal = useSelector(selectJit)
+  const walCompressionVal = useSelector(selectWalCompression)
+  const autovacuumMaxWorkersVal = useSelector(selectAutovacuumMaxWorkers)
+  const autovacuumWorkMemVal = useSelector(selectAutovacuumWorkMem)
+  const ioWorkersVal = useSelector(selectIoWorkers)
   // warnings
   const warningInfoMessagesVal = useSelector(selectWarningInfoMessages)
   // tab state
@@ -171,7 +181,12 @@ const ConfigurationView = () => {
       ['random_page_cost', randomPageCostVal],
       ['effective_io_concurrency', effectiveIoConcurrencyVal],
       ['work_mem', formatValue(workMemVal)],
-      ['huge_pages', hugePagesVal]
+      ['huge_pages', hugePagesVal],
+      ['jit', jitVal],
+      ['wal_compression', walCompressionVal],
+      ['autovacuum_max_workers', autovacuumMaxWorkersVal],
+      ['autovacuum_work_mem', autovacuumWorkMemVal ? formatValue(autovacuumWorkMemVal) : null],
+      ['io_workers', ioWorkersVal]
     ]
       .concat(getCheckpointSegments())
       .concat(getParallelSettings())

@@ -23,6 +23,7 @@ import {
   HARD_DRIVE_SSD,
   HARD_DRIVE_SAN,
   HARD_DRIVE_HDD,
+  HARD_DRIVE_NVME,
   SIZE_UNIT_GB,
   MAX_NUMERIC_VALUE
 } from '@features/configuration/constants'
@@ -87,6 +88,10 @@ const dbTypeOptions = () => [
 ]
 
 const hdTypeOptions = () => [
+  {
+    label: 'NVMe storage',
+    value: HARD_DRIVE_NVME
+  },
   {
     label: 'SSD storage',
     value: HARD_DRIVE_SSD

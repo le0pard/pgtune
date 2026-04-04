@@ -14,6 +14,7 @@ import {
   HARD_DRIVE_HDD,
   HARD_DRIVE_SSD,
   HARD_DRIVE_SAN,
+  HARD_DRIVE_NVME,
   MAX_NUMERIC_VALUE
 } from '@features/configuration/constants'
 
@@ -21,7 +22,7 @@ const MIN_MB_MEMORY = 512
 
 const DB_TYPES = [DB_TYPE_WEB, DB_TYPE_OLTP, DB_TYPE_DW, DB_TYPE_DESKTOP, DB_TYPE_MIXED]
 
-const HARD_DRIVE_TYPES = [HARD_DRIVE_HDD, HARD_DRIVE_SSD, HARD_DRIVE_SAN]
+const HARD_DRIVE_TYPES = [HARD_DRIVE_HDD, HARD_DRIVE_SSD, HARD_DRIVE_SAN, HARD_DRIVE_NVME]
 
 export const validationSchema = Yup.object().shape({
   dbVersion: Yup.number().required('Required').oneOf(DB_VERSIONS, 'Unsupported database version'),

@@ -18,5 +18,6 @@ export const SIZE_UNIT_GB = 'GB'
 export const HARD_DRIVE_SSD = 'ssd'
 export const HARD_DRIVE_SAN = 'san'
 export const HARD_DRIVE_HDD = 'hdd'
+export const HARD_DRIVE_NVME = 'nvme'
 // maximum value for integer fields
 export const MAX_NUMERIC_VALUE = 999999
