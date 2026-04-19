@@ -233,6 +233,28 @@ describe('selectEffectiveIoConcurrency', () => {
       })
     ).toEqual(1000)
   })
+  it('returns 4 for Data Warehouses on SSD to prevent bad index scans', () => {
+    expect(
+      selectRandomPageCost({
+        configuration: {
+          hdType: 'ssd',
+          dbType: 'dw',
+          dbSize: 'mid_ram'
+        }
+      })
+    ).toEqual(4)
+  })
+  it('returns 1.1 for Data Warehouses if the DB fits entirely in RAM', () => {
+    expect(
+      selectRandomPageCost({
+        configuration: {
+          hdType: 'ssd',
+          dbType: 'dw',
+          dbSize: 'less_ram'
+        }
+      })
+    ).toEqual(1.1)
+  })
 })
 
 describe('selectParallelSettings', () => {
@@ -738,8 +760,33 @@ describe('selectWarningInfoMessages', () => {
       'WARNING',
       'wal_compression = lz4 requires PostgreSQL',
       'to be compiled with --with-lz4',
+      '',
       'io_method = io_uring requires PostgreSQL',
       'to be compiled with --with-liburing'
+    ])
+  })
+
+  it('returns warning for Data Warehouses on NVMe to explain default cost parameters', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 64,
+          totalMemoryUnit: 'GB',
+          dbVersion: 15,
+          osType: 'linux',
+          dbType: 'dw',
+          hdType: 'nvme',
+          dbSize: 'mid_ram'
+        }
+      })
+    ).toEqual([
+      'WARNING',
+      'wal_compression = lz4 requires PostgreSQL',
+      'to be compiled with --with-lz4',
+      '',
+      'Cost parameters for Data Warehouses on NVMe drives are left at defaults',
+      'to avoid catastrophic index scan selections',
+      'Monitor query planner behavior and adjust random_page_cost if necessary'
     ])
   })
 })

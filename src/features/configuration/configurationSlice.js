@@ -266,20 +266,28 @@ export const selectDefaultStatisticsTarget = createSelector(
 )
 
 export const selectRandomPageCost = createSelector(
-  [selectHDType, selectDBSize],
-  (hdType, dbSize) => {
+  [selectHDType, selectDBSize, selectDBType],
+  (hdType, dbSize, dbType) => {
     // If the entire database fits in RAM, all read requests will be served
     // from the OS page cache. Disk seek time (even for HDD) becomes irrelevant.
     if (dbSize === DB_SIZE_LESS_RAM) {
       return 1.1
     }
 
-    return {
-      [HARD_DRIVE_HDD]: 4,
-      [HARD_DRIVE_SSD]: 1.1,
-      [HARD_DRIVE_SAN]: 1.1,
-      [HARD_DRIVE_NVME]: 1.1
-    }[hdType]
+    // HDD always gets 4.0
+    if (hdType === HARD_DRIVE_HDD) {
+      return 4
+    }
+
+    // For Data Warehouses that don't fit in RAM, a low random_page_cost is dangerous.
+    // It causes the planner to pick index scans for large data retrievals, which
+    // are much slower on physical SSDs than sequential scans.
+    // Return 4.0 (the Postgres default) to prevent this harm
+    if (dbType === DB_TYPE_DW) {
+      return 4
+    }
+
+    return 1.1
   }
 )
 
@@ -543,8 +551,15 @@ export const selectIoMethod = createSelector(
 )
 
 export const selectWarningInfoMessages = createSelector(
-  [selectTotalMemoryInBytes, selectWalCompression, selectIoMethod],
-  (totalMemory, walCompression, ioMethod) => {
+  [
+    selectTotalMemoryInBytes,
+    selectWalCompression,
+    selectIoMethod,
+    selectDBType,
+    selectHDType,
+    selectDBSize
+  ],
+  (totalMemory, walCompression, ioMethod, dbType, hdType, dbSize) => {
     let warnings = []
 
     // Memory warnings
@@ -556,13 +571,34 @@ export const selectWarningInfoMessages = createSelector(
 
     // Advanced features compilation warnings
     if (walCompression === 'lz4') {
+      if (warnings.length > 0) warnings.push('')
+
       warnings.push('wal_compression = lz4 requires PostgreSQL', 'to be compiled with --with-lz4')
     }
 
     if (ioMethod === 'io_uring') {
+      if (warnings.length > 0) warnings.push('')
+
       warnings.push(
         'io_method = io_uring requires PostgreSQL',
         'to be compiled with --with-liburing'
+      )
+    }
+
+    // I/O Cost Warning for Analytical DBs
+    if (dbType === DB_TYPE_DW && hdType !== HARD_DRIVE_HDD && dbSize !== DB_SIZE_LESS_RAM) {
+      const driveName = {
+        [HARD_DRIVE_SSD]: 'SSDs',
+        [HARD_DRIVE_NVME]: 'NVMe drives',
+        [HARD_DRIVE_SAN]: 'SAN storage'
+      }[hdType]
+
+      if (warnings.length > 0) warnings.push('')
+
+      warnings.push(
+        `Cost parameters for Data Warehouses on ${driveName} are left at defaults`,
+        'to avoid catastrophic index scan selections',
+        'Monitor query planner behavior and adjust random_page_cost if necessary'
       )
     }
 
