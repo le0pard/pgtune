@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "description": "pgtune website",
-  "author": "Alexey Vasiliev",
+  "author": "Oleksii Vasyliev",
   "license": "MIT",
   "scripts": {
     "dev": "vite",

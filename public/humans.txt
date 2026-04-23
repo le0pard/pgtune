@@ -2,7 +2,7 @@
 # The humans responsible & technology colophon
 
 /* TEAM */
-  Developer: Alexey Vasiliev
+  Developer: Oleksii Vasyliev
   Twitter: @leopard_me
 
   Web designer: Anna Rotar
