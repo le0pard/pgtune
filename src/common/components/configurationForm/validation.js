@@ -11,6 +11,7 @@ import {
   DB_TYPE_MIXED,
   SIZE_UNIT_MB,
   SIZE_UNIT_GB,
+  SIZE_UNIT_TB,
   HARD_DRIVE_HDD,
   HARD_DRIVE_SSD,
   HARD_DRIVE_SAN,
@@ -35,7 +36,7 @@ export const validationSchema = Yup.object().shape({
   dbType: Yup.string().required('Required').oneOf(DB_TYPES, 'Unsupported database type'),
   totalMemoryUnit: Yup.string()
     .required('Required')
-    .oneOf([SIZE_UNIT_MB, SIZE_UNIT_GB], 'Unsupported unit'),
+    .oneOf([SIZE_UNIT_MB, SIZE_UNIT_GB, SIZE_UNIT_TB], 'Unsupported unit'),
   totalMemory: Yup.number()
     .required('Required')
     .integer('Must be an integer')

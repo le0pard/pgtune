@@ -3,11 +3,20 @@ import { Field } from 'formik'
 import Tooltip from '@common/components/form/tooltip'
 import FormSimpleField from '@common/components/form/simpleField'
 import FormSimpleDropdown from '@common/components/form/simpleDropdown'
-import { SIZE_UNIT_MB, SIZE_UNIT_GB, MAX_NUMERIC_VALUE } from '@features/configuration/constants'
+import {
+  SIZE_UNIT_MB,
+  SIZE_UNIT_GB,
+  SIZE_UNIT_TB,
+  MAX_NUMERIC_VALUE
+} from '@features/configuration/constants'
 
 import './total-memory-input.css'
 
 const totalMemoryUnitOptions = () => [
+  {
+    label: 'TB',
+    value: SIZE_UNIT_TB
+  },
   {
     label: 'GB',
     value: SIZE_UNIT_GB
