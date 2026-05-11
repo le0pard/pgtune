@@ -68,7 +68,7 @@ pre {
   color: var(--baseColor);
   border: 1px solid var(--commentColor);
   padding: 0.8125rem;
-  box-shadow: 5px 5px 8px var(--headsColor);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   white-space: pre-wrap;
 }
 pre code {

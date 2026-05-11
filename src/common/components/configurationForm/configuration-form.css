@@ -13,6 +13,10 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
 }
 
 .configuration-form-btn--disabled {
@@ -28,5 +32,5 @@
 }
 
 .configuration-form-btn:active {
-  border-width: 2px;
+  transform: scale(0.98);
 }

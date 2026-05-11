@@ -6,38 +6,29 @@
 .configuration-view-tab {
   cursor: pointer;
   display: flex;
-  flex-basis: 49.95%;
-  flex-grow: 0;
-  flex-shrink: 0;
-  height: 2rem;
-  margin-top: 1rem;
-  max-width: 49.95%;
-  text-align: center;
-  width: 49.95%;
   align-items: center;
   justify-content: center;
+  height: 2rem;
+  margin-top: 1rem;
   border: 0;
   background: transparent;
   color: var(--baseColor);
-}
-
-.configuration-view-tab:nth-child(1n) {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.configuration-view-tab:last-child {
-  margin-right: 0;
-}
-
-.configuration-view-tab:nth-child(2n) {
-  margin-left: auto;
-  margin-right: 0;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  flex: 0 0 50%;
+  box-sizing: border-box;
 }
 
 .configuration-view-tab--active {
   border-bottom: 2px solid #cb4b16;
   background-color: var(--headsColor);
+}
+
+.configuration-view-tab:hover,
+.configuration-view-tab--active:hover {
+  background-color: var(--buttonHover);
 }
 
 .configuration-view-copy-wrapper {
@@ -50,37 +41,26 @@
   border: 1px solid var(--commentColor);
   color: var(--baseColor);
   display: flex;
-  flex-basis: 99.9%;
-  flex-grow: 0;
-  flex-shrink: 0;
-  height: 2.6rem;
-  max-width: 99.9%;
-  text-align: center;
-  width: 99.9%;
   align-items: center;
   justify-content: center;
-}
-
-.configuration-view-copy-button:nth-child(1n) {
-  margin-left: 0;
-  margin-right: 30px;
-}
-
-.configuration-view-copy-button:last-child {
-  margin-right: 0;
-}
-
-.configuration-view-copy-button:nth-child(1n) {
-  margin-left: auto;
-  margin-right: 0;
+  height: 2.6rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .configuration-view-copy-button:focus {
   outline: 0;
 }
+
 .configuration-view-copy-button:hover {
   background-color: var(--buttonHover);
 }
+
 .configuration-view-copy-button:active {
-  border-width: 2px;
+  transform: scale(0.98);
 }

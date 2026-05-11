@@ -3,60 +3,24 @@
   flex-flow: row wrap;
   border: 1px solid var(--commentColor);
   margin: 0.6rem;
+  gap: 2rem;
 }
 
 .app-update__title {
   display: flex;
-  flex-basis: calc(66.6% - 10px);
-  flex-grow: 0;
-  flex-shrink: 0;
-  max-width: calc(66.6% - 10px);
-  text-align: center;
-  width: calc(66.6% - 10px);
   align-items: center;
   justify-content: center;
-}
-
-.app-update__title:nth-child(1n) {
-  margin-left: 0;
-  margin-right: 30px;
-}
-
-.app-update__title:last-child {
-  margin-right: 0;
-}
-
-.app-update__title:nth-child(3n) {
-  margin-left: auto;
-  margin-right: 0;
+  text-align: center;
+  flex: 2;
 }
 
 .app-update__button-wrapper {
   background-color: var(--headsColor);
   display: flex;
-  flex-basis: calc(33.3% - 20px);
-  flex-grow: 0;
-  flex-shrink: 0;
-  max-width: calc(33.3% - 20px);
-  text-align: center;
-  vertical-align: middle;
-  width: calc(33.3% - 20px);
   align-items: center;
   justify-content: center;
-}
-
-.app-update__button-wrapper:nth-child(1n) {
-  margin-left: 0;
-  margin-right: 30px;
-}
-
-.app-update__button-wrapper:last-child {
-  margin-right: 0;
-}
-
-.app-update__button-wrapper:nth-child(3n) {
-  margin-left: auto;
-  margin-right: 0;
+  text-align: center;
+  flex: 1;
 }
 
 .app-update__button {
@@ -66,4 +30,20 @@
   cursor: pointer;
   width: 100%;
   height: 100%;
+  padding: 0.5rem;
+  transition:
+    color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.app-update__button:focus:not(:focus-visible) {
+  outline: 0;
+}
+
+.app-update__button:hover {
+  color: #cb4b16;
+}
+
+.app-update__button:active {
+  transform: scale(0.98);
 }

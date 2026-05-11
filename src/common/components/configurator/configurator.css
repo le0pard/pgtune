@@ -31,5 +31,6 @@
   .configurator-form-wrapper,
   .configurator-result-wrapper {
     flex: 0 0 100%;
+    max-width: 100%;
   }
 }
