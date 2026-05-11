@@ -1,50 +1,19 @@
 .configurator {
   display: flex;
   flex-flow: row wrap;
+  gap: 3rem;
 }
 
 .configurator-form-wrapper {
-  flex-basis: calc(49.95% - 1.5rem);
-  flex-grow: 0;
-  flex-shrink: 0;
-  max-width: calc(49.95% - 1.5rem);
-  width: calc(49.95% - 1.5rem);
-}
-
-.configurator-form-wrapper:nth-child(1n) {
-  margin-left: 0;
-  margin-right: 3rem;
-}
-
-.configurator-form-wrapper:last-child {
-  margin-right: 0;
-}
-
-.configurator-form-wrapper:nth-child(2n) {
-  margin-left: auto;
-  margin-right: 0;
+  flex: 1;
+  max-width: 24rem;
+  box-sizing: border-box;
 }
 
 .configurator-result-wrapper {
-  flex-basis: calc(49.95% - 1.5rem);
-  flex-grow: 0;
-  flex-shrink: 0;
-  max-width: calc(49.95% - 1.5rem);
-  width: calc(49.95% - 1.5rem);
-}
-
-.configurator-result-wrapper:nth-child(1n) {
-  margin-left: 0;
-  margin-right: 3rem;
-}
-
-.configurator-result-wrapper:last-child {
-  margin-right: 0;
-}
-
-.configurator-result-wrapper:nth-child(2n) {
-  margin-left: auto;
-  margin-right: 0;
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .configurator-form-subtitle {
@@ -53,48 +22,14 @@
   margin: 0.2rem 0;
 }
 
+/* Modern media query syntax */
 @media (width <= 640px) {
-  .configurator-form-wrapper {
-    flex-basis: 99.9%;
-    flex-grow: 0;
-    flex-shrink: 0;
-    max-width: 99.9%;
-    width: 99.9%;
+  .configurator {
+    gap: 1.875rem;
   }
 
-  .configurator-form-wrapper:nth-child(1n) {
-    margin-left: 0;
-    margin-right: 30px;
-  }
-
-  .configurator-form-wrapper:last-child {
-    margin-right: 0;
-  }
-
-  .configurator-form-wrapper:nth-child(1n) {
-    margin-left: auto;
-    margin-right: 0;
-  }
-
+  .configurator-form-wrapper,
   .configurator-result-wrapper {
-    flex-basis: 99.9%;
-    flex-grow: 0;
-    flex-shrink: 0;
-    max-width: 99.9%;
-    width: 99.9%;
-  }
-
-  .configurator-result-wrapper:nth-child(1n) {
-    margin-left: 0;
-    margin-right: 30px;
-  }
-
-  .configurator-result-wrapper:last-child {
-    margin-right: 0;
-  }
-
-  .configurator-result-wrapper:nth-child(1n) {
-    margin-left: auto;
-    margin-right: 0;
+    flex: 0 0 100%;
   }
 }

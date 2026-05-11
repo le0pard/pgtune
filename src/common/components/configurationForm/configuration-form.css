@@ -1,6 +1,5 @@
 .configuration-form-btn-wrapper {
   display: flex;
-  flex-flow: row wrap;
 }
 
 .configuration-form-btn {
@@ -8,40 +7,26 @@
   border: 1px solid var(--commentColor);
   color: var(--baseColor);
   display: flex;
-  flex-basis: 99.9%;
-  flex-grow: 0;
-  flex-shrink: 0;
+  flex: 1;
   height: 2.6rem;
-  max-width: 99.9%;
   text-align: center;
-  width: 99.9%;
   align-items: center;
   justify-content: center;
-}
-
-.configuration-form-btn:nth-child(1n) {
-  margin-left: 0;
-  margin-right: 30px;
-}
-
-.configuration-form-btn:last-child {
-  margin-right: 0;
-}
-
-.configuration-form-btn:nth-child(1n) {
-  margin-left: auto;
-  margin-right: 0;
+  box-sizing: border-box;
 }
 
 .configuration-form-btn--disabled {
   background-color: var(--commentColor);
 }
+
 .configuration-form-btn:focus:not(:focus-visible) {
   outline: 0;
 }
+
 .configuration-form-btn:hover {
   background-color: var(--buttonHover);
 }
+
 .configuration-form-btn:active {
   border-width: 2px;
 }
