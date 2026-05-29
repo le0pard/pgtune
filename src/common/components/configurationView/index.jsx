@@ -198,7 +198,7 @@ const ConfigurationView = () => {
     return configData
       .filter((item) => !!item[1])
       .map((item) =>
-        isAlterSystem ? `ALTER SYSTEM SET\n ${item[0]} = '${item[1]}';` : `${item[0]} = ${item[1]}`
+        isAlterSystem ? `ALTER SYSTEM SET ${item[0]} = '${item[1]}';` : `${item[0]} = ${item[1]}`
       )
       .join('\n')
   }
