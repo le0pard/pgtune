@@ -8361,8 +8361,8 @@ __metadata:
     react: "npm:^19.2.6"
     react-dom: "npm:^19.2.6"
     react-redux: "npm:^9.3.0"
-    react-router: "npm:^7.15.1"
-    react-router-dom: "npm:^7.15.1"
+    react-router: "npm:^7.16.0"
+    react-router-dom: "npm:^7.16.0"
     redux-logger: "npm:^3.0.6"
     terser: "npm:^5.48.0"
     vite: "npm:^8.0.14"
@@ -9059,21 +9059,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^7.15.1":
-  version: 7.15.1
-  resolution: "react-router-dom@npm:7.15.1"
+"react-router-dom@npm:^7.16.0":
+  version: 7.16.0
+  resolution: "react-router-dom@npm:7.16.0"
   dependencies:
-    react-router: "npm:7.15.1"
+    react-router: "npm:7.16.0"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10/9cb9bbfc48983eaeb50e3dd24ee97c7f4c43e503a586563a0fd70629dffeec1aea27595bc099cd849ef25adae227945641f4477c031b5e1c338415aff254ecc7
+  checksum: 10/f8d7da28bf1276c8a3bd2d85948b104810aa1b08e1ac761fbeccafbeb2f381aeb04c4ff3ec53c43e6a4e96564d1aa571d16b3a07e115f2b3782a16705bfde2c3
   languageName: node
   linkType: hard
 
-"react-router@npm:7.15.1, react-router@npm:^7.15.1":
-  version: 7.15.1
-  resolution: "react-router@npm:7.15.1"
+"react-router@npm:7.16.0, react-router@npm:^7.16.0":
+  version: 7.16.0
+  resolution: "react-router@npm:7.16.0"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -9083,7 +9083,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10/0d9f352839708f13586e41bc21d4e74d1ef94ac747d8ba99a424734d17c7f9512926b16ac28a7659cc44ee4dd60b64f63ed58c704deb1cc68800056b377d3b40
+  checksum: 10/2c77d27170eab1dfa6f0593e846f9d352424cc789a505aaee9bee9c9da1ed9d6a044d0a476e3eaf240e73b09169b4ffb85b5910d026a34abd055aed5b2f5a5cb
   languageName: node
   linkType: hard
 
