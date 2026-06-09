@@ -649,21 +649,25 @@ describe('selectAutovacuumWorkMem', () => {
 
 describe('selectIoWorkers', () => {
   it('returns null for PostgreSQL versions before 18', () => {
-    expect(selectIoWorkers({ configuration: { dbVersion: 17, cpuNum: 32 } })).toEqual(null)
+    expect(selectIoWorkers({ configuration: { dbVersion: 17, cpuNum: 32, osType: 'mac' } })).toEqual(null)
   })
 
   it('returns null if cpuNum is small or missing, deferring to the PG default of 3', () => {
-    expect(selectIoWorkers({ configuration: { dbVersion: 18 } })).toEqual(null)
-    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 8 } })).toEqual(null) // 8 / 4 = 2, so it stays null
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, osType: 'mac' } })).toEqual(null)
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 8, osType: 'mac' } })).toEqual(null) // 8 / 4 = 2, so it stays null
   })
 
   it('scales to roughly 25% of CPU cores for large servers', () => {
-    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 32 } })).toEqual(8)
-    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 64 } })).toEqual(16)
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 32, osType: 'mac' } })).toEqual(8)
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 64, osType: 'mac' } })).toEqual(16)
   })
 
   it('strictly caps at 32 as per PostgreSQL maximum limits', () => {
-    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 256 } })).toEqual(32)
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 256, osType: 'mac' } })).toEqual(32)
+  })
+
+  it('on linux for io_uring return null', () => {
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 256, osType: 'linux' } })).toEqual(null)
   })
 })
 
