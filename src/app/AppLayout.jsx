@@ -3,7 +3,7 @@ import AppUpdate from '@common/components/appUpdate'
 import ThemeSwitcher from '@common/components/themeSwitcher'
 import classnames from 'classnames'
 import { matchPath } from 'react-router'
-import { Link, useLocation, Outlet } from 'react-router-dom'
+import { Link, useLocation, Outlet } from 'react-router'
 
 import './app-layout.css'
 

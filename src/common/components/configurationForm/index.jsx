@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router'
 import classnames from 'classnames'
 import { isEmpty } from 'lodash-es'
 import { Formik, Field, Form } from 'formik'
