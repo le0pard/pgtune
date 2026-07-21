@@ -2378,9 +2378,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^3.3.5":
-  version: 3.3.5
-  resolution: "@eslint/eslintrc@npm:3.3.5"
+"@eslint/eslintrc@npm:^3.3.6":
+  version: 3.3.6
+  resolution: "@eslint/eslintrc@npm:3.3.6"
   dependencies:
     ajv: "npm:^6.14.0"
     debug: "npm:^4.3.2"
@@ -2388,17 +2388,17 @@ __metadata:
     globals: "npm:^14.0.0"
     ignore: "npm:^5.2.0"
     import-fresh: "npm:^3.2.1"
-    js-yaml: "npm:^4.1.1"
+    js-yaml: "npm:^4.3.0"
     minimatch: "npm:^3.1.5"
     strip-json-comments: "npm:^3.1.1"
-  checksum: 10/edabb65693d82a88cac3b2cf932a0f825e986b5e0a21ef08782d07e3a61ad87d39db67cfd5aeb146fd5053e5e24e389dbe5649ab22936a71d633c7b32a7e6d86
+  checksum: 10/8d1d501069faf7c1c73e37181ec403dd2d1509f8da85f226531f6a7fdd9a9326fc6d2ea2e8192515992578cf9e7ed87f9d7ce3f1bfc6d0f0e77796d18e0e8ef6
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.39.4, @eslint/js@npm:^9.39.4":
-  version: 9.39.4
-  resolution: "@eslint/js@npm:9.39.4"
-  checksum: 10/0a7ab4c4108cf2cadf66849ebd20f5957cc53052b88d8807d0b54e489dbf6ffcaf741e144e7f9b187c395499ce2e6ddc565dbfa4f60c6df455cf2b30bcbdc5a3
+"@eslint/js@npm:9.39.5, @eslint/js@npm:^9.39.5":
+  version: 9.39.5
+  resolution: "@eslint/js@npm:9.39.5"
+  checksum: 10/042d522f28da10ab205f368a94b620334418eb13a5226e50f7edd03dbe26809eb477d0b7a4dc3968b43a98f6ce594f6c03731214c3e0386fd5bcb74fdb9df64c
   languageName: node
   linkType: hard
 
@@ -5567,17 +5567,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9.39.4":
-  version: 9.39.4
-  resolution: "eslint@npm:9.39.4"
+"eslint@npm:^9.39.5":
+  version: 9.39.5
+  resolution: "eslint@npm:9.39.5"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.1"
     "@eslint/config-array": "npm:^0.21.2"
     "@eslint/config-helpers": "npm:^0.4.2"
     "@eslint/core": "npm:^0.17.0"
-    "@eslint/eslintrc": "npm:^3.3.5"
-    "@eslint/js": "npm:9.39.4"
+    "@eslint/eslintrc": "npm:^3.3.6"
+    "@eslint/js": "npm:9.39.5"
     "@eslint/plugin-kit": "npm:^0.4.1"
     "@humanfs/node": "npm:^0.16.6"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
@@ -5612,7 +5612,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10/de95093d710e62e8c7e753220d985587c40f4a05247ed4393ffb6e6cb43a60e825a47fc5b4263151bb2fc5871a206a31d563ccbabdceee1711072ae12db90adf
+  checksum: 10/081b27602a923276e4d591a0ef7972ff6f12cd189a93a0dadd5b8eb0338f2984882dc92d545cdf3527cb9c78230183394d411cf68098ee9dbbcb80d4f9fe115c
   languageName: node
   linkType: hard
 
@@ -7351,14 +7351,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "js-yaml@npm:4.1.1"
+"js-yaml@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "js-yaml@npm:4.3.0"
   dependencies:
     argparse: "npm:^2.0.1"
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 10/a52d0519f0f4ef5b4adc1cde466cb54c50d56e2b4a983b9d5c9c0f2f99462047007a6274d7e95617a21d3c91fde3ee6115536ed70991cd645ba8521058b78f77
+  checksum: 10/2bcec3a8118d7f744badeb04e14366578d234a736f353d41fe35d2305e4ce2409a8e041d277f07cd6bbc8aaa12128d650a68ce43247072519bede20962d2126f
   languageName: node
   linkType: hard
 
@@ -8006,6 +8006,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.16":
+  version: 3.3.16
+  resolution: "nanoid@npm:3.3.16"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 10/8004af92b5541af1dbd23b69845b5026f777d5b7ef07163cea1837aae86e052ced8b383cecbf8a4f1b5e77ae207df96dc45e16b9e0fa3c4b761d085f1e42851b
+  languageName: node
+  linkType: hard
+
 "napi-postinstall@npm:^0.2.4":
   version: 0.2.5
   resolution: "napi-postinstall@npm:0.2.5"
@@ -8369,14 +8378,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pgtune@workspace:."
   dependencies:
-    "@eslint/js": "npm:^9.39.4"
+    "@eslint/js": "npm:^9.39.5"
     "@reduxjs/toolkit": "npm:^2.12.0"
     "@vitejs/plugin-react": "npm:^6.0.3"
     "@vituum/vite-plugin-liquid": "npm:^2.0.2"
     "@yarnpkg/pnpify": "npm:^4.1.6"
     classnames: "npm:^2.5.1"
     clipboard: "npm:^2.0.11"
-    eslint: "npm:^9.39.4"
+    eslint: "npm:^9.39.5"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-prettier: "npm:^5.5.6"
     eslint-plugin-react: "npm:^7.37.5"
@@ -8388,11 +8397,11 @@ __metadata:
     jest: "npm:^30.4.2"
     lodash-es: "npm:^4.18.1"
     normalize.css: "npm:^8.0.1"
-    postcss: "npm:^8.5.17"
+    postcss: "npm:^8.5.21"
     postcss-import: "npm:^16.1.1"
     postcss-load-config: "npm:^6.0.1"
     postcss-preset-env: "npm:^11.3.2"
-    prettier: "npm:^3.9.5"
+    prettier: "npm:^3.9.6"
     prop-types: "npm:^15.8.1"
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
@@ -8908,6 +8917,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss@npm:^8.5.21":
+  version: 8.5.21
+  resolution: "postcss@npm:8.5.21"
+  dependencies:
+    nanoid: "npm:^3.3.16"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10/4849872929ff764216515f4f746469e5e91b3ef79be85fcd8d34df068a00bcfea47f7181d523a7353a3aa3fb017ff749c23308257ae5c8c06743582ffbf066f6
+  languageName: node
+  linkType: hard
+
 "postcss@npm:^8.5.8":
   version: 8.5.8
   resolution: "postcss@npm:8.5.8"
@@ -8935,12 +8955,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.9.5":
-  version: 3.9.5
-  resolution: "prettier@npm:3.9.5"
+"prettier@npm:^3.9.6":
+  version: 3.9.6
+  resolution: "prettier@npm:3.9.6"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10/b6587f1582ba653ce5207ee227aff646500e5098646931088f176d1ab090b1f47d5a333f1facd634e9aa7dcb15c45940e2cec13a5962534cf0200617517b67b6
+  checksum: 10/1dd1a1e0e40ec3b91cda9d294c4a95022aef61880ca3f441aad99b1252279f58a766c4cece81132c01550dcff1fd445efbd8812ea4a2374313e7fc6c8136f11f
   languageName: node
   linkType: hard
 
