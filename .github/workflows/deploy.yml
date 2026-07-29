@@ -43,7 +43,7 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: "dist/"
+          path: 'dist/'
 
   deploy:
     needs: build
