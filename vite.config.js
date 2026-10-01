@@ -78,12 +78,12 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@root': resolve(__dirname, 'src'),
-      '@app': resolve(__dirname, 'src/app'),
-      '@css': resolve(__dirname, 'src/css'),
-      '@common': resolve(__dirname, 'src/common'),
-      '@features': resolve(__dirname, 'src/features'),
-      '@hooks': resolve(__dirname, 'src/hooks')
+      '@root': resolve(import.meta.dirname, 'src'),
+      '@app': resolve(import.meta.dirname, 'src/app'),
+      '@css': resolve(import.meta.dirname, 'src/css'),
+      '@common': resolve(import.meta.dirname, 'src/common'),
+      '@features': resolve(import.meta.dirname, 'src/features'),
+      '@hooks': resolve(import.meta.dirname, 'src/hooks')
     }
   }
 })
