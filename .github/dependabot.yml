@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # Keeps the SHA-pinned actions current (the comment after each SHA names the release)
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - '*'
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # Matches npmMinimalAgeGate in yarn config
+    cooldown:
+      default-days: 3
+    groups:
+      development:
+        dependency-type: development
