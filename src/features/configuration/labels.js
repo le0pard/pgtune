@@ -20,7 +20,7 @@ import {
 
 export const OS_TYPE_LABELS = {
   [OS_LINUX]: 'Linux',
-  [OS_MAC]: 'macOS',
+  [OS_MAC]: 'MacOS',
   [OS_WINDOWS]: 'Windows'
 }
 
