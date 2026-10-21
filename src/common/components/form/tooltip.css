@@ -1,62 +1,75 @@
-.tooltip-container {
-  position: relative;
-  display: inline-block;
+.tooltip-toggle {
+  flex: 1 0 auto;
+  font-size: 0.8rem;
+  text-align: right;
 }
 
 .tooltip-button {
   display: inline-block;
   box-sizing: border-box;
+  padding: 0;
+  margin-right: 4px;
   border: none;
+  border-bottom: 1px dotted #b58900;
   background-color: transparent;
-  cursor: pointer;
   color: #b58900;
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-.tooltip-block {
-  color: var(--inputColor);
-  position: absolute;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  bottom: 50%;
-  left: 0%;
-  transform: translateX(-50%);
-  min-height: 20px;
-  border-radius: 0;
-  background-color: #b58900;
-  border: 1px solid var(--inputBorder);
-  white-space: nowrap;
-  text-align: left;
+.tooltip-button:hover,
+.tooltip-button[aria-expanded='true'] {
+  color: #cb4b16;
+  border-bottom-color: #cb4b16;
 }
-.tooltip-block__visible {
-  transform: translateY(0) translateX(-50%);
-  opacity: 1;
-  visibility: visible;
-  transition:
-    transform 300ms ease,
-    opacity 300ms,
-    visibility 300ms 0s;
+
+.tooltip-button:focus:not(:focus-visible) {
+  outline: none;
 }
-.tooltip-block__visible:after {
-  top: 100%;
+
+.tooltip-button:focus-visible {
+  outline: 2px solid #cb4b16;
+  outline-offset: 2px;
 }
-.tooltip-block__hidden {
-  transform: translateY(100%) translateX(-50%);
-  opacity: 0;
+
+/* collapsed panel stays in DOM, so inputs can use it as aria-describedby */
+.tooltip-panel {
+  flex: 0 0 100%;
+  display: grid;
+  grid-template-rows: 0fr;
   visibility: hidden;
   transition:
-    transform 300ms ease,
-    opacity 300ms,
-    visibility 300ms 300ms;
-}
-.tooltip-block__hidden:after {
-  top: 0;
+    grid-template-rows 0.2s ease,
+    visibility 0s linear 0.2s;
 }
 
-@media (width <= 640px) {
-  .tooltip-block {
-    white-space: normal;
-  }
-  .tooltip-block:after {
-    left: 90%;
+.tooltip-panel--visible {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows 0.2s ease,
+    visibility 0s linear 0s;
+}
+
+.tooltip-panel__content {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tooltip-panel__text {
+  margin-top: 4px;
+  padding: 0.4rem 0.6rem;
+  border-left: 3px solid #b58900;
+  background-color: var(--headsColor);
+  color: var(--emphColor);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip-panel,
+  .tooltip-panel--visible {
+    transition: none;
   }
 }

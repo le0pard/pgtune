@@ -411,10 +411,11 @@ const ConfigurationView = () => {
           <label className="configuration-view-include-warnings">
             <input
               type="checkbox"
+              className="configuration-view-include-warnings__input"
               checked={includeWarnings}
               onChange={handleToggleIncludeWarnings}
-            />{' '}
-            Include warnings as comments when copying
+            />
+            <span>Include warnings as comments when copying</span>
           </label>
         )}
         <div className="configuration-view-copy-wrapper">

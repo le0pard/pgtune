@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types'
-import { camelCase } from 'lodash-es'
 import Tooltip from './tooltip'
 
 import './field.css'
 
 const FormField = ({ label, tooltip, field, form: { touched, errors }, ...rest }) => {
-  const inputID = camelCase(`${field.name}-id`)
+  const inputID = `${field.name}Id`
   const isError = touched[field.name] && errors[field.name]
 
   return (
@@ -13,12 +12,7 @@ const FormField = ({ label, tooltip, field, form: { touched, errors }, ...rest }
       <label className="form-field-label" htmlFor={inputID}>
         {label}
       </label>
-      <Tooltip
-        id={`tooltip${inputID}`}
-        label="what is this?"
-        text={tooltip}
-        className="form-field-tooltip"
-      />
+      <Tooltip id={`tooltip${inputID}`} label="what is this?" text={tooltip} />
       <div className="form-field-wrapper">
         <input
           {...field}

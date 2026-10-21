@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types'
-import { camelCase } from 'lodash-es'
 import Tooltip from './tooltip'
 
 import './dropdown.css'
 
 const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors }, ...rest }) => {
-  const dropdownID = camelCase(`${field.name}-id`)
+  const dropdownID = `${field.name}Id`
   const isError = touched[field.name] && errors[field.name]
 
   return (
@@ -13,12 +12,7 @@ const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors 
       <label className="form-dropdown-label" htmlFor={dropdownID}>
         {label}
       </label>
-      <Tooltip
-        id={`tooltip${dropdownID}`}
-        label="what is this?"
-        text={tooltip}
-        className="form-dropdown-tooltip"
-      />
+      <Tooltip id={`tooltip${dropdownID}`} label="what is this?" text={tooltip} />
       <div className="form-dropdown-wrapper">
         <select
           {...field}

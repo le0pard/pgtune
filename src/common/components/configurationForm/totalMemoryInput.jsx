@@ -35,12 +35,7 @@ const TotalMemoryInput = ({ tooltip }) => {
       <label className="total-memory-label" htmlFor={inputID}>
         Total Memory (RAM)
       </label>
-      <Tooltip
-        id={`tooltip${inputID}`}
-        label="what is this?"
-        text={tooltip}
-        className="total-memory-tooltip"
-      />
+      <Tooltip id={`tooltip${inputID}`} label="what is this?" text={tooltip} />
       <Field
         name="totalMemory"
         type="number"
@@ -49,6 +44,7 @@ const TotalMemoryInput = ({ tooltip }) => {
         errorClassName="total-memory-amount__error"
         component={FormSimpleField}
         id={inputID}
+        aria-describedby={`tooltip${inputID}Content`}
         autoFocus={true}
         autoComplete="off"
         autoCorrect="off"

@@ -10,19 +10,6 @@
   font-size: 1.1rem;
 }
 
-.form-field-tooltip {
-  flex: 0 0 40%;
-  font-size: 0.8rem;
-  text-align: right;
-}
-
-.form-field-tooltip__button {
-  border-bottom: 1px dotted #b58900;
-  text-decoration: none;
-  vertical-align: middle;
-  margin-right: 4px;
-}
-
 .form-field-wrapper {
   flex: 0 0 100%;
   margin-top: 4px;

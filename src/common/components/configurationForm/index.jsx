@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router'
 import classnames from 'classnames'
-import { isEmpty } from 'lodash-es'
 import { Formik, Field, Form, useFormikContext } from 'formik'
 import FormField from '@common/components/form/field'
 import FormDropdown from '@common/components/form/dropdown'
@@ -152,7 +151,7 @@ const ConfigurationForm = () => {
   }, [searchParams])
 
   const formParams = useMemo(() => {
-    if (isEmpty(urlParams)) {
+    if (Object.keys(urlParams).length === 0) {
       return FORM_DEFAULTS
     }
 
