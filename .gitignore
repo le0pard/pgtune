@@ -30,3 +30,7 @@ dist-ssr
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+# Playwright
+test-results
+playwright-report

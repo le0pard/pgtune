@@ -12,6 +12,15 @@
   --inputBorder: #93a1a1;
   --inputColorPlaceholder: #839496;
   --buttonHover: #fdfcf9;
+  /* accent colors, same for light and dark themes */
+  --accentColor: #b58900;
+  --accentHoverColor: #cb4b16;
+  --accentShadowColor: rgba(181, 137, 0, 0.15);
+  --accentStrongShadowColor: rgba(181, 137, 0, 0.35);
+  --onAccentColor: #002b36;
+  --headingColor: #859900;
+  --dangerColor: #dc322f;
+  --infoColor: #268bd2;
 }
 
 :root.dark {
@@ -53,11 +62,11 @@ body {
 }
 
 a {
-  color: #b58900;
+  color: var(--accentColor);
 }
 
 a:hover {
-  color: #cb4b16;
+  color: var(--accentHoverColor);
   text-decoration: none;
 }
 
@@ -81,7 +90,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #859900;
+  color: var(--headingColor);
 }
 
 h1 {

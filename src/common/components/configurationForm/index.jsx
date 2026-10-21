@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react'
-import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router'
 import classnames from 'classnames'
@@ -100,7 +99,16 @@ const connectionsPlaceholder = (values) => {
   return `Optional, ${assumedConnections} if empty`
 }
 
-// generates configuration again, when form values are changed and valid
+/**
+ * @typedef {object} AutoGenerateProps
+ * @property {URLSearchParams} searchParams current url params
+ * @property {import('react-router').SetURLSearchParams} setSearchParams
+ */
+
+/**
+ * Generates configuration again, when form values are changed and valid
+ * @param {AutoGenerateProps} props
+ */
 const AutoGenerate = ({ searchParams, setSearchParams }) => {
   const { values } = useFormikContext()
 
@@ -118,11 +126,6 @@ const AutoGenerate = ({ searchParams, setSearchParams }) => {
   }, [values, searchParams, setSearchParams])
 
   return null
-}
-
-AutoGenerate.propTypes = {
-  searchParams: PropTypes.instanceOf(URLSearchParams).isRequired,
-  setSearchParams: PropTypes.func.isRequired
 }
 
 const filterFormParams = (params = {}) => {

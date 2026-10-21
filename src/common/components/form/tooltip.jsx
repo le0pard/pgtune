@@ -1,12 +1,22 @@
 import { Fragment, useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 import './tooltip.css'
 
-// Toggle button and help text panel. Parent should be a flex row with wrap:
-// button takes the rest of the label row, panel takes full row under the label.
-// Inputs can reference help text with aria-describedby={`${id}Content`}
+/**
+ * @typedef {object} TooltipProps
+ * @property {string} id prefix for button (`${id}Button`) and help text (`${id}Content`) ids
+ * @property {string} label toggle button label
+ * @property {import('react').ReactNode} text help text
+ * @property {string} [className] class for toggle button wrapper
+ */
+
+/**
+ * Toggle button and help text panel. Parent should be a flex row with wrap:
+ * button takes the rest of the label row, panel takes full row under the label.
+ * Inputs can reference help text with aria-describedby={`${id}Content`}
+ * @param {TooltipProps} props
+ */
 const Tooltip = ({ id, label, text, className }) => {
   const [isVisible, setVisibility] = useState(false)
 
@@ -55,13 +65,6 @@ const Tooltip = ({ id, label, text, className }) => {
       </div>
     </Fragment>
   )
-}
-
-Tooltip.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  text: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.string]).isRequired,
-  className: PropTypes.string
 }
 
 export default Tooltip

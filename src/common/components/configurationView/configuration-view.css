@@ -22,7 +22,7 @@
 }
 
 .configuration-view-tab--active {
-  border-bottom: 2px solid #cb4b16;
+  border-bottom: 2px solid var(--accentHoverColor);
   background-color: var(--headsColor);
 }
 
@@ -81,15 +81,15 @@
 }
 
 .configuration-view-warning--startup {
-  border-left-color: #dc322f;
+  border-left-color: var(--dangerColor);
 }
 
 .configuration-view-warning--memory {
-  border-left-color: #cb4b16;
+  border-left-color: var(--accentHoverColor);
 }
 
 .configuration-view-warning--note {
-  border-left-color: #268bd2;
+  border-left-color: var(--infoColor);
 }
 
 .configuration-view-warning__title {
@@ -98,15 +98,15 @@
 }
 
 .configuration-view-warning--startup .configuration-view-warning__title {
-  color: #dc322f;
+  color: var(--dangerColor);
 }
 
 .configuration-view-warning--memory .configuration-view-warning__title {
-  color: #cb4b16;
+  color: var(--accentHoverColor);
 }
 
 .configuration-view-warning--note .configuration-view-warning__title {
-  color: #268bd2;
+  color: var(--infoColor);
 }
 
 .configuration-view-warning__item + .configuration-view-warning__item {
@@ -183,15 +183,15 @@
   content: '';
   width: 0.55rem;
   height: 0.3rem;
-  border-left: 2px solid #002b36;
-  border-bottom: 2px solid #002b36;
+  border-left: 2px solid var(--onAccentColor);
+  border-bottom: 2px solid var(--onAccentColor);
   transform: translateY(-15%) rotate(-45deg) scale(0);
   transition: transform 0.15s ease;
 }
 
 .configuration-view-include-warnings__input:checked {
-  background-color: #b58900;
-  border-color: #b58900;
+  background-color: var(--accentColor);
+  border-color: var(--accentColor);
 }
 
 .configuration-view-include-warnings__input:checked::before {
@@ -199,12 +199,12 @@
 }
 
 .configuration-view-include-warnings:hover .configuration-view-include-warnings__input {
-  border-color: #b58900;
+  border-color: var(--accentColor);
 }
 
 .configuration-view-include-warnings__input:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(181, 137, 0, 0.35);
+  box-shadow: 0 0 0 3px var(--accentStrongShadowColor);
 }
 
 @media (prefers-reduced-motion: reduce) {

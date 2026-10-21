@@ -741,5 +741,84 @@ export const selectWarningInfoMessages = createSelector(
   }
 )
 
+// provided parameters with max_connections, which is used when number of connections is empty
+export const selectHardwareConfiguration = createSelector(
+  [selectConfiguration, selectMaxConnections],
+  (configuration, maxConnections) => ({
+    ...configuration,
+    maxConnections
+  })
+)
+
+// all generated settings in configuration order, memory values are in kB (isMemory)
+export const selectSettings = createSelector(
+  [
+    selectMaxConnections,
+    selectSharedBuffers,
+    selectEffectiveCacheSize,
+    selectMaintenanceWorkMem,
+    selectCheckpointCompletionTarget,
+    selectWalBuffers,
+    selectDefaultStatisticsTarget,
+    selectRandomPageCost,
+    selectEffectiveIoConcurrency,
+    selectMaintenanceIoConcurrency,
+    selectWorkMem,
+    selectJit,
+    selectWalCompression,
+    selectAutovacuumMaxWorkers,
+    selectAutovacuumWorkMem,
+    selectIoMethod,
+    selectIoWorkers,
+    selectCheckpointSegments,
+    selectParallelSettings,
+    selectWalLevel
+  ],
+  (
+    maxConnections,
+    sharedBuffers,
+    effectiveCacheSize,
+    maintenanceWorkMem,
+    checkpointCompletionTarget,
+    walBuffers,
+    defaultStatisticsTarget,
+    randomPageCost,
+    effectiveIoConcurrency,
+    maintenanceIoConcurrency,
+    workMem,
+    jit,
+    walCompression,
+    autovacuumMaxWorkers,
+    autovacuumWorkMem,
+    ioMethod,
+    ioWorkers,
+    checkpointSegments,
+    parallelSettings,
+    walLevel
+  ) =>
+    [
+      { key: 'max_connections', value: maxConnections },
+      { key: 'shared_buffers', value: sharedBuffers, isMemory: true },
+      { key: 'effective_cache_size', value: effectiveCacheSize, isMemory: true },
+      { key: 'maintenance_work_mem', value: maintenanceWorkMem, isMemory: true },
+      { key: 'checkpoint_completion_target', value: checkpointCompletionTarget },
+      { key: 'wal_buffers', value: walBuffers, isMemory: true },
+      { key: 'default_statistics_target', value: defaultStatisticsTarget },
+      { key: 'random_page_cost', value: randomPageCost },
+      { key: 'effective_io_concurrency', value: effectiveIoConcurrency },
+      { key: 'maintenance_io_concurrency', value: maintenanceIoConcurrency },
+      { key: 'work_mem', value: workMem, isMemory: true },
+      { key: 'jit', value: jit },
+      { key: 'wal_compression', value: walCompression },
+      { key: 'autovacuum_max_workers', value: autovacuumMaxWorkers },
+      { key: 'autovacuum_work_mem', value: autovacuumWorkMem, isMemory: true },
+      { key: 'io_method', value: ioMethod },
+      ...ioWorkers,
+      ...checkpointSegments.map((setting) => ({ ...setting, isMemory: true })),
+      ...parallelSettings,
+      ...walLevel
+    ].filter((setting) => setting.value !== null && setting.value !== undefined)
+)
+
 // Export the slice reducer as the default export
 export default configurationSlice.reducer

@@ -26,7 +26,7 @@
 .app-update__button {
   border: 0;
   background: transparent;
-  color: #b58900;
+  color: var(--accentColor);
   cursor: pointer;
   width: 100%;
   height: 100%;
@@ -41,7 +41,7 @@
 }
 
 .app-update__button:hover {
-  color: #cb4b16;
+  color: var(--accentHoverColor);
 }
 
 .app-update__button:active {

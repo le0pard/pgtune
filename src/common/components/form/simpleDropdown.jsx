@@ -1,7 +1,19 @@
-import PropTypes from 'prop-types'
+import './form.css'
 
-import './dropdown.css'
+/**
+ * @typedef {object} FormSimpleDropdownProps
+ * @property {string} label accessible name of select
+ * @property {Array<{ label: string, value: string | number }>} options
+ * @property {string} [className] class for wrapper
+ * @property {string} [selectClassName]
+ * @property {string} [errorClassName]
+ */
 
+/**
+ * Select with validation error, without visible label (Formik Field component),
+ * other props are passed to select element
+ * @param {import('formik').FieldProps & FormSimpleDropdownProps} props
+ */
 const FormSimpleDropdown = ({
   field,
   options,
@@ -28,27 +40,6 @@ const FormSimpleDropdown = ({
       {isError && <div className={errorClassName}>{errors[field.name]}</div>}
     </div>
   )
-}
-
-FormSimpleDropdown.propTypes = {
-  field: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    value: PropTypes.any
-  }).isRequired,
-  label: PropTypes.string.isRequired,
-  className: PropTypes.string,
-  selectClassName: PropTypes.string,
-  errorClassName: PropTypes.string,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.any.isRequired
-    }).isRequired
-  ),
-  form: PropTypes.shape({
-    touched: PropTypes.object,
-    errors: PropTypes.object
-  }).isRequired
 }
 
 export default FormSimpleDropdown

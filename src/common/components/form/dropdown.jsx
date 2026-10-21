@@ -1,24 +1,35 @@
-import PropTypes from 'prop-types'
 import Tooltip from './tooltip'
 
-import './dropdown.css'
+import './form.css'
 
+/**
+ * @typedef {object} FormDropdownProps
+ * @property {string} label
+ * @property {import('react').ReactNode} tooltip help text, shown by "what is this?"
+ * @property {Array<{ label: string, value: string | number }>} options
+ */
+
+/**
+ * Select with label, help text and validation error (Formik Field component),
+ * other props are passed to select element
+ * @param {import('formik').FieldProps & FormDropdownProps} props
+ */
 const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors }, ...rest }) => {
   const dropdownID = `${field.name}Id`
   const isError = touched[field.name] && errors[field.name]
   const errorID = `${dropdownID}Error`
 
   return (
-    <div className="form-dropdown">
-      <label className="form-dropdown-label" htmlFor={dropdownID}>
+    <div className="form-row">
+      <label className="form-label" htmlFor={dropdownID}>
         {label}
       </label>
       <Tooltip id={`tooltip${dropdownID}`} label="what is this?" text={tooltip} />
-      <div className="form-dropdown-wrapper">
+      <div className="form-control">
         <select
           {...field}
           {...rest}
-          className="form-dropdown-wrapper__select"
+          className="form-input form-input--select"
           aria-describedby={[`tooltip${dropdownID}Content`, isError && errorID]
             .filter(Boolean)
             .join(' ')}
@@ -34,31 +45,12 @@ const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors 
           })}
         </select>
         {isError && (
-          <div id={errorID} className="form-dropdown-error">
+          <div id={errorID} className="form-error">
             {errors[field.name]}
           </div>
         )}
       </div>
     </div>
-  )
-}
-
-FormDropdown.propTypes = {
-  label: PropTypes.string.isRequired,
-  tooltip: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.string]).isRequired,
-  field: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    value: PropTypes.any
-  }).isRequired,
-  form: PropTypes.shape({
-    touched: PropTypes.object,
-    errors: PropTypes.object
-  }).isRequired,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.any.isRequired
-    }).isRequired
   )
 }
 

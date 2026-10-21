@@ -10,12 +10,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "oxfmt --check src postcss.config.js vite.config.js && oxlint .",
-    "format": "oxfmt src postcss.config.js vite.config.js",
+    "lint": "oxfmt --check src e2e postcss.config.js vite.config.js playwright.config.js && oxlint .",
+    "format": "oxfmt src e2e postcss.config.js vite.config.js playwright.config.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@reduxjs/toolkit": "^2.13.0",
     "@vitejs/plugin-react": "^6.1.2",
     "@vituum/vite-plugin-liquid": "^2.0.2",
@@ -30,7 +32,6 @@
     "postcss-import": "^17.0.1",
     "postcss-load-config": "^6.0.1",
     "postcss-preset-env": "^11.6.1",
-    "prop-types": "^15.8.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-redux": "^9.3.0",

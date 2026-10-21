@@ -1,21 +1,23 @@
-.form-field {
+/* shared styles for form fields: row with label, help text, control and error */
+
+.form-row {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   margin-bottom: 1rem;
 }
 
-.form-field-label {
+.form-label {
   flex: 0 0 60%;
   font-size: 1.1rem;
 }
 
-.form-field-wrapper {
+.form-control {
   flex: 0 0 100%;
   margin-top: 4px;
 }
 
-.form-field-wrapper__input {
+.form-input {
   width: 100%;
   font-size: 1.3rem;
   color: var(--inputColor);
@@ -29,23 +31,23 @@
     box-shadow 0.2s ease;
 }
 
-.form-field-wrapper__input::placeholder {
+.form-input--select {
+  appearance: none;
+}
+
+.form-input::placeholder {
   font-size: 1.2rem;
   color: var(--inputColorPlaceholder);
 }
 
-.form-field-wrapper__input:focus:not(:focus-visible) {
+.form-input:focus {
+  border-color: var(--accentColor);
+  box-shadow: 0 0 0 3px var(--accentShadowColor);
   outline: none;
 }
 
-.form-field-wrapper__input:focus {
-  border-color: #b58900;
-  box-shadow: 0 0 0 3px rgba(181, 137, 0, 0.15);
-  outline: none;
-}
-
-.form-field-error {
-  color: #dc322f;
+.form-error {
+  color: var(--dangerColor);
   font-size: 0.8rem;
   margin-top: 2px;
 }

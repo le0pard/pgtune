@@ -10,9 +10,9 @@
   padding: 0;
   margin-right: 4px;
   border: none;
-  border-bottom: 1px dotted #b58900;
+  border-bottom: 1px dotted var(--accentColor);
   background-color: transparent;
-  color: #b58900;
+  color: var(--accentColor);
   font: inherit;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -20,8 +20,8 @@
 
 .tooltip-button:hover,
 .tooltip-button[aria-expanded='true'] {
-  color: #cb4b16;
-  border-bottom-color: #cb4b16;
+  color: var(--accentHoverColor);
+  border-bottom-color: var(--accentHoverColor);
 }
 
 .tooltip-button:focus:not(:focus-visible) {
@@ -29,7 +29,7 @@
 }
 
 .tooltip-button:focus-visible {
-  outline: 2px solid #cb4b16;
+  outline: 2px solid var(--accentHoverColor);
   outline-offset: 2px;
 }
 
@@ -60,7 +60,7 @@
 .tooltip-panel__text {
   margin-top: 4px;
   padding: 0.4rem 0.6rem;
-  border-left: 3px solid #b58900;
+  border-left: 3px solid var(--accentColor);
   background-color: var(--headsColor);
   color: var(--emphColor);
   font-size: 0.8rem;

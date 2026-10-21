@@ -10,49 +10,13 @@ import { settingDescription, settingDocsUrl } from './settingsDocs'
 import CopyButton from '@common/components/copyButton'
 import { APP_THEMES_LIGHT, TAB_CONFIG, TAB_ALTER_SYSTEM } from '@features/settings/constants'
 import {
-  WARNING_LEVEL_STARTUP,
-  WARNING_LEVEL_MEMORY,
-  WARNING_LEVEL_NOTE
-} from '@features/configuration/constants'
-import {
-  OS_TYPE_LABELS,
-  DB_TYPE_LABELS,
-  HARD_DRIVE_LABELS,
-  DB_SIZE_LABELS
-} from '@features/configuration/labels'
-import {
   selectDBVersion,
-  selectOSType,
-  selectDBType,
-  selectTotalMemory,
-  selectTotalMemoryUnit,
-  selectCPUNum,
-  selectConnectionNum,
-  selectHDType,
-  selectDBSize,
-  selectMaxConnections,
-  selectSharedBuffers,
-  selectEffectiveCacheSize,
-  selectMaintenanceWorkMem,
-  selectCheckpointSegments,
-  selectCheckpointCompletionTarget,
-  selectWalBuffers,
-  selectDefaultStatisticsTarget,
-  selectRandomPageCost,
-  selectEffectiveIoConcurrency,
-  selectMaintenanceIoConcurrency,
-  selectParallelSettings,
-  selectWorkMem,
+  selectHardwareConfiguration,
+  selectSettings,
   selectWarningInfoMessages,
-  selectWalLevel,
-  selectJit,
-  selectWalCompression,
-  selectAutovacuumMaxWorkers,
-  selectAutovacuumWorkMem,
-  selectIoWorkers,
-  selectIoMethod,
   selectRestartRequiredSettings
 } from '@features/configuration/configurationSlice'
+import { configurationText, groupWarnings } from '@features/configuration/configurationText'
 import {
   openConfigTab,
   toggleIncludeWarnings,
@@ -66,62 +30,10 @@ import './configuration-view.css'
 hljs.registerLanguage('ini', iniLang)
 hljs.registerLanguage('sql', sqlLang)
 
-const KB_UNIT_MAP = {
-  KB_PER_MB: 1024,
-  KB_PER_GB: 1048576
-}
-
 const CONFIGURATION_TABS = [
   { id: TAB_CONFIG, label: 'postgresql.conf' },
   { id: TAB_ALTER_SYSTEM, label: 'ALTER SYSTEM' }
 ]
-
-// warnings are grouped and shown in this order
-const WARNING_GROUPS = [
-  {
-    level: WARNING_LEVEL_STARTUP,
-    title: 'May prevent startup',
-    commentTitle: 'WARNING (may prevent startup)'
-  },
-  {
-    level: WARNING_LEVEL_MEMORY,
-    title: 'Memory risk',
-    commentTitle: 'WARNING (memory risk)'
-  },
-  {
-    level: WARNING_LEVEL_NOTE,
-    title: 'Note',
-    commentTitle: 'NOTE'
-  }
-]
-
-// This uses larger units only if there's no loss of resolution in displaying
-// with that value. Therefore, if using this to output newly assigned
-// values, that value needs to be rounded appropriately if you want
-// it to show up as an even number of MB or GB
-const formatValue = (value) => {
-  const result = (() => {
-    if (value % KB_UNIT_MAP['KB_PER_GB'] === 0) {
-      return {
-        value: Math.floor(value / KB_UNIT_MAP['KB_PER_GB']),
-        unit: 'GB'
-      }
-    }
-    if (value % KB_UNIT_MAP['KB_PER_MB'] === 0) {
-      return {
-        value: Math.floor(value / KB_UNIT_MAP['KB_PER_MB']),
-        unit: 'MB'
-      }
-    }
-    return {
-      value,
-      unit: 'kB'
-    }
-  })()
-
-  // return formatted
-  return `${result.value}${result.unit}`
-}
 
 const renderCodeInlineCss = (codeHighlightStyle) => {
   return Object.keys(codeHighlightStyle).map((className) => {
@@ -163,38 +75,11 @@ const renderHightlightedCode = (code, isAlterSystem, settingKeys, dbVersion) => 
 const ConfigurationView = () => {
   const dispatch = useDispatch()
 
-  // hardware configuration
   const dbVersion = useSelector(selectDBVersion)
-  const osType = useSelector(selectOSType)
-  const dbType = useSelector(selectDBType)
-  const totalMemory = useSelector(selectTotalMemory)
-  const totalMemoryUnit = useSelector(selectTotalMemoryUnit)
-  const cpuNum = useSelector(selectCPUNum)
-  const connectionNum = useSelector(selectConnectionNum)
-  const hdType = useSelector(selectHDType)
-  const dbSize = useSelector(selectDBSize)
-  // computed settings
-  const maxConnectionsVal = useSelector(selectMaxConnections)
-  const sharedBuffersVal = useSelector(selectSharedBuffers)
-  const effectiveCacheSizeVal = useSelector(selectEffectiveCacheSize)
-  const maintenanceWorkMemVal = useSelector(selectMaintenanceWorkMem)
-  const checkpointSegmentsVal = useSelector(selectCheckpointSegments)
-  const walLevelVal = useSelector(selectWalLevel)
-  const checkpointCompletionTargetVal = useSelector(selectCheckpointCompletionTarget)
-  const walBuffersVal = useSelector(selectWalBuffers)
-  const defaultStatisticsTargetVal = useSelector(selectDefaultStatisticsTarget)
-  const randomPageCostVal = useSelector(selectRandomPageCost)
-  const effectiveIoConcurrencyVal = useSelector(selectEffectiveIoConcurrency)
-  const maintenanceIoConcurrencyVal = useSelector(selectMaintenanceIoConcurrency)
-  const parallelSettingsVal = useSelector(selectParallelSettings)
-  const workMemVal = useSelector(selectWorkMem)
-  const jitVal = useSelector(selectJit)
-  const walCompressionVal = useSelector(selectWalCompression)
-  const autovacuumMaxWorkersVal = useSelector(selectAutovacuumMaxWorkers)
-  const autovacuumWorkMemVal = useSelector(selectAutovacuumWorkMem)
-  const ioMethodVal = useSelector(selectIoMethod)
-  const ioWorkersVal = useSelector(selectIoWorkers)
-  const restartRequiredSettingsVal = useSelector(selectRestartRequiredSettings)
+  // provided parameters and generated settings
+  const hardware = useSelector(selectHardwareConfiguration)
+  const settings = useSelector(selectSettings)
+  const restartRequiredSettings = useSelector(selectRestartRequiredSettings)
   // warnings
   const warningInfoMessagesVal = useSelector(selectWarningInfoMessages)
   // tab state
@@ -212,106 +97,8 @@ const ConfigurationView = () => {
   )
 
   const isAlterSystem = TAB_ALTER_SYSTEM === tabState
-  const commentPrefix = isAlterSystem ? '--' : '#'
 
-  const warningGroups = WARNING_GROUPS.map((group) => ({
-    ...group,
-    warnings: warningInfoMessagesVal.filter((warning) => warning.level === group.level)
-  })).filter((group) => group.warnings.length > 0)
-
-  const warningInfo = () =>
-    warningGroups
-      .map((group) => [
-        group.commentTitle,
-        ...group.warnings.flatMap((warning, index) => [
-          ...(index > 0 ? [''] : []),
-          ...warning.text,
-          ...(warning.code ? [warning.code] : [])
-        ])
-      ])
-      .reduce(
-        (lines, groupLines) => (lines.length > 0 ? [...lines, '', ...groupLines] : groupLines),
-        []
-      )
-      .map((line) => (line ? `${commentPrefix} ${line}` : commentPrefix))
-      .join('\n')
-
-  const hardwareConfiguration = () =>
-    [
-      ['DB Version', dbVersion],
-      ['OS Type', OS_TYPE_LABELS[osType]],
-      ['DB Type', DB_TYPE_LABELS[dbType]],
-      ['Total Memory (RAM)', `${totalMemory} ${totalMemoryUnit}`],
-      ['CPUs num', cpuNum],
-      ['Connections num', connectionNum || `${maxConnectionsVal} (not provided, assumed)`],
-      ['Data Storage', HARD_DRIVE_LABELS[hdType]],
-      ['Total Data Size', DB_SIZE_LABELS[dbSize]]
-    ]
-      .filter((item) => !!item[1])
-      .map((item) => `${commentPrefix} ${item[0]}: ${item[1]}`)
-      .join('\n')
-
-  const getCheckpointSegments = () =>
-    checkpointSegmentsVal.map((item) => [item.key, formatValue(item.value)])
-
-  const getWalLevel = () => walLevelVal.map((item) => [item.key, item.value])
-
-  const getParallelSettings = () => parallelSettingsVal.map((item) => [item.key, item.value])
-
-  const getIoWorkers = () => ioWorkersVal.map((item) => [item.key, item.value])
-
-  const settingNote = (key) => {
-    if (restartRequiredSettingsVal.includes(key)) {
-      return 'restart required'
-    }
-    if (key === 'max_wal_size') {
-      return 'needs free disk space'
-    }
-    return null
-  }
-
-  const postgresqlSettings = () =>
-    [
-      ['max_connections', maxConnectionsVal],
-      ['shared_buffers', formatValue(sharedBuffersVal)],
-      ['effective_cache_size', formatValue(effectiveCacheSizeVal)],
-      ['maintenance_work_mem', formatValue(maintenanceWorkMemVal)],
-      ['checkpoint_completion_target', checkpointCompletionTargetVal],
-      ['wal_buffers', formatValue(walBuffersVal)],
-      ['default_statistics_target', defaultStatisticsTargetVal],
-      ['random_page_cost', randomPageCostVal],
-      ['effective_io_concurrency', effectiveIoConcurrencyVal],
-      ['maintenance_io_concurrency', maintenanceIoConcurrencyVal],
-      ['work_mem', formatValue(workMemVal)],
-      ['jit', jitVal],
-      ['wal_compression', walCompressionVal],
-      ['autovacuum_max_workers', autovacuumMaxWorkersVal],
-      ['autovacuum_work_mem', autovacuumWorkMemVal ? formatValue(autovacuumWorkMemVal) : null],
-      ['io_method', ioMethodVal]
-    ]
-      .concat(getIoWorkers())
-      .concat(getCheckpointSegments())
-      .concat(getParallelSettings())
-      .concat(getWalLevel())
-      .filter((item) => !!item[1])
-
-  const postgresqlConfig = (settingsData) => {
-    const settings = settingsData.map((item) => ({
-      line: isAlterSystem
-        ? `ALTER SYSTEM SET ${item[0]} = '${item[1]}';`
-        : `${item[0]} = ${item[1]}`,
-      note: settingNote(item[0])
-    }))
-
-    // align notes in one column
-    const lineWidth = Math.max(...settings.map((item) => item.line.length))
-
-    return settings
-      .map((item) =>
-        item.note ? `${item.line.padEnd(lineWidth)} ${commentPrefix} ${item.note}` : item.line
-      )
-      .join('\n')
-  }
+  const warningGroups = groupWarnings(warningInfoMessagesVal)
 
   // arrow keys, Home and End move between tabs (WAI-ARIA tabs pattern)
   const handleTabKeyDown = (e) => {
@@ -399,15 +186,15 @@ const ConfigurationView = () => {
   }
 
   const renderConfigResult = () => {
-    const settingsData = postgresqlSettings()
-    const settingKeys = settingsData.map((item) => item[0])
-    const generatedConfigRes = [hardwareConfiguration(), '', postgresqlConfig(settingsData)].join(
-      '\n'
-    )
-    const copiedConfigRes =
-      includeWarnings && warningGroups.length > 0
-        ? [warningInfo(), '', generatedConfigRes].join('\n')
-        : generatedConfigRes
+    const { text, copyText } = configurationText({
+      hardware,
+      settings,
+      warnings: warningInfoMessagesVal,
+      restartRequiredSettings,
+      isAlterSystem,
+      includeWarnings
+    })
+    const settingKeys = settings.map((setting) => setting.key)
 
     return (
       <Fragment>
@@ -426,11 +213,7 @@ const ConfigurationView = () => {
         )}
         {renderWarnings()}
         <div className="configuration-view-code">
-          <CopyButton
-            className="configuration-view-copy-top-button"
-            text={copiedConfigRes}
-            label="Copy"
-          />
+          <CopyButton className="configuration-view-copy-top-button" text={copyText} label="Copy" />
           <pre
             style={{ display: 'block', overflowX: 'auto', padding: '0.5rem' }}
             role="region"
@@ -440,12 +223,7 @@ const ConfigurationView = () => {
             <code
               style={{ whiteSpace: 'pre' }}
               dangerouslySetInnerHTML={{
-                __html: renderHightlightedCode(
-                  generatedConfigRes,
-                  isAlterSystem,
-                  settingKeys,
-                  dbVersion
-                )
+                __html: renderHightlightedCode(text, isAlterSystem, settingKeys, dbVersion)
               }}
             />
           </pre>
@@ -464,7 +242,7 @@ const ConfigurationView = () => {
         <div className="configuration-view-copy-wrapper">
           <CopyButton
             className="configuration-view-copy-button"
-            text={copiedConfigRes}
+            text={copyText}
             label="Copy configuration"
           />
         </div>

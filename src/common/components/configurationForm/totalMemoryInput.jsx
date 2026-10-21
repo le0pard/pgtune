@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { Field } from 'formik'
 import Tooltip from '@common/components/form/tooltip'
 import FormSimpleField from '@common/components/form/simpleField'
@@ -22,12 +21,16 @@ const totalMemoryUnitOptions = () => [
   }
 ]
 
+/**
+ * Total memory amount and unit inputs
+ * @param {{ tooltip: import('react').ReactNode }} props
+ */
 const TotalMemoryInput = ({ tooltip }) => {
   const inputID = 'TotalMemoryId'
 
   return (
-    <div className="total-memory">
-      <label className="total-memory-label" htmlFor={inputID}>
+    <div className="form-row">
+      <label className="form-label" htmlFor={inputID}>
         Total Memory (RAM)
       </label>
       <Tooltip id={`tooltip${inputID}`} label="what is this?" text={tooltip} />
@@ -36,8 +39,8 @@ const TotalMemoryInput = ({ tooltip }) => {
         type="text"
         inputMode="numeric"
         className="total-memory-amount"
-        inputClassName="total-memory-amount__input"
-        errorClassName="total-memory-amount__error"
+        inputClassName="form-input"
+        errorClassName="form-error"
         component={FormSimpleField}
         id={inputID}
         aria-describedby={`tooltip${inputID}Content`}
@@ -53,16 +56,12 @@ const TotalMemoryInput = ({ tooltip }) => {
         name="totalMemoryUnit"
         label="Memory units"
         className="total-memory-unit"
-        selectClassName="total-memory-unit__select"
+        selectClassName="form-input form-input--select"
         component={FormSimpleDropdown}
         options={totalMemoryUnitOptions()}
       />
     </div>
   )
-}
-
-TotalMemoryInput.propTypes = {
-  tooltip: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.string]).isRequired
 }
 
 export default TotalMemoryInput

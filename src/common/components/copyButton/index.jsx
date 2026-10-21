@@ -1,11 +1,23 @@
 import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 
 const COPIED_TIMEOUT = 2000
 
 const COPY_STATUS_SUCCESS = 'success'
 const COPY_STATUS_ERROR = 'error'
 
+/**
+ * @typedef {object} CopyButtonProps
+ * @property {string} text text, which is copied to clipboard
+ * @property {string} [className]
+ * @property {string} [label] button label
+ * @property {string} [successLabel] label shown after successful copy
+ * @property {string} [errorLabel] label shown if copy failed
+ */
+
+/**
+ * Button, which copies text to clipboard and shows result in its label
+ * @param {CopyButtonProps} props
+ */
 const CopyButton = ({
   text,
   className,
@@ -53,14 +65,6 @@ const CopyButton = ({
       <span aria-live="polite">{renderLabel()}</span>
     </button>
   )
-}
-
-CopyButton.propTypes = {
-  className: PropTypes.string,
-  text: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  successLabel: PropTypes.string,
-  errorLabel: PropTypes.string
 }
 
 export default CopyButton
