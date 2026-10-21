@@ -17,8 +17,8 @@ import {
   selectCPUNum,
   selectConnectionNum,
   selectHDType,
+  selectDBSize,
   selectMaxConnections,
-  selectHugePages,
   selectSharedBuffers,
   selectEffectiveCacheSize,
   selectMaintenanceWorkMem,
@@ -28,6 +28,7 @@ import {
   selectDefaultStatisticsTarget,
   selectRandomPageCost,
   selectEffectiveIoConcurrency,
+  selectMaintenanceIoConcurrency,
   selectParallelSettings,
   selectWorkMem,
   selectWarningInfoMessages,
@@ -37,7 +38,8 @@ import {
   selectAutovacuumMaxWorkers,
   selectAutovacuumWorkMem,
   selectIoWorkers,
-  selectIoMethod
+  selectIoMethod,
+  selectRestartRequiredSettings
 } from '@features/configuration/configurationSlice'
 import {
   openConfigTab,
@@ -110,9 +112,9 @@ const ConfigurationView = () => {
   const cpuNum = useSelector(selectCPUNum)
   const connectionNum = useSelector(selectConnectionNum)
   const hdType = useSelector(selectHDType)
+  const dbSize = useSelector(selectDBSize)
   // computed settings
   const maxConnectionsVal = useSelector(selectMaxConnections)
-  const hugePagesVal = useSelector(selectHugePages)
   const sharedBuffersVal = useSelector(selectSharedBuffers)
   const effectiveCacheSizeVal = useSelector(selectEffectiveCacheSize)
   const maintenanceWorkMemVal = useSelector(selectMaintenanceWorkMem)
@@ -123,6 +125,7 @@ const ConfigurationView = () => {
   const defaultStatisticsTargetVal = useSelector(selectDefaultStatisticsTarget)
   const randomPageCostVal = useSelector(selectRandomPageCost)
   const effectiveIoConcurrencyVal = useSelector(selectEffectiveIoConcurrency)
+  const maintenanceIoConcurrencyVal = useSelector(selectMaintenanceIoConcurrency)
   const parallelSettingsVal = useSelector(selectParallelSettings)
   const workMemVal = useSelector(selectWorkMem)
   const jitVal = useSelector(selectJit)
@@ -131,6 +134,7 @@ const ConfigurationView = () => {
   const autovacuumWorkMemVal = useSelector(selectAutovacuumWorkMem)
   const ioMethodVal = useSelector(selectIoMethod)
   const ioWorkersVal = useSelector(selectIoWorkers)
+  const restartRequiredSettingsVal = useSelector(selectRestartRequiredSettings)
   // warnings
   const warningInfoMessagesVal = useSelector(selectWarningInfoMessages)
   // tab state
@@ -141,9 +145,10 @@ const ConfigurationView = () => {
   const handleClickTab = useCallback((tab) => dispatch(openConfigTab(tab)), [dispatch])
 
   const isAlterSystem = TAB_ALTER_SYSTEM === tabState
+  const commentPrefix = isAlterSystem ? '--' : '#'
 
   const warningInfo = () =>
-    warningInfoMessagesVal.map((item) => `${isAlterSystem ? '--' : '#'} ${item}`).join('\n')
+    warningInfoMessagesVal.map((item) => `${commentPrefix} ${item}`).join('\n')
 
   const hardwareConfiguration = () =>
     [
@@ -152,24 +157,32 @@ const ConfigurationView = () => {
       ['DB Type', dbType],
       ['Total Memory (RAM)', `${totalMemory} ${totalMemoryUnit}`],
       ['CPUs num', cpuNum],
-      ['Connections num', connectionNum],
-      ['Data Storage', hdType]
+      ['Connections num', connectionNum || `${maxConnectionsVal} (not provided, assumed)`],
+      ['Data Storage', hdType],
+      ['Total Data Size', dbSize]
     ]
       .filter((item) => !!item[1])
-      .map((item) => `${isAlterSystem ? '--' : '#'} ${item[0]}: ${item[1]}`)
+      .map((item) => `${commentPrefix} ${item[0]}: ${item[1]}`)
       .join('\n')
 
   const getCheckpointSegments = () =>
-    checkpointSegmentsVal.map((item) => {
-      if (item.key === 'checkpoint_segments') {
-        return [item.key, item.value]
-      }
-      return [item.key, formatValue(item.value)]
-    })
+    checkpointSegmentsVal.map((item) => [item.key, formatValue(item.value)])
 
   const getWalLevel = () => walLevelVal.map((item) => [item.key, item.value])
 
   const getParallelSettings = () => parallelSettingsVal.map((item) => [item.key, item.value])
+
+  const getIoWorkers = () => ioWorkersVal.map((item) => [item.key, item.value])
+
+  const settingNote = (key) => {
+    if (restartRequiredSettingsVal.includes(key)) {
+      return 'restart required'
+    }
+    if (key === 'max_wal_size') {
+      return 'needs at least this much free disk space for WAL'
+    }
+    return null
+  }
 
   const postgresqlConfig = () => {
     const configData = [
@@ -182,23 +195,34 @@ const ConfigurationView = () => {
       ['default_statistics_target', defaultStatisticsTargetVal],
       ['random_page_cost', randomPageCostVal],
       ['effective_io_concurrency', effectiveIoConcurrencyVal],
+      ['maintenance_io_concurrency', maintenanceIoConcurrencyVal],
       ['work_mem', formatValue(workMemVal)],
-      ['huge_pages', hugePagesVal],
       ['jit', jitVal],
       ['wal_compression', walCompressionVal],
       ['autovacuum_max_workers', autovacuumMaxWorkersVal],
       ['autovacuum_work_mem', autovacuumWorkMemVal ? formatValue(autovacuumWorkMemVal) : null],
-      ['io_method', ioMethodVal],
-      ['io_workers', ioWorkersVal]
+      ['io_method', ioMethodVal]
     ]
+      .concat(getIoWorkers())
       .concat(getCheckpointSegments())
       .concat(getParallelSettings())
       .concat(getWalLevel())
 
-    return configData
+    const settings = configData
       .filter((item) => !!item[1])
+      .map((item) => ({
+        line: isAlterSystem
+          ? `ALTER SYSTEM SET ${item[0]} = '${item[1]}';`
+          : `${item[0]} = ${item[1]}`,
+        note: settingNote(item[0])
+      }))
+
+    // align notes in one column
+    const lineWidth = Math.max(...settings.map((item) => item.line.length))
+
+    return settings
       .map((item) =>
-        isAlterSystem ? `ALTER SYSTEM SET ${item[0]} = '${item[1]}';` : `${item[0]} = ${item[1]}`
+        item.note ? `${item.line.padEnd(lineWidth)} ${commentPrefix} ${item.note}` : item.line
       )
       .join('\n')
   }
@@ -244,13 +268,20 @@ const ConfigurationView = () => {
           <p>
             <strong>ALTER SYSTEM</strong> writes the given parameter setting to the{' '}
             <strong>postgresql.auto.conf</strong> file, which is read in addition to{' '}
-            <strong>postgresql.conf</strong>
+            <strong>postgresql.conf</strong>. Settings marked as &quot;restart required&quot; take
+            effect only after database restart, others after{' '}
+            <strong>SELECT pg_reload_conf();</strong>
           </p>
         ) : (
           <p>
             Add/modify this settings in <strong>postgresql.conf</strong> and restart database
           </p>
         )}
+        <p>
+          Apply the same settings on replicas: <strong>max_connections</strong> and{' '}
+          <strong>max_worker_processes</strong> on a standby must be the same or higher than on the
+          primary
+        </p>
         <pre style={{ display: 'block', overflowX: 'auto', padding: '0.5rem' }}>
           <code
             style={{ whiteSpace: 'pre' }}

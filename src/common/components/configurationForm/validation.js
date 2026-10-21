@@ -17,6 +17,7 @@ import {
   HARD_DRIVE_SAN,
   HARD_DRIVE_NVME,
   MAX_NUMERIC_VALUE,
+  MAX_CONNECTIONS_VALUE,
   DB_SIZE_LESS_RAM,
   DB_SIZE_MID_RAM,
   DB_SIZE_GREATER_RAM
@@ -62,5 +63,5 @@ export const validationSchema = Yup.object().shape({
     .notRequired()
     .integer('Must be an integer')
     .min(20, 'Must be greater than or equal to 20')
-    .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`)
+    .max(MAX_CONNECTIONS_VALUE, `Must be less than or equal to ${MAX_CONNECTIONS_VALUE}`)
 })

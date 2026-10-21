@@ -28,7 +28,8 @@ import {
   DB_SIZE_MID_RAM,
   DB_SIZE_GREATER_RAM,
   SIZE_UNIT_GB,
-  MAX_NUMERIC_VALUE
+  MAX_NUMERIC_VALUE,
+  MAX_CONNECTIONS_VALUE
 } from '@features/configuration/constants'
 
 import './configuration-form.css'
@@ -228,7 +229,7 @@ const ConfigurationForm = () => {
             autoCorrect="off"
             autoCapitalize="none"
             min={20}
-            max={MAX_NUMERIC_VALUE}
+            max={MAX_CONNECTIONS_VALUE}
             step={1}
             pattern="[0-9]{1,6}"
             placeholder="Number of Connections (optional)"

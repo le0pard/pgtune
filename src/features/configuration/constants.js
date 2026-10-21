@@ -1,6 +1,6 @@
 // postgresql versions
 export const DEFAULT_DB_VERSION = 18
-export const DB_VERSIONS = [DEFAULT_DB_VERSION, 17, 16, 15, 14, 13, 12, 11, 10]
+export const DB_VERSIONS = [19, DEFAULT_DB_VERSION, 17, 16, 15, 14, 13, 12, 11, 10]
 // os types
 export const OS_LINUX = 'linux'
 export const OS_WINDOWS = 'windows'
@@ -26,3 +26,6 @@ export const DB_SIZE_MID_RAM = 'mid_ram'
 export const DB_SIZE_GREATER_RAM = 'greater_ram'
 // maximum value for integer fields
 export const MAX_NUMERIC_VALUE = 999999
+// PostgreSQL allows 262143 server processes in total (max_connections + autovacuum
+// + max_worker_processes + max_wal_senders), so leave room for non-connection processes
+export const MAX_CONNECTIONS_VALUE = 260000

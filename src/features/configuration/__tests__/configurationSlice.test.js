@@ -1,12 +1,16 @@
 import {
   selectIsConfigured,
   selectMaxConnections,
+  selectSharedBuffers,
+  selectEffectiveCacheSize,
+  selectCheckpointCompletionTarget,
+  selectWalBuffers,
   selectDefaultStatisticsTarget,
   selectRandomPageCost,
   selectEffectiveIoConcurrency,
+  selectMaintenanceIoConcurrency,
   selectParallelSettings,
   selectWalLevel,
-  selectHugePages,
   selectMaintenanceWorkMem,
   selectWorkMem,
   selectJit,
@@ -15,6 +19,7 @@ import {
   selectAutovacuumWorkMem,
   selectIoWorkers,
   selectIoMethod,
+  selectRestartRequiredSettings,
   selectWarningInfoMessages
 } from '../configurationSlice'
 
@@ -42,7 +47,9 @@ describe('selectMaxConnections', () => {
     expect(
       selectMaxConnections({
         configuration: {
-          dbType: 'web'
+          dbType: 'web',
+          totalMemory: 16,
+          totalMemoryUnit: 'GB'
         }
       })
     ).toEqual(200)
@@ -51,37 +58,150 @@ describe('selectMaxConnections', () => {
     expect(
       selectMaxConnections({
         configuration: {
-          dbType: 'oltp'
+          dbType: 'oltp',
+          totalMemory: 16,
+          totalMemoryUnit: 'GB'
         }
       })
     ).toEqual(300)
   })
-  it('dw app', () => {
+  it('dw app does not go below PostgreSQL default', () => {
     expect(
       selectMaxConnections({
         configuration: {
-          dbType: 'dw'
+          dbType: 'dw',
+          totalMemory: 16,
+          totalMemoryUnit: 'GB'
         }
       })
-    ).toEqual(40)
+    ).toEqual(100)
   })
-  it('desktop app', () => {
+  it('desktop app does not go below PostgreSQL default', () => {
     expect(
       selectMaxConnections({
         configuration: {
-          dbType: 'desktop'
+          dbType: 'desktop',
+          totalMemory: 16,
+          totalMemoryUnit: 'GB'
         }
       })
-    ).toEqual(20)
+    ).toEqual(100)
   })
   it('mixed app', () => {
     expect(
       selectMaxConnections({
         configuration: {
-          dbType: 'mixed'
+          dbType: 'mixed',
+          totalMemory: 16,
+          totalMemoryUnit: 'GB'
         }
       })
     ).toEqual(100)
+  })
+  it('lowers default for small memory to fit minimal work_mem', () => {
+    expect(
+      selectMaxConnections({
+        configuration: {
+          dbType: 'web',
+          totalMemory: 2,
+          totalMemoryUnit: 'GB'
+        }
+      })
+    ).toEqual(120) // (2GB - 512MB) / (4MB * 3) - 8 workers
+  })
+  it('never lowers default below PostgreSQL default', () => {
+    expect(
+      selectMaxConnections({
+        configuration: {
+          dbType: 'web',
+          totalMemory: 1,
+          totalMemoryUnit: 'GB'
+        }
+      })
+    ).toEqual(100)
+  })
+  it('uses provided number of connections', () => {
+    expect(
+      selectMaxConnections({
+        configuration: {
+          dbType: 'web',
+          totalMemory: 1,
+          totalMemoryUnit: 'GB',
+          connectionNum: 500
+        }
+      })
+    ).toEqual(500)
+  })
+})
+
+describe('selectSharedBuffers', () => {
+  it('rounds down to whole megabytes', () => {
+    expect(
+      selectSharedBuffers({
+        configuration: {
+          dbType: 'web',
+          totalMemory: 1001,
+          totalMemoryUnit: 'MB'
+        }
+      })
+    ).toEqual(256000) // 250MB in kB
+  })
+})
+
+describe('selectEffectiveCacheSize', () => {
+  it('rounds down to whole megabytes', () => {
+    expect(
+      selectEffectiveCacheSize({
+        configuration: {
+          dbType: 'web',
+          totalMemory: 1001,
+          totalMemoryUnit: 'MB'
+        }
+      })
+    ).toEqual(768000) // 750MB in kB
+  })
+})
+
+describe('selectCheckpointCompletionTarget', () => {
+  it('sets 0.9 before PostgreSQL 14', () => {
+    expect(selectCheckpointCompletionTarget({ configuration: { dbVersion: 13 } })).toEqual(0.9)
+  })
+  it('omits it on PostgreSQL 14+, where 0.9 is default', () => {
+    expect(selectCheckpointCompletionTarget({ configuration: { dbVersion: 14 } })).toEqual(null)
+  })
+})
+
+describe('selectWalBuffers', () => {
+  it('uses 1/32 of shared_buffers like PostgreSQL automatic value', () => {
+    expect(
+      selectWalBuffers({
+        configuration: {
+          dbType: 'web',
+          totalMemory: 512,
+          totalMemoryUnit: 'MB'
+        }
+      })
+    ).toEqual(4096) // shared_buffers 128MB / 32
+    expect(
+      selectWalBuffers({
+        configuration: {
+          dbType: 'web',
+          totalMemory: 1000,
+          totalMemoryUnit: 'MB'
+        }
+      })
+    ).toEqual(8000) // shared_buffers 250MB / 32
+  })
+  it('caps at one WAL segment (16MB)', () => {
+    expect(
+      selectWalBuffers({
+        configuration: {
+          dbType: 'web',
+          totalMemory: 16,
+          totalMemoryUnit: 'GB'
+        }
+      })
+    ).toEqual(16384)
   })
 })
 
@@ -93,7 +213,7 @@ describe('selectDefaultStatisticsTarget', () => {
           dbType: 'web'
         }
       })
-    ).toEqual(100)
+    ).toEqual(null)
   })
   it('oltp app', () => {
     expect(
@@ -102,7 +222,7 @@ describe('selectDefaultStatisticsTarget', () => {
           dbType: 'oltp'
         }
       })
-    ).toEqual(100)
+    ).toEqual(null)
   })
   it('dw app', () => {
     expect(
@@ -120,7 +240,7 @@ describe('selectDefaultStatisticsTarget', () => {
           dbType: 'desktop'
         }
       })
-    ).toEqual(100)
+    ).toEqual(null)
   })
   it('mixed app', () => {
     expect(
@@ -129,7 +249,7 @@ describe('selectDefaultStatisticsTarget', () => {
           dbType: 'mixed'
         }
       })
-    ).toEqual(100)
+    ).toEqual(null)
   })
 })
 
@@ -180,6 +300,28 @@ describe('selectRandomPageCost', () => {
       })
     ).toEqual(1.1)
   })
+  it('returns 4 for Data Warehouses on SSD to prevent bad index scans', () => {
+    expect(
+      selectRandomPageCost({
+        configuration: {
+          hdType: 'ssd',
+          dbType: 'dw',
+          dbSize: 'mid_ram'
+        }
+      })
+    ).toEqual(4)
+  })
+  it('returns 1.1 for Data Warehouses if the DB fits entirely in RAM', () => {
+    expect(
+      selectRandomPageCost({
+        configuration: {
+          hdType: 'ssd',
+          dbType: 'dw',
+          dbSize: 'less_ram'
+        }
+      })
+    ).toEqual(1.1)
+  })
 })
 
 describe('selectEffectiveIoConcurrency', () => {
@@ -218,10 +360,33 @@ describe('selectEffectiveIoConcurrency', () => {
       selectEffectiveIoConcurrency({
         configuration: {
           osType: 'windows',
-          hdType: 'ssd'
+          hdType: 'ssd',
+          dbVersion: 17
         }
       })
     ).toEqual(null)
+  })
+  it('ssd and windows on PostgreSQL 18+', () => {
+    expect(
+      selectEffectiveIoConcurrency({
+        configuration: {
+          osType: 'windows',
+          hdType: 'ssd',
+          dbVersion: 18
+        }
+      })
+    ).toEqual(200)
+  })
+  it('nvme and macOS on PostgreSQL 18+', () => {
+    expect(
+      selectEffectiveIoConcurrency({
+        configuration: {
+          osType: 'mac',
+          hdType: 'nvme',
+          dbVersion: 18
+        }
+      })
+    ).toEqual(1000)
   })
   it('nvme', () => {
     expect(
@@ -233,27 +398,39 @@ describe('selectEffectiveIoConcurrency', () => {
       })
     ).toEqual(1000)
   })
-  it('returns 4 for Data Warehouses on SSD to prevent bad index scans', () => {
+})
+
+describe('selectMaintenanceIoConcurrency', () => {
+  it('returns null before PostgreSQL 13', () => {
     expect(
-      selectRandomPageCost({
-        configuration: {
-          hdType: 'ssd',
-          dbType: 'dw',
-          dbSize: 'mid_ram'
-        }
+      selectMaintenanceIoConcurrency({
+        configuration: { osType: 'linux', hdType: 'ssd', dbVersion: 12 }
       })
-    ).toEqual(4)
+    ).toEqual(null)
   })
-  it('returns 1.1 for Data Warehouses if the DB fits entirely in RAM', () => {
+  it('follows effective_io_concurrency on PostgreSQL 13+', () => {
     expect(
-      selectRandomPageCost({
-        configuration: {
-          hdType: 'ssd',
-          dbType: 'dw',
-          dbSize: 'less_ram'
-        }
+      selectMaintenanceIoConcurrency({
+        configuration: { osType: 'linux', hdType: 'ssd', dbVersion: 13 }
       })
-    ).toEqual(1.1)
+    ).toEqual(200)
+    expect(
+      selectMaintenanceIoConcurrency({
+        configuration: { osType: 'linux', hdType: 'hdd', dbVersion: 17 }
+      })
+    ).toEqual(2)
+  })
+  it('returns null for macOS before PostgreSQL 18', () => {
+    expect(
+      selectMaintenanceIoConcurrency({
+        configuration: { osType: 'mac', hdType: 'ssd', dbVersion: 17 }
+      })
+    ).toEqual(null)
+    expect(
+      selectMaintenanceIoConcurrency({
+        configuration: { osType: 'mac', hdType: 'ssd', dbVersion: 18 }
+      })
+    ).toEqual(200)
   })
 })
 
@@ -324,8 +501,57 @@ describe('selectParallelSettings', () => {
       })
     ).toEqual([
       { key: 'max_worker_processes', value: 31 },
-      { key: 'max_parallel_workers_per_gather', value: 16 },
+      { key: 'max_parallel_workers_per_gather', value: 7 }, // 1/4 of max_parallel_workers
       { key: 'max_parallel_workers', value: 31 },
+      { key: 'max_parallel_maintenance_workers', value: 4 }
+    ])
+  })
+
+  it('DWH keeps at least 4 workers per gather', () => {
+    expect(
+      selectParallelSettings({
+        configuration: {
+          dbVersion: 13,
+          cpuNum: 12,
+          dbType: 'dw'
+        }
+      })
+    ).toEqual([
+      { key: 'max_worker_processes', value: 12 },
+      { key: 'max_parallel_workers_per_gather', value: 4 },
+      { key: 'max_parallel_workers', value: 12 },
+      { key: 'max_parallel_maintenance_workers', value: 4 }
+    ])
+  })
+
+  it('never lowers max_worker_processes below PostgreSQL default (8)', () => {
+    expect(
+      selectParallelSettings({
+        configuration: {
+          dbVersion: 13,
+          cpuNum: 4
+        }
+      })
+    ).toEqual([
+      { key: 'max_worker_processes', value: 8 },
+      { key: 'max_parallel_workers_per_gather', value: 2 },
+      { key: 'max_parallel_workers', value: 4 },
+      { key: 'max_parallel_maintenance_workers', value: 2 }
+    ])
+  })
+
+  it('caps parallel workers at PostgreSQL limit (1024)', () => {
+    expect(
+      selectParallelSettings({
+        configuration: {
+          dbVersion: 13,
+          cpuNum: 2000
+        }
+      })
+    ).toEqual([
+      { key: 'max_worker_processes', value: 1024 },
+      { key: 'max_parallel_workers_per_gather', value: 4 },
+      { key: 'max_parallel_workers', value: 1024 },
       { key: 'max_parallel_maintenance_workers', value: 4 }
     ])
   })
@@ -412,49 +638,19 @@ describe('selectMaintenanceWorkMem', () => {
       })
     ).toEqual(1048576) // 1GB in kB
   })
-})
 
-describe('selectHugePages', () => {
-  it('returns off when shared_buffers is small (< 2GB)', () => {
+  it('rounds down to whole megabytes', () => {
     expect(
-      selectHugePages({
+      selectMaintenanceWorkMem({
         configuration: {
-          totalMemory: 4,
-          totalMemoryUnit: 'GB',
+          totalMemory: 1000, // 1000MB / 16 = 62.5MB
+          totalMemoryUnit: 'MB',
           dbType: 'web',
           osType: 'linux',
           dbVersion: 15
         }
       })
-    ).toEqual('off')
-  })
-
-  it('returns try when shared_buffers is large (>= 2GB)', () => {
-    expect(
-      selectHugePages({
-        configuration: {
-          totalMemory: 16,
-          totalMemoryUnit: 'GB',
-          dbType: 'web',
-          osType: 'linux',
-          dbVersion: 15
-        }
-      })
-    ).toEqual('try')
-  })
-
-  it('returns off for macOS regardless of RAM size', () => {
-    expect(
-      selectHugePages({
-        configuration: {
-          totalMemory: 128,
-          totalMemoryUnit: 'GB',
-          dbType: 'web',
-          osType: 'mac',
-          dbVersion: 15
-        }
-      })
-    ).toEqual('off')
+    ).toEqual(63488) // 62MB in kB
   })
 })
 
@@ -504,56 +700,52 @@ describe('selectWorkMem', () => {
           cpuNum: 4
         }
       })
-    ).toBeGreaterThan(2096128) // Actually evaluates to 2796202 (~2.6GB)
+    ).toBeGreaterThan(2096128) // Actually evaluates to 2795520 (2730MB)
+  })
+
+  it('rounds down to whole megabytes', () => {
+    expect(
+      selectWorkMem({
+        configuration: {
+          totalMemory: 64,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15,
+          dbSize: 'mid_ram'
+        }
+      })
+    ).toEqual(79872) // 48GB / (208 * 3) = 78.77MB -> 78MB in kB
   })
 
   it('safely boosts work_mem by 30% when database size is less than RAM', () => {
-    // A standard calculation might yield 100000 kB. With 'less_ram', it should multiply by 1.3
-    const standardWorkMem = selectWorkMem({
-      configuration: {
-        totalMemory: 64,
-        totalMemoryUnit: 'GB',
-        dbType: 'web',
-        osType: 'linux',
-        dbVersion: 15,
-        dbSize: 'mid_ram'
-      }
-    })
-    const boostedWorkMem = selectWorkMem({
-      configuration: {
-        totalMemory: 64,
-        totalMemoryUnit: 'GB',
-        dbType: 'web',
-        osType: 'linux',
-        dbVersion: 15,
-        dbSize: 'less_ram'
-      }
-    })
-    expect(boostedWorkMem).toEqual(Math.floor(standardWorkMem * 1.3))
+    expect(
+      selectWorkMem({
+        configuration: {
+          totalMemory: 64,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15,
+          dbSize: 'less_ram'
+        }
+      })
+    ).toEqual(104448) // 78.77MB * 1.3 = 102.4MB -> 102MB in kB
   })
 
   it('safely reduces work_mem by 10% when database size is > 3x RAM to protect OS cache', () => {
-    const standardWorkMem = selectWorkMem({
-      configuration: {
-        totalMemory: 64,
-        totalMemoryUnit: 'GB',
-        dbType: 'web',
-        osType: 'linux',
-        dbVersion: 15,
-        dbSize: 'mid_ram'
-      }
-    })
-    const reducedWorkMem = selectWorkMem({
-      configuration: {
-        totalMemory: 64,
-        totalMemoryUnit: 'GB',
-        dbType: 'web',
-        osType: 'linux',
-        dbVersion: 15,
-        dbSize: 'greater_ram'
-      }
-    })
-    expect(reducedWorkMem).toEqual(Math.floor(standardWorkMem * 0.9))
+    expect(
+      selectWorkMem({
+        configuration: {
+          totalMemory: 64,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 15,
+          dbSize: 'greater_ram'
+        }
+      })
+    ).toEqual(71680) // 78.77MB * 0.9 = 70.9MB -> 70MB in kB
   })
 })
 
@@ -567,6 +759,10 @@ describe('selectJit', () => {
     expect(selectJit({ configuration: { dbVersion: 15, dbType: 'dw' } })).toEqual(null)
     expect(selectJit({ configuration: { dbVersion: 11, dbType: 'web' } })).toEqual(null)
   })
+
+  it('leaves JIT alone on PG19+, where it is disabled by default', () => {
+    expect(selectJit({ configuration: { dbVersion: 19, dbType: 'web' } })).toEqual(null)
+  })
 })
 
 describe('selectWalCompression', () => {
@@ -578,6 +774,10 @@ describe('selectWalCompression', () => {
   it('uses lz4 for PG15+ assuming standard package installations', () => {
     expect(selectWalCompression({ configuration: { dbVersion: 15 } })).toEqual('lz4')
     expect(selectWalCompression({ configuration: { dbVersion: 17 } })).toEqual('lz4')
+  })
+
+  it('uses on for PG19+, which picks the best available method', () => {
+    expect(selectWalCompression({ configuration: { dbVersion: 19 } })).toEqual('on')
   })
 })
 
@@ -594,7 +794,7 @@ describe('selectAutovacuumWorkMem', () => {
     expect(
       selectAutovacuumWorkMem({
         configuration: {
-          totalMemory: 4,
+          totalMemory: 16, // maintenance_work_mem is exactly 1GB
           totalMemoryUnit: 'GB',
           dbType: 'web',
           osType: 'linux',
@@ -604,7 +804,7 @@ describe('selectAutovacuumWorkMem', () => {
     ).toEqual(null)
   })
 
-  it('caps autovacuum_work_mem at 2GB if maintenance_work_mem is massive', () => {
+  it('caps autovacuum_work_mem at 1GB if maintenance_work_mem is massive', () => {
     expect(
       selectAutovacuumWorkMem({
         configuration: {
@@ -615,10 +815,10 @@ describe('selectAutovacuumWorkMem', () => {
           dbVersion: 15
         }
       })
-    ).toEqual(2097152) // exactly 2GB
+    ).toEqual(1048576) // exactly 1GB
   })
 
-  it('returns null for Windows PG17 or older because maintenance_work_mem is already safely capped below the threshold', () => {
+  it('caps autovacuum_work_mem at 1GB for Windows PG17 or older', () => {
     expect(
       selectAutovacuumWorkMem({
         configuration: {
@@ -626,13 +826,13 @@ describe('selectAutovacuumWorkMem', () => {
           totalMemoryUnit: 'GB',
           dbType: 'web',
           osType: 'windows',
-          dbVersion: 17
+          dbVersion: 17 // maintenance_work_mem is capped at 2GB - 1MB
         }
       })
-    ).toEqual(null) // Falls back to safely capped maintenance_work_mem
+    ).toEqual(1048576) // exactly 1GB
   })
 
-  it('caps autovacuum_work_mem at 2GB for Windows PG18+ where maintenance_work_mem is allowed to be massive', () => {
+  it('caps autovacuum_work_mem at 1GB for Windows PG18+', () => {
     expect(
       selectAutovacuumWorkMem({
         configuration: {
@@ -643,43 +843,52 @@ describe('selectAutovacuumWorkMem', () => {
           dbVersion: 18 // PG18 allows 8GB maintenance_work_mem
         }
       })
-    ).toEqual(2097152) // exactly 2GB
+    ).toEqual(1048576) // exactly 1GB
   })
 })
 
 describe('selectIoWorkers', () => {
-  it('returns null for PostgreSQL versions before 18', () => {
+  it('returns nothing for PostgreSQL versions before 18', () => {
     expect(
       selectIoWorkers({ configuration: { dbVersion: 17, cpuNum: 32, osType: 'mac' } })
-    ).toEqual(null)
+    ).toEqual([])
   })
 
-  it('returns null if cpuNum is small or missing, deferring to the PG default of 3', () => {
-    expect(selectIoWorkers({ configuration: { dbVersion: 18, osType: 'mac' } })).toEqual(null)
+  it('returns nothing if cpuNum is small or missing, deferring to the PG default of 3', () => {
+    expect(selectIoWorkers({ configuration: { dbVersion: 18, osType: 'mac' } })).toEqual([])
     expect(selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 8, osType: 'mac' } })).toEqual(
-      null
-    ) // 8 / 4 = 2, so it stays null
+      []
+    ) // 8 / 4 = 2, so it stays default
   })
 
   it('scales to roughly 25% of CPU cores for large servers', () => {
     expect(
       selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 32, osType: 'mac' } })
-    ).toEqual(8)
+    ).toEqual([{ key: 'io_workers', value: 8 }])
     expect(
       selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 64, osType: 'mac' } })
-    ).toEqual(16)
+    ).toEqual([{ key: 'io_workers', value: 16 }])
   })
 
   it('strictly caps at 32 as per PostgreSQL maximum limits', () => {
     expect(
       selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 256, osType: 'mac' } })
-    ).toEqual(32)
+    ).toEqual([{ key: 'io_workers', value: 32 }])
   })
 
-  it('on linux for io_uring return null', () => {
+  it('on linux for io_uring return nothing', () => {
     expect(
       selectIoWorkers({ configuration: { dbVersion: 18, cpuNum: 256, osType: 'linux' } })
-    ).toEqual(null)
+    ).toEqual([])
+  })
+
+  it('uses io_max_workers on PostgreSQL 19+, only above its default of 8', () => {
+    expect(
+      selectIoWorkers({ configuration: { dbVersion: 19, cpuNum: 32, osType: 'mac' } })
+    ).toEqual([])
+    expect(
+      selectIoWorkers({ configuration: { dbVersion: 19, cpuNum: 64, osType: 'mac' } })
+    ).toEqual([{ key: 'io_max_workers', value: 16 }])
   })
 })
 
@@ -694,14 +903,26 @@ describe('selectIoMethod', () => {
     )
   })
 
-  it('safely falls back to worker for Windows on PostgreSQL 18+', () => {
-    expect(selectIoMethod({ configuration: { dbVersion: 18, osType: 'windows' } })).toEqual(
-      'worker'
+  it('keeps default worker for Windows on PostgreSQL 18+', () => {
+    expect(selectIoMethod({ configuration: { dbVersion: 18, osType: 'windows' } })).toEqual(null)
+  })
+
+  it('keeps default worker for macOS on PostgreSQL 18+', () => {
+    expect(selectIoMethod({ configuration: { dbVersion: 18, osType: 'mac' } })).toEqual(null)
+  })
+})
+
+describe('selectRestartRequiredSettings', () => {
+  it('includes autovacuum_max_workers before PostgreSQL 18', () => {
+    expect(selectRestartRequiredSettings({ configuration: { dbVersion: 17 } })).toContain(
+      'autovacuum_max_workers'
     )
   })
 
-  it('safely falls back to worker for macOS on PostgreSQL 18+', () => {
-    expect(selectIoMethod({ configuration: { dbVersion: 18, osType: 'mac' } })).toEqual('worker')
+  it('excludes autovacuum_max_workers on PostgreSQL 18+', () => {
+    const settings = selectRestartRequiredSettings({ configuration: { dbVersion: 18 } })
+    expect(settings).toContain('shared_buffers')
+    expect(settings).not.toContain('autovacuum_max_workers')
   })
 })
 
@@ -713,7 +934,8 @@ describe('selectWarningInfoMessages', () => {
           totalMemory: 4,
           totalMemoryUnit: 'GB',
           dbVersion: 14,
-          osType: 'linux'
+          osType: 'linux',
+          dbType: 'web'
         }
       })
     ).toEqual([])
@@ -723,13 +945,23 @@ describe('selectWarningInfoMessages', () => {
     expect(
       selectWarningInfoMessages({
         configuration: {
-          totalMemory: 128,
+          totalMemory: 512,
           totalMemoryUnit: 'MB',
           dbVersion: 14,
-          osType: 'linux'
+          osType: 'linux',
+          dbType: 'web'
         }
       })
-    ).toEqual(['WARNING', 'this tool not being optimal', 'for low memory systems'])
+    ).toEqual([
+      'WARNING',
+      'this tool not being optimal',
+      'for low memory systems',
+      '',
+      'max_connections = 100 is too high for this amount of RAM:',
+      'work_mem is raised to 4MB minimum, so under load',
+      'PostgreSQL can run out of memory',
+      'Lower max_connections or use a connection pooler (e.g. PgBouncer)'
+    ])
   })
 
   it('returns warning for very high memory systems', () => {
@@ -739,10 +971,91 @@ describe('selectWarningInfoMessages', () => {
           totalMemory: 256,
           totalMemoryUnit: 'GB',
           dbVersion: 14,
-          osType: 'linux'
+          osType: 'linux',
+          dbType: 'web'
         }
       })
-    ).toEqual(['WARNING', 'this tool not being optimal', 'for very high memory systems'])
+    ).toEqual([
+      'WARNING',
+      'this tool not being optimal',
+      'for very high memory systems',
+      '',
+      'shared_buffers is large: reserve Linux huge pages (vm.nr_hugepages)',
+      'to reduce memory used by page tables of each connection',
+      'See "Linux Huge Pages" in PostgreSQL documentation to calculate it'
+    ])
+  })
+
+  it('returns warning when work_mem minimum does not fit in memory', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 4,
+          totalMemoryUnit: 'GB',
+          dbVersion: 14,
+          osType: 'linux',
+          dbType: 'web',
+          connectionNum: 2000
+        }
+      })
+    ).toEqual([
+      'WARNING',
+      'max_connections = 2000 is too high for this amount of RAM:',
+      'work_mem is raised to 4MB minimum, so under load',
+      'PostgreSQL can run out of memory',
+      'Lower max_connections or use a connection pooler (e.g. PgBouncer)'
+    ])
+  })
+
+  it('returns huge pages warning for Windows', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 16,
+          totalMemoryUnit: 'GB',
+          dbVersion: 14,
+          osType: 'windows',
+          dbType: 'web'
+        }
+      })
+    ).toEqual([
+      'WARNING',
+      'shared_buffers is large: grant the "Lock pages in memory" right',
+      'to the PostgreSQL service account to use huge pages'
+    ])
+  })
+
+  it('returns no huge pages warning for macOS', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 64,
+          totalMemoryUnit: 'GB',
+          dbVersion: 14,
+          osType: 'mac',
+          dbType: 'web'
+        }
+      })
+    ).toEqual([])
+  })
+
+  it('returns warning for minimal wal_level on desktop', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 2,
+          totalMemoryUnit: 'GB',
+          dbVersion: 14,
+          osType: 'linux',
+          dbType: 'desktop'
+        }
+      })
+    ).toEqual([
+      'WARNING',
+      'wal_level = minimal: PostgreSQL will not start if archive_mode = on',
+      'or if replication slots exist. Replication, pg_basebackup',
+      'and point-in-time recovery are not possible'
+    ])
   })
 
   it('returns compilation warning for lz4 wal_compression', () => {
@@ -752,13 +1065,15 @@ describe('selectWarningInfoMessages', () => {
           totalMemory: 4,
           totalMemoryUnit: 'GB',
           dbVersion: 15,
-          osType: 'linux'
+          osType: 'linux',
+          dbType: 'web'
         }
       })
     ).toEqual([
       'WARNING',
       'wal_compression = lz4 requires PostgreSQL',
-      'to be compiled with --with-lz4'
+      'to be compiled with --with-lz4',
+      "Check: SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';"
     ])
   })
 
@@ -769,17 +1084,36 @@ describe('selectWarningInfoMessages', () => {
           totalMemory: 4,
           totalMemoryUnit: 'GB',
           dbVersion: 18,
-          osType: 'linux'
+          osType: 'linux',
+          dbType: 'web'
         }
       })
     ).toEqual([
       'WARNING',
       'wal_compression = lz4 requires PostgreSQL',
       'to be compiled with --with-lz4',
+      "Check: SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';",
       '',
       'io_method = io_uring requires PostgreSQL',
-      'to be compiled with --with-liburing'
+      'to be compiled with --with-liburing',
+      'and io_uring allowed by the kernel (kernel.io_uring_disabled sysctl)',
+      'and by containers (Docker default seccomp profile blocks it)',
+      "Check: SELECT enumvals FROM pg_settings WHERE name = 'io_method';"
     ])
+  })
+
+  it('returns no lz4 warning on PostgreSQL 19+', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 4,
+          totalMemoryUnit: 'GB',
+          dbVersion: 19,
+          osType: 'mac',
+          dbType: 'web'
+        }
+      })
+    ).toEqual([])
   })
 
   it('returns warning for Data Warehouses on NVMe to explain default cost parameters', () => {
@@ -797,8 +1131,14 @@ describe('selectWarningInfoMessages', () => {
       })
     ).toEqual([
       'WARNING',
+      'shared_buffers is large: reserve Linux huge pages (vm.nr_hugepages)',
+      'to reduce memory used by page tables of each connection',
+      'Required number (with these settings, while server is stopped):',
+      'postgres -D $PGDATA -C shared_memory_size_in_huge_pages',
+      '',
       'wal_compression = lz4 requires PostgreSQL',
       'to be compiled with --with-lz4',
+      "Check: SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';",
       '',
       'Cost parameters for Data Warehouses on NVMe drives are left at defaults',
       'to avoid catastrophic index scan selections',

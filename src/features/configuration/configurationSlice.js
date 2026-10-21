@@ -30,11 +30,34 @@ const SIZE_UNIT_MAP = {
 
 const DEFAULT_DB_SETTINGS = {
   default: {
+    ['max_connections']: 100,
     ['max_worker_processes']: 8,
     ['max_parallel_workers_per_gather']: 2,
     ['max_parallel_workers']: 8
   }
 }
+
+// PostgreSQL limit for max_parallel_workers (MAX_PARALLEL_WORKER_LIMIT)
+const MAX_PARALLEL_WORKERS = 1024
+
+// Modern floor limit: 4 MB minimum to prevent disk-spill for simple queries
+const MIN_WORK_MEM = (4 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
+
+// Settings, which take effect only after server restart
+const RESTART_REQUIRED_SETTINGS = [
+  'max_connections',
+  'shared_buffers',
+  'wal_buffers',
+  'max_worker_processes',
+  'wal_level',
+  'max_wal_senders',
+  'io_method'
+]
+
+// Memory values (in kB) are rounded down to whole megabytes to keep config readable
+const roundDownToMb = (valueKb) =>
+  Math.floor(valueKb / (SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])) *
+  (SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])
 
 // redux
 
@@ -113,75 +136,66 @@ export const selectIsConfigured = createSelector(
   (totalMemory) => !!totalMemory
 )
 
-export const selectMaxConnections = createSelector(
-  [selectConnectionNum, selectDBType],
-  (connectionNum, dbType) =>
-    connectionNum
-      ? connectionNum
-      : {
-          [DB_TYPE_WEB]: 200,
-          [DB_TYPE_OLTP]: 300,
-          [DB_TYPE_DW]: 40,
-          [DB_TYPE_DESKTOP]: 20,
-          [DB_TYPE_MIXED]: 100
-        }[dbType]
+export const selectRestartRequiredSettings = createSelector([selectDBVersion], (dbVersion) =>
+  // autovacuum_max_workers can be changed by reload since PostgreSQL 18
+  dbVersion < 18
+    ? [...RESTART_REQUIRED_SETTINGS, 'autovacuum_max_workers']
+    : RESTART_REQUIRED_SETTINGS
 )
 
 export const selectSharedBuffers = createSelector(
-  [selectTotalMemoryInKb, selectDBType, selectOSType, selectDBVersion],
-  (totalMemoryKb, dbType, osType, dbVersion) => {
-    let sharedBuffersValue = {
-      [DB_TYPE_WEB]: Math.floor(totalMemoryKb / 4),
-      [DB_TYPE_OLTP]: Math.floor(totalMemoryKb / 4),
-      [DB_TYPE_DW]: Math.floor(totalMemoryKb / 4),
-      [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 16),
-      [DB_TYPE_MIXED]: Math.floor(totalMemoryKb / 4)
-    }[dbType]
-    if (dbVersion < 10 && OS_WINDOWS === osType) {
-      // Limit shared_buffers to 512MB on Windows
-      const winMemoryLimit = (512 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
-      if (sharedBuffersValue > winMemoryLimit) {
-        sharedBuffersValue = winMemoryLimit
-      }
-    }
-    return sharedBuffersValue
-  }
+  [selectTotalMemoryInKb, selectDBType],
+  (totalMemoryKb, dbType) =>
+    roundDownToMb(
+      {
+        [DB_TYPE_WEB]: Math.floor(totalMemoryKb / 4),
+        [DB_TYPE_OLTP]: Math.floor(totalMemoryKb / 4),
+        [DB_TYPE_DW]: Math.floor(totalMemoryKb / 4),
+        [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 16),
+        [DB_TYPE_MIXED]: Math.floor(totalMemoryKb / 4)
+      }[dbType]
+    )
 )
 
-export const selectHugePages = createSelector(
+const selectIsHugePagesRecommended = createSelector(
   [selectSharedBuffers, selectOSType],
   (sharedBuffersValue, osType) => {
     // macOS does not support PostgreSQL huge pages
     if (osType === OS_MAC) {
-      return 'off'
+      return false
     }
+    // huge_pages = try is PostgreSQL default, but huge pages need to be reserved in OS
     const hugePageThreshold = (2 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB']
-    return sharedBuffersValue >= hugePageThreshold ? 'try' : 'off'
+    return sharedBuffersValue >= hugePageThreshold
   }
 )
 
 export const selectEffectiveCacheSize = createSelector(
   [selectTotalMemoryInKb, selectDBType],
   (totalMemoryKb, dbType) =>
-    ({
-      [DB_TYPE_WEB]: Math.floor((totalMemoryKb * 3) / 4),
-      [DB_TYPE_OLTP]: Math.floor((totalMemoryKb * 3) / 4),
-      [DB_TYPE_DW]: Math.floor((totalMemoryKb * 3) / 4),
-      [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 4),
-      [DB_TYPE_MIXED]: Math.floor((totalMemoryKb * 3) / 4)
-    })[dbType]
+    roundDownToMb(
+      {
+        [DB_TYPE_WEB]: Math.floor((totalMemoryKb * 3) / 4),
+        [DB_TYPE_OLTP]: Math.floor((totalMemoryKb * 3) / 4),
+        [DB_TYPE_DW]: Math.floor((totalMemoryKb * 3) / 4),
+        [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 4),
+        [DB_TYPE_MIXED]: Math.floor((totalMemoryKb * 3) / 4)
+      }[dbType]
+    )
 )
 
 export const selectMaintenanceWorkMem = createSelector(
   [selectTotalMemoryInKb, selectDBType, selectOSType, selectDBVersion],
   (totalMemoryKb, dbType, osType, dbVersion) => {
-    let maintenanceWorkMemValue = {
-      [DB_TYPE_WEB]: Math.floor(totalMemoryKb / 16),
-      [DB_TYPE_OLTP]: Math.floor(totalMemoryKb / 16),
-      [DB_TYPE_DW]: Math.floor(totalMemoryKb / 8),
-      [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 16),
-      [DB_TYPE_MIXED]: Math.floor(totalMemoryKb / 16)
-    }[dbType]
+    let maintenanceWorkMemValue = roundDownToMb(
+      {
+        [DB_TYPE_WEB]: Math.floor(totalMemoryKb / 16),
+        [DB_TYPE_OLTP]: Math.floor(totalMemoryKb / 16),
+        [DB_TYPE_DW]: Math.floor(totalMemoryKb / 8),
+        [DB_TYPE_DESKTOP]: Math.floor(totalMemoryKb / 16),
+        [DB_TYPE_MIXED]: Math.floor(totalMemoryKb / 16)
+      }[dbType]
+    )
     // Default cap is 8GB on modern servers with lots of memory
     let memoryLimit = (8 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB']
 
@@ -228,42 +242,25 @@ export const selectCheckpointSegments = createSelector([selectDBType], (dbType) 
 })
 
 export const selectCheckpointCompletionTarget = createSelector(
-  [],
-  () => 0.9 // based on https://github.com/postgres/postgres/commit/bbcc4eb2
+  [selectDBVersion],
+  // based on https://github.com/postgres/postgres/commit/bbcc4eb2,
+  // which made 0.9 the default since PostgreSQL 14
+  (dbVersion) => (dbVersion < 14 ? 0.9 : null)
 )
 
 export const selectWalBuffers = createSelector([selectSharedBuffers], (sharedBuffersValue) => {
-  // Follow auto-tuning guideline for wal_buffers added in 9.1, where it's
-  // set to 3% of shared_buffers up to a maximum of 16MB.
-  let walBuffersValue = Math.floor((3 * sharedBuffersValue) / 100)
+  // Same value as PostgreSQL picks automatically (wal_buffers = -1): 1/32 of
+  // shared_buffers in 8kB pages, not less than 64kB and not more than
+  // one WAL segment (16MB)
+  const walBuffersValue = Math.floor(sharedBuffersValue / 8 / 32) * 8
   const maxWalBuffer = (16 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
-  if (walBuffersValue > maxWalBuffer) {
-    walBuffersValue = maxWalBuffer
-  }
-  // It's nice of wal_buffers is an even 16MB if it's near that number. Since
-  // that is a common case on Windows, where shared_buffers is clipped to 512MB,
-  // round upwards in that situation
-  const walBufferNearValue = (14 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
-  if (walBuffersValue > walBufferNearValue && walBuffersValue < maxWalBuffer) {
-    walBuffersValue = maxWalBuffer
-  }
-  // if less, than 32 kb, than set it to minimum
-  if (walBuffersValue < 32) {
-    walBuffersValue = 32
-  }
-  return walBuffersValue
+  return Math.min(Math.max(walBuffersValue, 64), maxWalBuffer)
 })
 
 export const selectDefaultStatisticsTarget = createSelector(
   [selectDBType],
-  (dbType) =>
-    ({
-      [DB_TYPE_WEB]: 100,
-      [DB_TYPE_OLTP]: 100,
-      [DB_TYPE_DW]: 500,
-      [DB_TYPE_DESKTOP]: 100,
-      [DB_TYPE_MIXED]: 100
-    })[dbType]
+  // other types keep PostgreSQL default (100)
+  (dbType) => (dbType === DB_TYPE_DW ? 500 : null)
 )
 
 export const selectRandomPageCost = createSelector(
@@ -293,9 +290,11 @@ export const selectRandomPageCost = createSelector(
 )
 
 export const selectEffectiveIoConcurrency = createSelector(
-  [selectOSType, selectHDType],
-  (osType, hdType) => {
-    if (osType !== OS_LINUX) {
+  [selectOSType, selectHDType, selectDBVersion],
+  (osType, hdType, dbVersion) => {
+    // Before PostgreSQL 18 non-zero value is rejected on platforms without
+    // posix_fadvise (macOS, Windows). Asynchronous I/O in PostgreSQL 18 removed this limitation
+    if (osType !== OS_LINUX && dbVersion < 18) {
       return null
     }
     return {
@@ -307,23 +306,38 @@ export const selectEffectiveIoConcurrency = createSelector(
   }
 )
 
+export const selectMaintenanceIoConcurrency = createSelector(
+  [selectEffectiveIoConcurrency, selectDBVersion],
+  // maintenance_io_concurrency was added in PostgreSQL 13. Same storage, same concurrency
+  (effectiveIoConcurrencyValue, dbVersion) =>
+    dbVersion >= 13 && effectiveIoConcurrencyValue ? effectiveIoConcurrencyValue : null
+)
+
 export const selectParallelSettings = createSelector(
-  [selectDBVersion, selectDBType, selectCPUNum],
-  (dbVersion, dbType, cpuNum) => {
+  [selectDBVersion, selectDBType, selectCPUNum, selectDbDefaultValues],
+  (dbVersion, dbType, cpuNum, dbDefaultValues) => {
     if (!cpuNum || cpuNum < 4) {
       return []
     }
 
-    let workersPerGather = Math.ceil(cpuNum / 2)
+    const parallelWorkers = Math.min(cpuNum, MAX_PARALLEL_WORKERS)
 
-    if (dbType !== DB_TYPE_DW && workersPerGather > 4) {
+    let workersPerGather = Math.ceil(parallelWorkers / 2)
+
+    if (dbType === DB_TYPE_DW) {
+      // with half of workers per query, the third concurrent query gets no workers at all,
+      // so keep enough workers for at least 4 parallel queries at the same time
+      workersPerGather = Math.min(workersPerGather, Math.max(4, Math.floor(parallelWorkers / 4)))
+    } else if (workersPerGather > 4) {
       workersPerGather = 4 // no clear evidence, that each new worker will provide big benefit for each noew core
     }
 
     let config = [
       {
         key: 'max_worker_processes',
-        value: cpuNum
+        // Never lower than PostgreSQL default: logical replication and extensions
+        // take their background workers from the same pool
+        value: Math.max(parallelWorkers, dbDefaultValues['max_worker_processes'])
       },
       {
         key: 'max_parallel_workers_per_gather',
@@ -334,12 +348,12 @@ export const selectParallelSettings = createSelector(
     if (dbVersion >= 10) {
       config.push({
         key: 'max_parallel_workers',
-        value: cpuNum
+        value: parallelWorkers
       })
     }
 
     if (dbVersion >= 11) {
-      let parallelMaintenanceWorkers = Math.ceil(cpuNum / 2)
+      let parallelMaintenanceWorkers = Math.ceil(parallelWorkers / 2)
 
       if (parallelMaintenanceWorkers > 4) {
         parallelMaintenanceWorkers = 4 // no clear evidence, that each new worker will provide big benefit for each noew core
@@ -355,49 +369,70 @@ export const selectParallelSettings = createSelector(
   }
 )
 
-export const selectWorkMem = createSelector(
+// Number of parallel workers, which can run queries (and use work_mem) at the same time
+const selectParallelWorkersForWorkMem = createSelector(
+  [selectParallelSettings, selectDbDefaultValues],
+  (parallelSettingsValue, dbDefaultValues) => {
+    const maxParallelWorkers = parallelSettingsValue.find(
+      (param) => param['key'] === 'max_parallel_workers'
+    )
+    if (maxParallelWorkers && maxParallelWorkers['value'] > 0) {
+      return maxParallelWorkers['value']
+    }
+    return dbDefaultValues['max_parallel_workers']
+  }
+)
+
+export const selectMaxConnections = createSelector(
+  [
+    selectConnectionNum,
+    selectDBType,
+    selectTotalMemoryInKb,
+    selectSharedBuffers,
+    selectParallelWorkersForWorkMem,
+    selectDbDefaultValues
+  ],
+  (connectionNum, dbType, totalMemoryKb, sharedBuffersValue, parallelWorkers, dbDefaultValues) => {
+    if (connectionNum) {
+      return connectionNum
+    }
+
+    const dbTypeConnections = {
+      [DB_TYPE_WEB]: 200,
+      [DB_TYPE_OLTP]: 300,
+      [DB_TYPE_DW]: 100,
+      [DB_TYPE_DESKTOP]: 100,
+      [DB_TYPE_MIXED]: 100
+    }[dbType]
+
+    // Connections, which fit in memory with minimal work_mem (see selectWorkMemBudget)
+    const connectionsFitInMemory =
+      Math.floor((totalMemoryKb - sharedBuffersValue) / (MIN_WORK_MEM * 3)) - parallelWorkers
+
+    // Never lower than PostgreSQL default: application can fail with "too many clients"
+    return Math.max(
+      dbDefaultValues['max_connections'],
+      Math.min(dbTypeConnections, connectionsFitInMemory)
+    )
+  }
+)
+
+// work_mem is assigned any time a query calls for a sort, or a hash, or any other structure that needs a space allocation, which can happen multiple times per query. So you're better off assuming max_connections * 2 or max_connections * 3 is the amount of RAM that will actually use in reality. At the very least, you need to subtract shared_buffers from the amount you're distributing to connections in work_mem.
+// The other thing to consider is that there's no reason to run on the edge of available memory. If you do that, there's a very high risk the out-of-memory killer will come along and start killing PostgreSQL backends. Always leave a buffer of some kind in case of spikes in memory usage. So your maximum amount of memory available in work_mem should be (RAM - shared_buffers) / ((max_connections + max_parallel_workers) * 3).
+const selectWorkMemBudget = createSelector(
   [
     selectTotalMemoryInKb,
     selectSharedBuffers,
     selectMaxConnections,
-    selectParallelSettings,
-    selectDbDefaultValues,
-    selectDBType,
-    selectOSType,
-    selectDBVersion,
-    selectDBSize
+    selectParallelWorkersForWorkMem
   ],
-  (
-    totalMemoryKb,
-    sharedBuffersValue,
-    maxConnectionsValue,
-    parallelSettingsValue,
-    dbDefaultValues,
-    dbType,
-    osType,
-    dbVersion,
-    dbSize
-  ) => {
-    const parallelForWorkMem = (() => {
-      if (parallelSettingsValue.length) {
-        const maxWorkerProcesses = parallelSettingsValue.find(
-          (param) => param['key'] === 'max_worker_processes'
-        )
-        if (maxWorkerProcesses && maxWorkerProcesses['value'] && maxWorkerProcesses['value'] > 0) {
-          return maxWorkerProcesses['value']
-        }
-      }
-      if (dbDefaultValues['max_worker_processes'] && dbDefaultValues['max_worker_processes'] > 0) {
-        return dbDefaultValues['max_worker_processes']
-      }
-      return 1
-    })()
+  (totalMemoryKb, sharedBuffersValue, maxConnectionsValue, parallelWorkers) =>
+    (totalMemoryKb - sharedBuffersValue) / ((maxConnectionsValue + parallelWorkers) * 3)
+)
 
-    // work_mem is assigned any time a query calls for a sort, or a hash, or any other structure that needs a space allocation, which can happen multiple times per query. So you're better off assuming max_connections * 2 or max_connections * 3 is the amount of RAM that will actually use in reality. At the very least, you need to subtract shared_buffers from the amount you're distributing to connections in work_mem.
-    // The other thing to consider is that there's no reason to run on the edge of available memory. If you do that, there's a very high risk the out-of-memory killer will come along and start killing PostgreSQL backends. Always leave a buffer of some kind in case of spikes in memory usage. So your maximum amount of memory available in work_mem should be (RAM - shared_buffers) / ((max_connections + max_worker_processes) * 3).
-    const workMemValue =
-      (totalMemoryKb - sharedBuffersValue) / ((maxConnectionsValue + parallelForWorkMem) * 3)
-
+export const selectWorkMem = createSelector(
+  [selectWorkMemBudget, selectDBType, selectOSType, selectDBVersion, selectDBSize],
+  (workMemValue, dbType, osType, dbVersion, dbSize) => {
     let workMemResult = {
       [DB_TYPE_WEB]: Math.floor(workMemValue),
       [DB_TYPE_OLTP]: Math.floor(workMemValue),
@@ -416,10 +451,10 @@ export const selectWorkMem = createSelector(
       workMemResult = Math.floor(workMemResult * 0.9)
     }
 
-    // Modern floor limit: 4 MB minimum to prevent disk-spill for simple queries
-    const minWorkMem = (4 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
-    if (workMemResult < minWorkMem) {
-      workMemResult = minWorkMem
+    workMemResult = roundDownToMb(workMemResult)
+
+    if (workMemResult < MIN_WORK_MEM) {
+      workMemResult = MIN_WORK_MEM
     }
 
     // Windows 64-bit has a strict 2GB limit up to PostgreSQL 17
@@ -455,16 +490,25 @@ export const selectWalLevel = createSelector([selectDBType], (dbType) => {
 })
 
 export const selectJit = createSelector([selectDBVersion, selectDBType], (dbVersion, dbType) => {
-  // JIT compilation is enabled by default in PG 12+. For OLTP/Web workloads,
+  // JIT compilation is enabled by default in PG 12 - 18. For OLTP/Web workloads,
   // it routinely causes CPU spikes and slow planning for simple, short queries.
   // JIT compilation is beneficial primarily for long-running CPU-bound queries. Frequently these will be analytical queries.
-  if (dbVersion >= 12 && [DB_TYPE_WEB, DB_TYPE_OLTP, DB_TYPE_MIXED].includes(dbType)) {
+  // PG 19+ disables JIT by default.
+  if (
+    dbVersion >= 12 &&
+    dbVersion < 19 &&
+    [DB_TYPE_WEB, DB_TYPE_OLTP, DB_TYPE_MIXED].includes(dbType)
+  ) {
     return 'off'
   }
   return null // Omit for dw/desktop so it uses the PG default
 })
 
 export const selectWalCompression = createSelector([selectDBVersion], (dbVersion) => {
+  // PG 19+ 'on' picks the best compression method available in the build
+  if (dbVersion >= 19) {
+    return 'on'
+  }
   // PG 15+ introduced lz4 and zstd support. lz4 is significantly faster
   // and lighter on CPU than the native pglz algorithm. Standard package
   // installations compile with lz4 support by default.
@@ -487,30 +531,15 @@ export const selectAutovacuumMaxWorkers = createSelector([selectCPUNum], (cpuNum
 })
 
 export const selectAutovacuumWorkMem = createSelector(
-  [selectMaintenanceWorkMem, selectOSType, selectDBVersion],
-  (maintenanceWorkMemValue, osType, dbVersion) => {
-    let autovacuumWorkMemValue = null
-
+  [selectMaintenanceWorkMem],
+  (maintenanceWorkMemValue) => {
     // By default, autovacuum_work_mem is -1 (uses maintenance_work_mem).
     // Because we safely raised maintenance_work_mem to up to 8GB, letting 3-5 background
-    // workers each consume 8GB would cause severe OOM risks. We explicitly cap
-    // background vacuum memory to 2GB max per worker.
-    const threshold = (2 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB']
-    if (maintenanceWorkMemValue >= threshold) {
-      autovacuumWorkMemValue = threshold
-    }
-
-    // Windows 64-bit has a strict 2GB limit up to PostgreSQL 17
-    if (autovacuumWorkMemValue !== null && osType === OS_WINDOWS && dbVersion <= 17) {
-      const winMemoryLimit =
-        (2 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB'] -
-        (1 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB']
-      if (autovacuumWorkMemValue > winMemoryLimit) {
-        autovacuumWorkMemValue = winMemoryLimit
-      }
-    }
-
-    return autovacuumWorkMemValue
+    // workers each consume it would cause severe OOM risks. Before PostgreSQL 17 vacuum
+    // can not use more than 1GB for dead tuples, and PostgreSQL 17+ stores them much more
+    // compactly, so we cap background vacuum memory to 1GB per worker.
+    const threshold = (1 * SIZE_UNIT_MAP['GB']) / SIZE_UNIT_MAP['KB']
+    return maintenanceWorkMemValue > threshold ? threshold : null
   }
 )
 
@@ -528,61 +557,133 @@ export const selectIoMethod = createSelector(
       return 'io_uring'
     }
 
-    // Windows and macOS do not support io_uring natively, so we fall back
-    // to the safe cross-platform 'worker' processes.
-    return 'worker'
+    // Windows and macOS do not support io_uring natively, so we keep
+    // the PostgreSQL default 'worker' processes.
+    return null
   }
 )
 
 export const selectIoWorkers = createSelector(
   [selectDBVersion, selectCPUNum, selectIoMethod],
   (dbVersion, cpuNum, ioMethod) => {
-    // io_workers was introduced in PG18 for the new Asynchronous I/O subsystem
+    // I/O workers were introduced in PG18 for the new Asynchronous I/O subsystem
     if (dbVersion < 18 || !cpuNum || ioMethod === 'io_uring') {
-      return null
+      return []
     }
 
-    // Default is 3. We conservatively scale it to ~25% of CPU cores to avoid
+    // We conservatively scale it to ~25% of CPU cores to avoid
     // lock contention on the AIO queue, capped at PostgreSQL's hard max of 32
-    const ioWorkersValue = Math.min(32, Math.max(3, Math.floor(cpuNum / 4)))
+    const ioWorkersValue = Math.min(32, Math.floor(cpuNum / 4))
+
+    // PG19 starts and stops I/O workers automatically, between io_min_workers
+    // and io_max_workers (default 8). PG18 uses fixed io_workers (default 3).
+    const ioWorkersSetting =
+      dbVersion >= 19 ? { key: 'io_max_workers', default: 8 } : { key: 'io_workers', default: 3 }
 
     // Only explicitly configure it if we are recommending more than the default
-    return ioWorkersValue > 3 ? ioWorkersValue : null
+    return ioWorkersValue > ioWorkersSetting.default
+      ? [{ key: ioWorkersSetting.key, value: ioWorkersValue }]
+      : []
   }
 )
 
 export const selectWarningInfoMessages = createSelector(
   [
     selectTotalMemoryInBytes,
-    selectWalCompression,
-    selectIoMethod,
+    selectDBVersion,
+    selectOSType,
     selectDBType,
     selectHDType,
-    selectDBSize
+    selectDBSize,
+    selectMaxConnections,
+    selectWorkMemBudget,
+    selectIsHugePagesRecommended,
+    selectWalLevel,
+    selectWalCompression,
+    selectIoMethod
   ],
-  (totalMemory, walCompression, ioMethod, dbType, hdType, dbSize) => {
+  (
+    totalMemory,
+    dbVersion,
+    osType,
+    dbType,
+    hdType,
+    dbSize,
+    maxConnections,
+    workMemBudget,
+    isHugePagesRecommended,
+    walLevel,
+    walCompression,
+    ioMethod
+  ) => {
     let warnings = []
 
+    const addWarning = (...lines) => {
+      if (warnings.length > 0) warnings.push('')
+
+      warnings.push(...lines)
+    }
+
     // Memory warnings
-    if (totalMemory < 256 * SIZE_UNIT_MAP['MB']) {
-      warnings.push('this tool not being optimal', 'for low memory systems')
+    if (totalMemory < 1 * SIZE_UNIT_MAP['GB']) {
+      addWarning('this tool not being optimal', 'for low memory systems')
     } else if (totalMemory > 100 * SIZE_UNIT_MAP['GB']) {
-      warnings.push('this tool not being optimal', 'for very high memory systems')
+      addWarning('this tool not being optimal', 'for very high memory systems')
+    }
+
+    if (workMemBudget < MIN_WORK_MEM) {
+      addWarning(
+        `max_connections = ${maxConnections} is too high for this amount of RAM:`,
+        'work_mem is raised to 4MB minimum, so under load',
+        'PostgreSQL can run out of memory',
+        'Lower max_connections or use a connection pooler (e.g. PgBouncer)'
+      )
+    }
+
+    if (isHugePagesRecommended) {
+      if (osType === OS_WINDOWS) {
+        addWarning(
+          'shared_buffers is large: grant the "Lock pages in memory" right',
+          'to the PostgreSQL service account to use huge pages'
+        )
+      } else {
+        addWarning(
+          'shared_buffers is large: reserve Linux huge pages (vm.nr_hugepages)',
+          'to reduce memory used by page tables of each connection',
+          ...(dbVersion >= 15
+            ? [
+                'Required number (with these settings, while server is stopped):',
+                'postgres -D $PGDATA -C shared_memory_size_in_huge_pages'
+              ]
+            : ['See "Linux Huge Pages" in PostgreSQL documentation to calculate it'])
+        )
+      }
+    }
+
+    if (walLevel.some((item) => item.key === 'wal_level' && item.value === 'minimal')) {
+      addWarning(
+        'wal_level = minimal: PostgreSQL will not start if archive_mode = on',
+        'or if replication slots exist. Replication, pg_basebackup',
+        'and point-in-time recovery are not possible'
+      )
     }
 
     // Advanced features compilation warnings
     if (walCompression === 'lz4') {
-      if (warnings.length > 0) warnings.push('')
-
-      warnings.push('wal_compression = lz4 requires PostgreSQL', 'to be compiled with --with-lz4')
+      addWarning(
+        'wal_compression = lz4 requires PostgreSQL',
+        'to be compiled with --with-lz4',
+        "Check: SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';"
+      )
     }
 
     if (ioMethod === 'io_uring') {
-      if (warnings.length > 0) warnings.push('')
-
-      warnings.push(
+      addWarning(
         'io_method = io_uring requires PostgreSQL',
-        'to be compiled with --with-liburing'
+        'to be compiled with --with-liburing',
+        'and io_uring allowed by the kernel (kernel.io_uring_disabled sysctl)',
+        'and by containers (Docker default seccomp profile blocks it)',
+        "Check: SELECT enumvals FROM pg_settings WHERE name = 'io_method';"
       )
     }
 
@@ -594,9 +695,7 @@ export const selectWarningInfoMessages = createSelector(
         [HARD_DRIVE_SAN]: 'SAN storage'
       }[hdType]
 
-      if (warnings.length > 0) warnings.push('')
-
-      warnings.push(
+      addWarning(
         `Cost parameters for Data Warehouses on ${driveName} are left at defaults`,
         'to avoid catastrophic index scan selections',
         'Monitor query planner behavior and adjust random_page_cost if necessary'
