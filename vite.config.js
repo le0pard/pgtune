@@ -72,6 +72,14 @@ export default defineConfig({
       }
     })
   ],
+  test: {
+    // describe, it and expect are available without import (as in Jest)
+    globals: true,
+    include: ['src/**/__tests__/**/*.test.{js,jsx}'],
+    env: {
+      TZ: 'UTC' // normalize timezone for tests
+    }
+  },
   resolve: {
     alias: {
       '@root': resolve(import.meta.dirname, 'src'),
