@@ -1,7 +1,7 @@
 import '@css/app.css'
 
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom/client'
+import { render } from 'preact'
 import { Provider } from 'react-redux'
 import { configureAppStore } from '@app/store'
 import { initServiceWorker } from '@features/sw/swWindow'
@@ -39,13 +39,17 @@ const start = () => {
 
   initServiceWorker(store)
 
-  ReactDOM.createRoot(rootElement).render(
+  // Preact render (not hydrate) reuses prerendered html and updates it to current state
+  // (url params, theme, etc.). React compatible createRoot().render() would remove it first
+  render(
     <StrictMode>
       <Provider store={store}>
         <App />
       </Provider>
-    </StrictMode>
+    </StrictMode>,
+    rootElement
   )
+  document.documentElement.classList.remove('render-pending')
 }
 
 onDomReady(start)

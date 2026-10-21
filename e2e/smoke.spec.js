@@ -218,3 +218,35 @@ test.describe('mobile', () => {
     })
   }
 })
+
+test.describe('prerender', () => {
+  test('pages are served with rendered content', async ({ request }) => {
+    const home = await (await request.get('/')).text()
+    expect(home).toContain('Parameters of your system')
+    expect(home).toContain('SaaS backends')
+
+    const about = await (await request.get('/about')).text()
+    expect(about).toContain('Before applying the configuration')
+  })
+
+  test.describe('without javascript', () => {
+    test.use({ javaScriptEnabled: false })
+
+    test('shows form and description', async ({ page }) => {
+      await page.goto('/')
+
+      await expect(page.getByRole('heading', { name: 'Parameters of your system' })).toBeVisible()
+      await expect(page.getByLabel('Number of CPUs')).toBeVisible()
+      await expect(page.getByText('SaaS backends')).toBeVisible()
+    })
+  })
+
+  test('shows configuration from url params over prerendered page', async ({ page }) => {
+    await page.goto(CONFIGURATION_URL)
+
+    await expect(page.locator('#TotalMemoryId')).toHaveValue('21')
+    await expect(page.locator('#TotalMemoryId')).toBeFocused()
+    await expect(generatedConfiguration(page)).toContainText('shared_buffers = 5376MB')
+    await expect(page.getByRole('heading', { name: 'Choosing "DB Type"' })).toHaveCount(0)
+  })
+})

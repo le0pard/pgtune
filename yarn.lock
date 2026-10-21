@@ -5954,6 +5954,7 @@ __metadata:
     postcss-preset-env: "npm:^11.6.1"
     preact: "npm:^11.0.1"
     preact-iso: "npm:^2.12.2"
+    preact-render-to-string: "npm:^6.8.1"
     react-redux: "npm:^9.3.0"
     redux-logger: "npm:^3.0.6"
     terser: "npm:^5.51.2"
@@ -6498,6 +6499,15 @@ __metadata:
     preact: ">=10 || >= 11.0.0-0"
     preact-render-to-string: ">=6.4.0"
   checksum: 10/da3971c88db04f6304bfbe4adedf32a1c032674e47bed5a9280ecf37c812ae48770e2cd436fcb3ffc36d4be3c7fbbad7a49b50b5a4dfb298e6286c201858c5e9
+  languageName: node
+  linkType: hard
+
+"preact-render-to-string@npm:^6.8.1":
+  version: 6.8.1
+  resolution: "preact-render-to-string@npm:6.8.1"
+  peerDependencies:
+    preact: ">=10 || >= 11.0.0-0"
+  checksum: 10/ff773e60bb23bd873fe38ea422f11ea79d827174105789ccb088577e91fbb31d3b4fec220b739afd3aa4f1082f0185a5a491dc6c4c1d72875225bc7bd8f863ab
   languageName: node
   linkType: hard
 

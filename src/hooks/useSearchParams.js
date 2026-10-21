@@ -9,7 +9,8 @@ import { useLocation } from 'preact-iso/router'
 export const useSearchParams = () => {
   const { url, path, route } = useLocation()
 
-  const searchParams = useMemo(() => new URL(url, window.location.origin).searchParams, [url])
+  // url is path with search params (no window access, so it works in prerender too)
+  const searchParams = useMemo(() => new URLSearchParams(url.split('?')[1] ?? ''), [url])
 
   const setSearchParams = useCallback(
     (params, { replace = false } = {}) => {
