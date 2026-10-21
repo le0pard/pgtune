@@ -39,7 +39,7 @@
     "redux-logger": "^3.0.6",
     "terser": "^5.51.2",
     "valibot": "^1.5.0",
-    "vite": "^8.3.4",
+    "vite": "^8.3.5",
     "vite-plugin-pwa": "^2.0.0",
     "vitest": "^5.0.5",
     "vituum": "^2.0.2",
