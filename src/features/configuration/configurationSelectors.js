@@ -495,6 +495,38 @@ export const selectAutovacuumWorkMem = createSelector(
   }
 )
 
+export const selectAutovacuumVacuumCostLimit = createSelector(
+  [selectAutovacuumMaxWorkers],
+  (autovacuumMaxWorkers) => {
+    // The cost limit (default -1, uses vacuum_cost_limit = 200) is shared by all running
+    // autovacuum workers, so with more workers each one vacuums slower than with default 3.
+    // Raise it together with workers, to keep the default speed of each worker
+    if (!autovacuumMaxWorkers) return null
+    return Math.round((200 * autovacuumMaxWorkers) / 3)
+  }
+)
+
+export const selectAutovacuumVacuumCostDelay = createSelector(
+  [selectDBVersion],
+  // 2ms is the default since PostgreSQL 12 (was 20ms), which lets autovacuum proceed faster
+  // (https://www.postgresql.org/docs/release/12.0/)
+  (dbVersion) => (dbVersion < 12 ? '2ms' : null)
+)
+
+export const selectVacuumCostPageMiss = createSelector(
+  [selectDBVersion],
+  // 2 is the default since PostgreSQL 14 (was 10), to better reflect current hardware
+  // (https://www.postgresql.org/docs/release/14.0/)
+  (dbVersion) => (dbVersion < 14 ? 2 : null)
+)
+
+export const selectVacuumBufferUsageLimit = createSelector(
+  [selectDBVersion],
+  // added in PostgreSQL 16 with 256kB default, 2MB is the default since PostgreSQL 17
+  // (https://www.postgresql.org/docs/release/17.0/)
+  (dbVersion) => (dbVersion === 16 ? (2 * SIZE_UNIT_MAP['MB']) / SIZE_UNIT_MAP['KB'] : null)
+)
+
 export const selectIoMethod = createSelector(
   [selectDBVersion, selectOSType],
   (dbVersion, osType) => {
@@ -716,6 +748,10 @@ export const selectSettings = createSelector(
     selectWalCompression,
     selectAutovacuumMaxWorkers,
     selectAutovacuumWorkMem,
+    selectAutovacuumVacuumCostLimit,
+    selectAutovacuumVacuumCostDelay,
+    selectVacuumCostPageMiss,
+    selectVacuumBufferUsageLimit,
     selectIoMethod,
     selectIoWorkers,
     selectCheckpointSegments,
@@ -738,6 +774,10 @@ export const selectSettings = createSelector(
     walCompression,
     autovacuumMaxWorkers,
     autovacuumWorkMem,
+    autovacuumVacuumCostLimit,
+    autovacuumVacuumCostDelay,
+    vacuumCostPageMiss,
+    vacuumBufferUsageLimit,
     ioMethod,
     ioWorkers,
     checkpointSegments,
@@ -760,6 +800,10 @@ export const selectSettings = createSelector(
       { key: 'wal_compression', value: walCompression },
       { key: 'autovacuum_max_workers', value: autovacuumMaxWorkers },
       { key: 'autovacuum_work_mem', value: autovacuumWorkMem, isMemory: true },
+      { key: 'autovacuum_vacuum_cost_limit', value: autovacuumVacuumCostLimit },
+      { key: 'autovacuum_vacuum_cost_delay', value: autovacuumVacuumCostDelay },
+      { key: 'vacuum_cost_page_miss', value: vacuumCostPageMiss },
+      { key: 'vacuum_buffer_usage_limit', value: vacuumBufferUsageLimit, isMemory: true },
       { key: 'io_method', value: ioMethod },
       ...ioWorkers,
       ...checkpointSegments.map((setting) => ({ ...setting, isMemory: true })),

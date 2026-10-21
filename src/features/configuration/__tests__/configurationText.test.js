@@ -287,6 +287,7 @@ describe('configurationText', () => {
         "ALTER SYSTEM SET work_mem = '4MB';",
         "ALTER SYSTEM SET jit = 'off';",
         "ALTER SYSTEM SET wal_compression = 'on';",
+        "ALTER SYSTEM SET vacuum_cost_page_miss = '2';",
         "ALTER SYSTEM SET min_wal_size = '2GB';",
         "ALTER SYSTEM SET max_wal_size = '8GB';                 -- needs free disk space"
       ].join('\n')

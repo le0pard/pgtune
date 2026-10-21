@@ -15,6 +15,10 @@ import {
   selectWalCompression,
   selectAutovacuumMaxWorkers,
   selectAutovacuumWorkMem,
+  selectAutovacuumVacuumCostLimit,
+  selectAutovacuumVacuumCostDelay,
+  selectVacuumCostPageMiss,
+  selectVacuumBufferUsageLimit,
   selectIoMethod,
   selectIoWorkers,
   selectWalLevel,
@@ -108,6 +112,7 @@ const checkConfiguration = (configuration) => {
   const effectiveCacheSize = selectEffectiveCacheSize(state)
   const maintenanceWorkMem = selectMaintenanceWorkMem(state)
   const autovacuumWorkMem = selectAutovacuumWorkMem(state)
+  const vacuumBufferUsageLimit = selectVacuumBufferUsageLimit(state)
   const workMem = selectWorkMem(state)
   const walBuffers = selectWalBuffers(state)
   const parallelSettings = Object.fromEntries(
@@ -162,6 +167,22 @@ const checkConfiguration = (configuration) => {
     `autovacuum_work_mem = ${autovacuumWorkMem}kB`
   )
   check(isInRange(walBuffers, 64, 16384) && walBuffers % 8 === 0, `wal_buffers = ${walBuffers}kB`)
+  // larger value is silently capped to 1/8 of shared_buffers
+  check(
+    vacuumBufferUsageLimit === null ||
+      (isInRange(vacuumBufferUsageLimit, 128, 16777216) &&
+        vacuumBufferUsageLimit <= sharedBuffers / 8),
+    `vacuum_buffer_usage_limit = ${vacuumBufferUsageLimit}kB`
+  )
+
+  // cost limit is shared by running autovacuum workers, each worker keeps default speed
+  const autovacuumMaxWorkers = selectAutovacuumMaxWorkers(state) || 3
+  const autovacuumCostLimit = selectAutovacuumVacuumCostLimit(state) ?? 200
+  check(
+    isInRange(autovacuumCostLimit, 1, 10000) &&
+      Math.abs(autovacuumCostLimit / autovacuumMaxWorkers - 200 / 3) < 1,
+    `autovacuum_vacuum_cost_limit = ${autovacuumCostLimit} for ${autovacuumMaxWorkers} workers`
+  )
   check(
     walSettings['min_wal_size'] >= 32768 &&
       walSettings['max_wal_size'] >= walSettings['min_wal_size'],
@@ -244,6 +265,19 @@ const checkConfiguration = (configuration) => {
   check(
     selectCheckpointCompletionTarget(state) === null || dbVersion < 14,
     'checkpoint_completion_target equals default'
+  )
+  check(
+    selectAutovacuumVacuumCostDelay(state) === null || dbVersion < 12,
+    'autovacuum_vacuum_cost_delay equals default'
+  )
+  check(
+    selectVacuumCostPageMiss(state) === null || dbVersion < 14,
+    'vacuum_cost_page_miss equals default'
+  )
+  // vacuum_buffer_usage_limit was added in PostgreSQL 16
+  check(
+    vacuumBufferUsageLimit === null || dbVersion === 16,
+    'vacuum_buffer_usage_limit equals default or does not exist'
   )
   check(selectDefaultStatisticsTarget(state) !== 100, 'default_statistics_target equals default')
   check(selectJit(state) === null || dbVersion < 19, 'jit equals default')

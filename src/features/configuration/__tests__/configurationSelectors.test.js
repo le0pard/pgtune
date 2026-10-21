@@ -16,6 +16,10 @@ import {
   selectWalCompression,
   selectAutovacuumMaxWorkers,
   selectAutovacuumWorkMem,
+  selectAutovacuumVacuumCostLimit,
+  selectAutovacuumVacuumCostDelay,
+  selectVacuumCostPageMiss,
+  selectVacuumBufferUsageLimit,
   selectIoWorkers,
   selectIoMethod,
   selectRestartRequiredSettings,
@@ -824,6 +828,48 @@ describe('selectAutovacuumWorkMem', () => {
         }
       })
     ).toEqual(1048576) // exactly 1GB
+  })
+})
+
+describe('selectAutovacuumVacuumCostLimit', () => {
+  it('raises cost limit with autovacuum workers, to keep default speed of each worker', () => {
+    expect(selectAutovacuumVacuumCostLimit({ configuration: { cpuNum: 16 } })).toEqual(267) // 4 workers
+    expect(selectAutovacuumVacuumCostLimit({ configuration: { cpuNum: 32 } })).toEqual(333) // 5 workers
+  })
+
+  it('keeps default, when autovacuum workers are default', () => {
+    expect(selectAutovacuumVacuumCostLimit({ configuration: { cpuNum: 8 } })).toEqual(null)
+    expect(selectAutovacuumVacuumCostLimit({ configuration: { cpuNum: null } })).toEqual(null)
+  })
+})
+
+describe('selectAutovacuumVacuumCostDelay', () => {
+  it('sets 2ms before PostgreSQL 12', () => {
+    expect(selectAutovacuumVacuumCostDelay({ configuration: { dbVersion: 11 } })).toEqual('2ms')
+  })
+  it('omits it on PostgreSQL 12+, where 2ms is default', () => {
+    expect(selectAutovacuumVacuumCostDelay({ configuration: { dbVersion: 12 } })).toEqual(null)
+  })
+})
+
+describe('selectVacuumCostPageMiss', () => {
+  it('sets 2 before PostgreSQL 14', () => {
+    expect(selectVacuumCostPageMiss({ configuration: { dbVersion: 13 } })).toEqual(2)
+  })
+  it('omits it on PostgreSQL 14+, where 2 is default', () => {
+    expect(selectVacuumCostPageMiss({ configuration: { dbVersion: 14 } })).toEqual(null)
+  })
+})
+
+describe('selectVacuumBufferUsageLimit', () => {
+  it('sets 2MB on PostgreSQL 16', () => {
+    expect(selectVacuumBufferUsageLimit({ configuration: { dbVersion: 16 } })).toEqual(2048)
+  })
+  it('omits it before PostgreSQL 16, where it does not exist', () => {
+    expect(selectVacuumBufferUsageLimit({ configuration: { dbVersion: 15 } })).toEqual(null)
+  })
+  it('omits it on PostgreSQL 17+, where 2MB is default', () => {
+    expect(selectVacuumBufferUsageLimit({ configuration: { dbVersion: 17 } })).toEqual(null)
   })
 })
 

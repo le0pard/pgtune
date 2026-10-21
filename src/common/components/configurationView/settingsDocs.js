@@ -60,6 +60,22 @@ const SETTINGS_DOCS = {
     page: 'resource',
     description: 'Memory for each autovacuum worker'
   },
+  autovacuum_vacuum_cost_limit: {
+    page: 'autovacuum',
+    description: 'Amount of autovacuum work before a pause, shared by all running workers'
+  },
+  autovacuum_vacuum_cost_delay: {
+    page: 'autovacuum',
+    description: 'Pause of autovacuum after its cost limit is reached'
+  },
+  vacuum_cost_page_miss: {
+    page: 'resource',
+    description: 'Vacuum cost of reading a page from disk'
+  },
+  vacuum_buffer_usage_limit: {
+    page: 'resource',
+    description: 'Shared buffers VACUUM and ANALYZE can use for their work'
+  },
   io_method: {
     page: 'resource',
     description: 'Method for asynchronous I/O'
