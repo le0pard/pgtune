@@ -45,6 +45,18 @@ test.describe('configuration', () => {
     await expect(generatedConfiguration(page)).toContainText('max_connections = 200')
   })
 
+  test('requires at least 512 MB of memory', async ({ page }) => {
+    await page.goto(CONFIGURATION_URL)
+    const memory = page.locator('#TotalMemoryId')
+
+    await memory.fill('100')
+    await page.locator('select[name="totalMemoryUnit"]').selectOption('MB')
+    await memory.blur()
+
+    await expect(page.getByText('Must be greater than or equal to 512 MB')).toBeVisible()
+    await expect(generatedConfiguration(page)).toContainText('shared_buffers = 5376MB')
+  })
+
   test('switches format with keyboard', async ({ page }) => {
     await page.goto(CONFIGURATION_URL)
     const configTab = page.getByRole('tab', { name: 'postgresql.conf' })

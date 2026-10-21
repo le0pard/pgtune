@@ -1,4 +1,4 @@
-import * as Yup from 'yup'
+import * as v from 'valibot'
 import {
   DB_VERSIONS,
   OS_LINUX,
@@ -31,50 +31,85 @@ const HARD_DRIVE_TYPES = [HARD_DRIVE_HDD, HARD_DRIVE_SSD, HARD_DRIVE_SAN, HARD_D
 
 const DB_SIZES = [DB_SIZE_LESS_RAM, DB_SIZE_MID_RAM, DB_SIZE_GREATER_RAM]
 
-// numeric fields are text inputs, so only digits are allowed (values like "1e3" or "16GB"
-// would be cast by Yup differently, than parsed by configuration)
-const onlyDigits = (schema) =>
-  schema.test('only-digits', 'Must be an integer', function () {
-    const { originalValue } = this
-    return (
-      originalValue === undefined ||
-      originalValue === null ||
-      originalValue === '' ||
-      /^\d+$/.test(String(originalValue).trim())
-    )
-  })
+const isEmpty = (value) => value === '' || value === null || value === undefined
 
-export const validationSchema = Yup.object().shape({
-  dbVersion: Yup.number().required('Required').oneOf(DB_VERSIONS, 'Unsupported database version'),
-  osType: Yup.string().required('Required').oneOf([OS_LINUX, OS_WINDOWS, OS_MAC], 'Unsupported OS'),
-  dbType: Yup.string().required('Required').oneOf(DB_TYPES, 'Unsupported database type'),
-  totalMemoryUnit: Yup.string()
-    .required('Required')
-    .oneOf([SIZE_UNIT_MB, SIZE_UNIT_GB, SIZE_UNIT_TB], 'Unsupported unit'),
-  totalMemory: onlyDigits(Yup.number().typeError('Must be an integer'))
-    .required('Required')
-    .integer('Must be an integer')
-    .when('totalMemoryUnit', (totalMemoryUnit, schema) => {
-      if (totalMemoryUnit === SIZE_UNIT_MB) {
-        return schema.min(MIN_MB_MEMORY, `Must be greater than or equal to ${MIN_MB_MEMORY} MB`)
-      }
-      return schema.min(1, 'Must be greater than zero')
+// numeric fields are text inputs, so only digits are allowed (values like "1e3" or "16GB"
+// would be parsed differently by configuration), surrounding spaces are ignored like by parseInt
+const isDigits = (value) => /^\d+$/.test(String(value).trim())
+
+// missing value is validated as empty string, so required fields report "Required"
+const field = (...actions) => v.optional(v.pipe(v.unknown(), ...actions), '')
+
+const selectField = (options, message) =>
+  field(
+    v.check((value) => !isEmpty(value), 'Required'),
+    v.check((value) => isEmpty(value) || options.map(String).includes(String(value)), message)
+  )
+
+const numberField = ({ required = false, min, minMessage, max, maxMessage }) =>
+  field(
+    v.check((value) => !required || !isEmpty(value), 'Required'),
+    v.check((value) => isEmpty(value) || isDigits(value), 'Must be an integer'),
+    v.check((value) => isEmpty(value) || !isDigits(value) || Number(value) >= min, minMessage),
+    v.check((value) => isEmpty(value) || !isDigits(value) || Number(value) <= max, maxMessage)
+  )
+
+export const validationSchema = v.pipe(
+  v.object({
+    dbVersion: selectField(DB_VERSIONS, 'Unsupported database version'),
+    osType: selectField([OS_LINUX, OS_WINDOWS, OS_MAC], 'Unsupported OS'),
+    dbType: selectField(DB_TYPES, 'Unsupported database type'),
+    totalMemoryUnit: selectField([SIZE_UNIT_MB, SIZE_UNIT_GB, SIZE_UNIT_TB], 'Unsupported unit'),
+    totalMemory: numberField({
+      required: true,
+      min: 1,
+      minMessage: 'Must be greater than zero',
+      max: MAX_NUMERIC_VALUE,
+      maxMessage: `Must be less than or equal to ${MAX_NUMERIC_VALUE}`
+    }),
+    hdType: selectField(HARD_DRIVE_TYPES, 'Unsupported hard drive'),
+    dbSize: selectField(DB_SIZES, 'Unsupported db size'),
+    cpuNum: numberField({
+      min: 1,
+      minMessage: 'Must be greater than zero',
+      max: MAX_NUMERIC_VALUE,
+      maxMessage: `Must be less than or equal to ${MAX_NUMERIC_VALUE}`
+    }),
+    connectionNum: numberField({
+      min: 20,
+      minMessage: 'Must be greater than or equal to 20',
+      max: MAX_CONNECTIONS_VALUE,
+      maxMessage: `Must be less than or equal to ${MAX_CONNECTIONS_VALUE}`
     })
-    .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`),
-  hdType: Yup.string().required('Required').oneOf(HARD_DRIVE_TYPES, 'Unsupported hard drive'),
-  dbSize: Yup.string().required('Required').oneOf(DB_SIZES, 'Unsupported db size'),
-  cpuNum: onlyDigits(Yup.number())
-    .transform((value) => (isNaN(value) ? null : value))
-    .nullable()
-    .notRequired()
-    .integer('Must be an integer')
-    .min(1, 'Must be greater than zero')
-    .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`),
-  connectionNum: onlyDigits(Yup.number())
-    .transform((value) => (isNaN(value) ? null : value))
-    .nullable()
-    .notRequired()
-    .integer('Must be an integer')
-    .min(20, 'Must be greater than or equal to 20')
-    .max(MAX_CONNECTIONS_VALUE, `Must be less than or equal to ${MAX_CONNECTIONS_VALUE}`)
-})
+  }),
+  // memory in megabytes has higher minimum
+  v.forward(
+    v.partialCheck(
+      [['totalMemory'], ['totalMemoryUnit']],
+      ({ totalMemory, totalMemoryUnit }) =>
+        totalMemoryUnit !== SIZE_UNIT_MB ||
+        !isDigits(totalMemory) ||
+        Number(totalMemory) < 1 ||
+        Number(totalMemory) >= MIN_MB_MEMORY,
+      `Must be greater than or equal to ${MIN_MB_MEMORY} MB`
+    ),
+    ['totalMemory']
+  )
+)
+
+export const isValid = (values) => v.is(validationSchema, values)
+
+// errors by field name, first message of each field (format of Formik errors)
+export const validateValues = (values) => {
+  const result = v.safeParse(validationSchema, values)
+  if (result.success) {
+    return {}
+  }
+  return result.issues.reduce((errors, issue) => {
+    const name = issue.path?.[0]?.key
+    if (name !== undefined && !(name in errors)) {
+      errors[name] = issue.message
+    }
+    return errors
+  }, {})
+}

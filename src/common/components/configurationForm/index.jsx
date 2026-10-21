@@ -14,7 +14,7 @@ import {
   HARD_DRIVE_LABELS,
   DB_SIZE_LABELS
 } from '@features/configuration/labels'
-import { validationSchema } from '@features/configuration/validation'
+import { isValid, validateValues } from '@features/configuration/validation'
 import {
   DB_VERSIONS,
   OS_LINUX,
@@ -71,7 +71,7 @@ const dbSizeOptions = () =>
 // shows max_connections, which will be used, if number of connections is empty
 const connectionsPlaceholder = (values) => {
   const valuesWithoutConnections = { ...values, connectionNum: '' }
-  if (!validationSchema.isValidSync(valuesWithoutConnections)) {
+  if (!isValid(valuesWithoutConnections)) {
     return 'Number of Connections (optional)'
   }
   const assumedConnections = selectMaxConnections({
@@ -106,7 +106,7 @@ const UrlSync = ({ searchParams, formParams, writtenParams, writeParams }) => {
   }, [searchParams, formParams, writtenParams, setValues])
 
   useEffect(() => {
-    if (!validationSchema.isValidSync(values)) {
+    if (!isValid(values)) {
       return
     }
     const params = new URLSearchParams(values)
@@ -142,11 +142,7 @@ const ConfigurationForm = () => {
   }
 
   return (
-    <Formik
-      onSubmit={handleGenerateConfig}
-      initialValues={formParams}
-      validationSchema={validationSchema}
-    >
+    <Formik onSubmit={handleGenerateConfig} initialValues={formParams} validate={validateValues}>
       {({ isSubmitting, values }) => (
         <Form>
           <UrlSync

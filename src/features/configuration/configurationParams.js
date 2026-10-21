@@ -8,7 +8,7 @@ import {
   HARD_DRIVE_SSD,
   DB_SIZE_MID_RAM
 } from './constants'
-import { validationSchema } from './validation'
+import { isValid, validateValues } from './validation'
 
 export const FORM_DEFAULTS = {
   dbVersion: DEFAULT_DB_VERSION,
@@ -53,10 +53,8 @@ export const formValuesFromParams = (searchParams) => {
     return FORM_DEFAULTS
   }
 
-  try {
-    validationSchema.validateSync(params)
-  } catch (e) {
-    console.warn('Url params error', e)
+  if (!isValid(params)) {
+    console.warn('Url params error', validateValues(params))
     return FORM_DEFAULTS
   }
 
