@@ -17,7 +17,7 @@
 }
 
 .configurator-form-subtitle {
-  color: #b58900;
+  color: var(--accentColor);
   text-align: center;
   margin: 0.2rem 0;
 }

@@ -1,13 +1,14 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 import { listenerMiddleware } from '@app/listenerMiddleware'
-import { submitConfiguration } from '@app/actions/configurator'
 import { LocalStorage } from '@common/utils/localStorage'
 
 import { APP_THEMES_LIGHT, APP_THEMES_DARK, TAB_CONFIG } from './constants'
 
-const initialState = {
+// exported to fill preloaded state, which replaces initial state of the slice
+export const initialState = {
   tabState: TAB_CONFIG,
-  theme: APP_THEMES_LIGHT
+  theme: APP_THEMES_LIGHT,
+  includeWarnings: true
 }
 
 const settingsSlice = createSlice({
@@ -19,20 +20,21 @@ const settingsSlice = createSlice({
     },
     toggleTheme: (state) => {
       state.theme = APP_THEMES_LIGHT === state.theme ? APP_THEMES_DARK : APP_THEMES_LIGHT
+    },
+    toggleIncludeWarnings: (state) => {
+      state.includeWarnings = state.includeWarnings === false
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(submitConfiguration, (state) => {
-      state.tabState = TAB_CONFIG
-    })
   }
 })
 
-export const { openConfigTab, toggleTheme } = settingsSlice.actions
+export const { openConfigTab, toggleTheme, toggleIncludeWarnings } = settingsSlice.actions
 
 export const selectSettings = (state) => state.settings
 export const selectThemeSettings = (state) => selectSettings(state).theme
 export const selectTabSettings = (state) => selectSettings(state).tabState
+// include warnings as comments in copied configuration (enabled by default)
+export const selectIncludeWarningsSettings = (state) =>
+  selectSettings(state).includeWarnings !== false
 
 // Export the slice reducer as the default export
 export default settingsSlice.reducer
@@ -42,5 +44,12 @@ listenerMiddleware.startListening({
   matcher: isAnyOf(toggleTheme),
   effect: (_action, listenerApi) => {
     LocalStorage.setItem('theme', selectThemeSettings(listenerApi.getState()))
+  }
+})
+
+listenerMiddleware.startListening({
+  matcher: isAnyOf(toggleIncludeWarnings),
+  effect: (_action, listenerApi) => {
+    LocalStorage.setItem('includeWarnings', selectIncludeWarningsSettings(listenerApi.getState()))
   }
 })

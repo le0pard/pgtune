@@ -1,43 +1,40 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/query'
-import { createLogger } from 'redux-logger'
+import { configureStore, createDynamicMiddleware } from '@reduxjs/toolkit'
 
 import { listenerMiddleware } from './listenerMiddleware'
-import configurationReducer from '@features/configuration/configurationSlice'
 import settingsReducer from '@features/settings/settingsSlice'
 import swReducer from '@features/sw/swSlice'
 
-const isDevelopment = process.env.NODE_ENV === 'development'
+const isDevelopment = import.meta.env.DEV
 
 export const configureAppStore = (preloadedState = {}) => {
+  const dynamicMiddleware = createDynamicMiddleware()
+
   const store = configureStore({
     preloadedState,
     reducer: {
-      configuration: configurationReducer,
       settings: settingsReducer,
       sw: swReducer
     },
     devTools: isDevelopment,
-    middleware: (getDefaultMiddleware) => {
-      let middlewares = getDefaultMiddleware().prepend(listenerMiddleware.middleware)
-
-      if (isDevelopment) {
-        middlewares = middlewares.concat(
-          createLogger({
-            duration: true,
-            timestamp: true,
-            diff: true,
-            collapsed: true
-          })
-        )
-      }
-
-      return middlewares
-    }
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware()
+        .prepend(listenerMiddleware.middleware)
+        .concat(dynamicMiddleware.middleware)
   })
 
-  // enable listener behavior for the store
-  setupListeners(store.dispatch)
+  if (isDevelopment) {
+    // loaded on demand, so logger is not included in production bundle
+    import('redux-logger').then(({ createLogger }) => {
+      dynamicMiddleware.addMiddleware(
+        createLogger({
+          duration: true,
+          timestamp: true,
+          diff: true,
+          collapsed: true
+        })
+      )
+    })
+  }
 
   return store
 }

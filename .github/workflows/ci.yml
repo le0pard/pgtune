@@ -34,3 +34,36 @@ jobs:
 
       - name: Check tests
         run: yarn run test
+
+  e2e:
+    name: Smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Install Node.JS
+        uses: actions/setup-node@v7
+        with:
+          check-latest: true
+          cache: 'yarn'
+          node-version-file: '.tool-versions'
+
+      - name: Install Javascript dependencies
+        run: yarn install --immutable
+
+      - name: Install Playwright browser
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run smoke tests
+        run: yarn run test:e2e
+
+      - name: Upload Playwright report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

@@ -1,0 +1,22 @@
+.db-types {
+  margin: 0.5rem 0 0;
+}
+
+.db-types__item + .db-types__item {
+  margin-top: 0.6rem;
+}
+
+.db-types__name {
+  font-weight: bold;
+  color: var(--emphColor);
+}
+
+.db-types__description {
+  margin: 0.1rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.db-types__description::first-letter {
+  text-transform: uppercase;
+}

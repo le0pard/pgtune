@@ -7,6 +7,32 @@
     <meta name="keywords" content="pgtune, postgresql, postgres, tuning, config, configuration, free, open source" />
     <meta name="description" content="PgTune - Tuning PostgreSQL config by your hardware" />
     <meta name="theme-color" content="#fdf6e3" />
+    <script>
+      // apply saved (or system) theme before first paint, to avoid flash of light theme
+      try {
+        var theme = JSON.parse(window.localStorage.getItem('theme'))
+        if (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark'
+        }
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark')
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#002b36')
+        }
+      } catch (e) {
+        // localStorage can be unavailable, light theme is used
+      }
+      // page is prerendered without url params, so configuration from url params is shown
+      // after javascript renders it (main.jsx). Load event fires after the script ran or failed,
+      // so page is shown anyway (in next task, as main.jsx can start in a task too, see onDomReady)
+      if (/[?&]totalMemory=/.test(window.location.search)) {
+        document.documentElement.classList.add('render-pending')
+        window.addEventListener('load', function () {
+          setTimeout(function () {
+            document.documentElement.classList.remove('render-pending')
+          }, 0)
+        })
+      }
+    </script>
     <link type="text/plain" rel="author" href="/humans.txt" />
     <title>PGTune - calculate configuration for PostgreSQL based on the maximum performance for a given hardware configuration</title>
   </head>

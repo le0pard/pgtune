@@ -22,7 +22,7 @@
 }
 
 .configuration-view-tab--active {
-  border-bottom: 2px solid #cb4b16;
+  border-bottom: 2px solid var(--accentHoverColor);
   background-color: var(--headsColor);
 }
 
@@ -63,4 +63,186 @@
 
 .configuration-view-copy-button:active {
   transform: scale(0.98);
+}
+
+.configuration-view-warnings {
+  display: flex;
+  flex-flow: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+}
+
+.configuration-view-warning {
+  background-color: var(--bgColor);
+  border: 1px solid var(--commentColor);
+  border-left: 4px solid var(--commentColor);
+  padding: 0.4rem 0.6rem;
+}
+
+.configuration-view-warning--startup {
+  border-left-color: var(--dangerColor);
+}
+
+.configuration-view-warning--memory {
+  border-left-color: var(--accentHoverColor);
+}
+
+.configuration-view-warning--note {
+  border-left-color: var(--infoColor);
+}
+
+.configuration-view-warning__title {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.configuration-view-warning--startup .configuration-view-warning__title {
+  color: var(--dangerColor);
+}
+
+.configuration-view-warning--memory .configuration-view-warning__title {
+  color: var(--accentHoverColor);
+}
+
+.configuration-view-warning--note .configuration-view-warning__title {
+  color: var(--infoColor);
+}
+
+.configuration-view-warning__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* line between warnings, so several warnings in a group are not read as one */
+.configuration-view-warning__item + .configuration-view-warning__item {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--commentColor);
+}
+
+.configuration-view-warning__code {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--emphColor);
+  overflow-wrap: anywhere;
+}
+
+.configuration-view-code {
+  position: relative;
+}
+
+.configuration-view-copy-top-button {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  background-color: var(--headsColor);
+  border: 1px solid var(--commentColor);
+  color: var(--baseColor);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+}
+
+.configuration-view-copy-top-button:hover {
+  background-color: var(--buttonHover);
+}
+
+/* generated configuration highlighting, colors are defined per theme in app.css */
+.configuration-code__comment {
+  color: var(--codeCommentColor);
+  font-style: italic;
+}
+
+.configuration-code__keyword {
+  color: var(--codeKeywordColor);
+}
+
+.configuration-code__name {
+  color: var(--codeNameColor);
+}
+
+.configuration-code__value {
+  color: var(--codeValueColor);
+}
+
+/* setting names link to documentation */
+a.configuration-code__name {
+  text-decoration: none;
+}
+
+a.configuration-code__name:hover {
+  color: var(--codeNameColor);
+  text-decoration: underline dotted;
+}
+
+.configuration-view-include-warnings {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* custom checkbox in the same style as form inputs */
+.configuration-view-include-warnings__input {
+  appearance: none;
+  flex: 0 0 auto;
+  display: grid;
+  place-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  border: 1px solid var(--inputBorder);
+  border-radius: 0;
+  background-color: var(--inputBg);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.configuration-view-include-warnings__input::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.3rem;
+  border-left: 2px solid var(--onAccentColor);
+  border-bottom: 2px solid var(--onAccentColor);
+  transform: translateY(-15%) rotate(-45deg) scale(0);
+  transition: transform 0.15s ease;
+}
+
+.configuration-view-include-warnings__input:checked {
+  background-color: var(--accentColor);
+  border-color: var(--accentColor);
+}
+
+.configuration-view-include-warnings__input:checked::before {
+  transform: translateY(-15%) rotate(-45deg) scale(1);
+}
+
+.configuration-view-include-warnings:hover .configuration-view-include-warnings__input {
+  border-color: var(--accentColor);
+}
+
+.configuration-view-include-warnings__input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accentStrongShadowColor);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .configuration-view-include-warnings__input,
+  .configuration-view-include-warnings__input::before {
+    transition: none;
+  }
+}
+
+.configuration-view-footnotes {
+  margin: 0.8rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.7rem;
 }

@@ -1,13 +1,8 @@
-.info-view-db-type__description {
-  margin: 0;
+.info-view__title {
+  margin: 1rem 0 0.2rem;
 }
 
-.info-view-db-type__list {
-  font-size: 0.8rem;
+.info-view__hint {
   margin: 0;
-}
-
-.info-view-db-type__header {
-  font-size: 1rem;
-  padding: 8px 0px;
+  font-size: 0.85rem;
 }

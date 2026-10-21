@@ -1,3 +1,25 @@
+/* corner is the opposite of page theme */
+.github-corner__svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  fill: #151513;
+  color: #fff;
+}
+
+:root.dark .github-corner__svg {
+  fill: #fff;
+  color: #151513;
+}
+
+/* hide for small screens */
+@media (width < 500px) {
+  .github-corner {
+    display: none;
+  }
+}
+
 .github-corner:hover .github-corner-arm {
   animation: octocat-wave 560ms ease-in-out;
 }

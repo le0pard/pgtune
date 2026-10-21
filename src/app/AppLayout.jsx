@@ -2,31 +2,36 @@ import GithubCorner from '@common/components/githubCorner'
 import AppUpdate from '@common/components/appUpdate'
 import ThemeSwitcher from '@common/components/themeSwitcher'
 import classnames from 'classnames'
-import { matchPath } from 'react-router'
-import { Link, useLocation, Outlet } from 'react-router'
+import { useLocation } from 'preact-iso/router'
 
 import './app-layout.css'
 
-const AppLayout = () => {
+/**
+ * Page layout with navigation, links are handled by preact-iso LocationProvider
+ * @param {{ children: import('react').ReactNode }} props
+ */
+const AppLayout = ({ children }) => {
   const location = useLocation()
-  const isActive = (path) => matchPath(path, location.pathname)
+  const isActive = (path) => location.path === path
 
   return (
     <div className="app">
       <GithubCorner />
-      <main className="app__main" role="main">
-        <nav className="app__navigation" role="navigation">
+      <main className="app__main">
+        <nav className="app__navigation" aria-label="Main">
           <div
             className={classnames('app__navigation__item', {
               'app__navigation__item--active': isActive('/')
             })}
           >
             {isActive('/') ? (
-              <div className="app__navigation__active-item">Home</div>
-            ) : (
-              <Link className="app__navigation__link" to="/">
+              <div className="app__navigation__active-item" aria-current="page">
                 Home
-              </Link>
+              </div>
+            ) : (
+              <a className="app__navigation__link" href="/">
+                Home
+              </a>
             )}
           </div>
           <div
@@ -35,11 +40,13 @@ const AppLayout = () => {
             })}
           >
             {isActive('/about') ? (
-              <div className="app__navigation__active-item">How it works</div>
-            ) : (
-              <Link className="app__navigation__link" to="/about">
+              <div className="app__navigation__active-item" aria-current="page">
                 How it works
-              </Link>
+              </div>
+            ) : (
+              <a className="app__navigation__link" href="/about">
+                How it works
+              </a>
             )}
           </div>
           <div className="app__navigation__item">
@@ -49,7 +56,7 @@ const AppLayout = () => {
 
         <AppUpdate />
 
-        <Outlet />
+        {children}
       </main>
     </div>
   )

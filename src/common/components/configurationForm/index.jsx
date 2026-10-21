@@ -1,16 +1,22 @@
-import { useEffect, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
-import { useSearchParams } from 'react-router'
+import { Fragment, useCallback, useEffect, useRef } from 'react'
+import { useSearchParams } from '@hooks/useSearchParams'
 import classnames from 'classnames'
-import { isEmpty } from 'lodash-es'
-import { Formik, Field, Form } from 'formik'
+import { Formik, Field, Form, useFormikContext } from 'formik'
 import FormField from '@common/components/form/field'
 import FormDropdown from '@common/components/form/dropdown'
 import TotalMemoryInput from './totalMemoryInput'
-import { submitConfiguration } from '@app/actions/configurator'
-import { validationSchema } from './validation'
+import { selectMaxConnections } from '@features/configuration/configurationSelectors'
+import { normalizeConfiguration } from '@features/configuration/configurationParams'
+import { useConfiguration } from '@features/configuration/useConfiguration'
 import {
-  DEFAULT_DB_VERSION,
+  OS_TYPE_LABELS,
+  DB_TYPE_LABELS,
+  DB_TYPE_DESCRIPTIONS,
+  HARD_DRIVE_LABELS,
+  DB_SIZE_LABELS
+} from '@features/configuration/labels'
+import { isValid, validateValues } from '@features/configuration/validation'
+import {
   DB_VERSIONS,
   OS_LINUX,
   OS_MAC,
@@ -26,26 +32,13 @@ import {
   HARD_DRIVE_NVME,
   DB_SIZE_LESS_RAM,
   DB_SIZE_MID_RAM,
-  DB_SIZE_GREATER_RAM,
-  SIZE_UNIT_GB,
-  MAX_NUMERIC_VALUE
+  DB_SIZE_GREATER_RAM
 } from '@features/configuration/constants'
 
 import './configuration-form.css'
 
-const FORM_DEFAULTS = {
-  dbVersion: DEFAULT_DB_VERSION,
-  osType: OS_LINUX,
-  dbType: DB_TYPE_WEB,
-  cpuNum: '',
-  totalMemory: '',
-  totalMemoryUnit: SIZE_UNIT_GB,
-  connectionNum: '',
-  hdType: HARD_DRIVE_SSD,
-  dbSize: DB_SIZE_MID_RAM
-}
-
-const FORM_FIELDS = Object.keys(FORM_DEFAULTS)
+// delay before configuration is generated again after form changes
+const AUTO_GENERATE_DELAY = 400
 
 const dbVersionOptions = () =>
   DB_VERSIONS.map((version) => ({
@@ -53,130 +46,112 @@ const dbVersionOptions = () =>
     value: version
   }))
 
-const osTypeOptions = () => [
-  {
-    label: 'Linux',
-    value: OS_LINUX
-  },
-  {
-    label: 'OS X',
-    value: OS_MAC
-  },
-  {
-    label: 'Windows',
-    value: OS_WINDOWS
-  }
-]
+const labelOptions = (labels, values) =>
+  values.map((value) => ({
+    label: labels[value],
+    value
+  }))
 
-const dbTypeOptions = () => [
-  {
-    label: 'Web application',
-    value: DB_TYPE_WEB
-  },
-  {
-    label: 'Online transaction processing system',
-    value: DB_TYPE_OLTP
-  },
-  {
-    label: 'Data warehouse',
-    value: DB_TYPE_DW
-  },
-  {
-    label: 'Desktop application',
-    value: DB_TYPE_DESKTOP
-  },
-  {
-    label: 'Mixed type of application',
-    value: DB_TYPE_MIXED
-  }
-]
+const osTypeOptions = () => labelOptions(OS_TYPE_LABELS, [OS_LINUX, OS_MAC, OS_WINDOWS])
 
-const hdTypeOptions = () => [
-  {
-    label: 'NVMe storage',
-    value: HARD_DRIVE_NVME
-  },
-  {
-    label: 'SSD storage',
-    value: HARD_DRIVE_SSD
-  },
-  {
-    label: 'Network (SAN) storage',
-    value: HARD_DRIVE_SAN
-  },
-  {
-    label: 'HDD storage',
-    value: HARD_DRIVE_HDD
-  }
-]
+const dbTypeOptions = () =>
+  labelOptions(DB_TYPE_LABELS, [
+    DB_TYPE_WEB,
+    DB_TYPE_OLTP,
+    DB_TYPE_DW,
+    DB_TYPE_DESKTOP,
+    DB_TYPE_MIXED
+  ])
 
-const dbSizeOptions = () => [
-  {
-    label: 'Less than RAM',
-    value: DB_SIZE_LESS_RAM
-  },
-  {
-    label: '1x - 3x RAM',
-    value: DB_SIZE_MID_RAM
-  },
-  {
-    label: 'More than 3x RAM',
-    value: DB_SIZE_GREATER_RAM
-  }
-]
+const hdTypeOptions = () =>
+  labelOptions(HARD_DRIVE_LABELS, [HARD_DRIVE_NVME, HARD_DRIVE_SSD, HARD_DRIVE_SAN, HARD_DRIVE_HDD])
 
-const filterFormParams = (params = {}) => {
-  const paramKeys = Object.keys(params)
-  return FORM_FIELDS.reduce((arr, key) => {
-    if (paramKeys.includes(key)) {
-      arr[key] = params[key]
+const dbSizeOptions = () =>
+  labelOptions(DB_SIZE_LABELS, [DB_SIZE_LESS_RAM, DB_SIZE_MID_RAM, DB_SIZE_GREATER_RAM])
+
+// shows max_connections, which will be used, if number of connections is empty
+const connectionsPlaceholder = (values) => {
+  const valuesWithoutConnections = { ...values, connectionNum: '' }
+  if (!isValid(valuesWithoutConnections)) {
+    return 'Number of Connections (optional)'
+  }
+  const assumedConnections = selectMaxConnections({
+    configuration: normalizeConfiguration(valuesWithoutConnections)
+  })
+  return `Optional, ${assumedConnections} if empty`
+}
+
+/**
+ * @typedef {object} UrlSyncProps
+ * @property {URLSearchParams} searchParams current url params
+ * @property {object} formParams form values from current url params
+ * @property {{ current: string }} writtenParams params, which form wrote to url last time
+ * @property {(params: URLSearchParams, options?: { replace?: boolean }) => void} writeParams
+ */
+
+/**
+ * Keeps form and url in sync: valid form values are written to url (configuration is
+ * generated again), url changed outside of the form (browser back or forward, links)
+ * is shown in the form
+ * @param {UrlSyncProps} props
+ */
+const UrlSync = ({ searchParams, formParams, writtenParams, writeParams }) => {
+  const { values, setValues } = useFormikContext()
+
+  // url was changed outside of the form, so form shows its values
+  useEffect(() => {
+    if (searchParams.toString() !== writtenParams.current) {
+      writtenParams.current = searchParams.toString()
+      setValues(formParams)
     }
-    return arr
-  }, {})
+  }, [searchParams, formParams, writtenParams, setValues])
+
+  useEffect(() => {
+    if (!isValid(values)) {
+      return
+    }
+    const params = new URLSearchParams(values)
+    if (params.toString() === searchParams.toString()) {
+      return
+    }
+    // replace, so typing does not create browser history entries
+    const timer = setTimeout(() => writeParams(params, { replace: true }), AUTO_GENERATE_DELAY)
+    return () => clearTimeout(timer)
+  }, [values, searchParams, writeParams])
+
+  return null
 }
 
 const ConfigurationForm = () => {
-  const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
+  // form values from url params
+  const { values: formParams } = useConfiguration()
+  // to recognize url changes made by the form itself
+  const writtenParams = useRef(searchParams.toString())
+
+  const writeParams = useCallback(
+    (params, options) => {
+      writtenParams.current = params.toString()
+      setSearchParams(params, options)
+    },
+    [setSearchParams]
+  )
 
   const handleGenerateConfig = (values, { setSubmitting }) => {
-    setSearchParams(new URLSearchParams(values))
+    writeParams(new URLSearchParams(values))
     setSubmitting(false)
   }
 
-  const urlParams = useMemo(() => {
-    return filterFormParams(Object.fromEntries(searchParams.entries()))
-  }, [searchParams])
-
-  const formParams = useMemo(() => {
-    if (isEmpty(urlParams)) {
-      return FORM_DEFAULTS
-    }
-
-    let vParams = urlParams
-
-    try {
-      validationSchema.validateSync(vParams)
-    } catch (e) {
-      console.warn('Url params error', e)
-      vParams = {} // back to default
-    }
-
-    return Object.assign({}, FORM_DEFAULTS, vParams)
-  }, [urlParams])
-
-  useEffect(() => {
-    dispatch(submitConfiguration(formParams))
-  }, [dispatch, formParams])
-
   return (
-    <Formik
-      onSubmit={handleGenerateConfig}
-      initialValues={formParams}
-      validationSchema={validationSchema}
-    >
-      {({ isSubmitting }) => (
+    <Formik onSubmit={handleGenerateConfig} initialValues={formParams} validate={validateValues}>
+      {({ isSubmitting, values }) => (
         <Form>
+          <UrlSync
+            searchParams={searchParams}
+            formParams={formParams}
+            writtenParams={writtenParams}
+            writeParams={writeParams}
+          />
           <Field
             name="dbVersion"
             component={FormDropdown}
@@ -189,27 +164,43 @@ const ConfigurationForm = () => {
             component={FormDropdown}
             label="OS Type"
             options={osTypeOptions()}
-            tooltip="Operation system of the PostgreSQL server host"
+            tooltip="Operating system of the PostgreSQL server host"
           />
           <Field
             name="dbType"
             component={FormDropdown}
             label="DB Type"
             options={dbTypeOptions()}
-            tooltip="For what type of application is PostgreSQL used"
+            tooltip={
+              <span>
+                Choose the type closest to the main workload of the database:
+                {Object.entries(DB_TYPE_LABELS).map(([dbType, label]) => (
+                  <Fragment key={dbType}>
+                    <br />
+                    {label}: {DB_TYPE_DESCRIPTIONS[dbType].summary}
+                  </Fragment>
+                ))}
+              </span>
+            }
           />
-          <TotalMemoryInput tooltip="How much memory can PostgreSQL use" />
+          <TotalMemoryInput
+            tooltip={
+              <span>
+                How much memory can PostgreSQL use
+                <br />
+                For containers use the container memory limit
+              </span>
+            }
+          />
           <Field
             name="cpuNum"
-            type="number"
+            type="text"
+            inputMode="numeric"
             component={FormField}
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="none"
-            min={1}
-            max={MAX_NUMERIC_VALUE}
-            step={1}
-            pattern="[0-9]{1,6}"
+            pattern="[0-9]*"
             placeholder="Number of CPUs (optional)"
             label="Number of CPUs"
             tooltip={
@@ -217,23 +208,29 @@ const ConfigurationForm = () => {
                 Number of CPUs, which PostgreSQL can use
                 <br />
                 CPUs = threads per core * cores per socket * sockets
+                <br />
+                If empty, parallel query settings are not changed
               </span>
             }
           />
           <Field
             name="connectionNum"
-            type="number"
+            type="text"
+            inputMode="numeric"
             component={FormField}
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="none"
-            min={20}
-            max={MAX_NUMERIC_VALUE}
-            step={1}
-            pattern="[0-9]{1,6}"
-            placeholder="Number of Connections (optional)"
+            pattern="[0-9]*"
+            placeholder={connectionsPlaceholder(values)}
             label="Number of Connections"
-            tooltip="Maximum number of PostgreSQL client connections"
+            tooltip={
+              <span>
+                Maximum number of PostgreSQL client connections
+                <br />
+                If empty, assumed by DB type and memory (min 100)
+              </span>
+            }
           />
           <Field
             name="hdType"

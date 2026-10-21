@@ -105,7 +105,7 @@
       "env": {
         "es2026": true,
         "browser": true,
-        "jest": true,
+        "vitest": true,
         "node": true
       }
     }

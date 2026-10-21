@@ -10,8 +10,22 @@
   --inputBgDisabled: #93a1a1;
   --inputColor: #073642;
   --inputBorder: #93a1a1;
-  --inputColorPlaceholder: #b8c4c9;
+  --inputColorPlaceholder: #839496;
   --buttonHover: #fdfcf9;
+  /* accent colors, same for light and dark themes */
+  --accentColor: #b58900;
+  --accentHoverColor: #cb4b16;
+  --accentShadowColor: rgba(181, 137, 0, 0.15);
+  --accentStrongShadowColor: rgba(181, 137, 0, 0.35);
+  --onAccentColor: #002b36;
+  --headingColor: #859900;
+  --dangerColor: #dc322f;
+  --infoColor: #268bd2;
+  /* generated configuration: Solarized hues, darker for 4.5:1 contrast on light background */
+  --codeCommentColor: #586e75;
+  --codeKeywordColor: #677400;
+  --codeNameColor: #8a6a00;
+  --codeValueColor: #207a73;
 }
 
 :root.dark {
@@ -24,8 +38,13 @@
   --inputBgDisabled: #586e75;
   --inputColor: #eee8d5;
   --inputBorder: #586e75;
-  --inputColorPlaceholder: #3b4445;
+  --inputColorPlaceholder: #839496;
   --buttonHover: #021014;
+  /* generated configuration: Solarized colors, comments lighter for 4.5:1 contrast */
+  --codeCommentColor: #839496;
+  --codeKeywordColor: #859900;
+  --codeNameColor: #b58900;
+  --codeValueColor: #2aa198;
 }
 
 :root {
@@ -43,6 +62,11 @@
   }
 }
 
+/* see render-pending in layouts/main.liquid; opacity keeps elements focusable (autofocus) */
+.render-pending #root {
+  opacity: 0;
+}
+
 html {
   background-color: var(--headsColor);
   color: var(--baseColor);
@@ -53,11 +77,11 @@ body {
 }
 
 a {
-  color: #b58900;
+  color: var(--accentColor);
 }
 
 a:hover {
-  color: #cb4b16;
+  color: var(--accentHoverColor);
   text-decoration: none;
 }
 
@@ -81,7 +105,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #859900;
+  color: var(--headingColor);
 }
 
 h1 {
@@ -106,6 +130,18 @@ h5 {
 
 h6 {
   font-size: 1.15rem;
+}
+
+/* avoid single word on the last line of text (browsers without support wrap it as before) */
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
+/* short labels are split into lines of similar length */
+dt {
+  text-wrap: balance;
 }
 
 input[type='number']::-webkit-inner-spin-button,

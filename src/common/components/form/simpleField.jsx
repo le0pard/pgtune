@@ -1,7 +1,17 @@
-import PropTypes from 'prop-types'
+import './form.css'
 
-import './field.css'
+/**
+ * @typedef {object} FormSimpleFieldProps
+ * @property {string} [className] class for wrapper
+ * @property {string} [inputClassName]
+ * @property {string} [errorClassName]
+ */
 
+/**
+ * Input with validation error, without label (Formik Field component),
+ * other props are passed to input element
+ * @param {import('formik').FieldProps & FormSimpleFieldProps} props
+ */
 const FormSimpleField = ({
   field,
   className,
@@ -11,27 +21,25 @@ const FormSimpleField = ({
   ...rest
 }) => {
   const isError = touched[field.name] && errors[field.name]
+  const errorID = `${field.name}Error`
+  const describedBy = [rest['aria-describedby'], isError && errorID].filter(Boolean).join(' ')
 
   return (
     <div className={className}>
-      <input {...field} {...rest} className={inputClassName} />
-      {isError && <div className={errorClassName}>{errors[field.name]}</div>}
+      <input
+        {...field}
+        {...rest}
+        className={inputClassName}
+        aria-describedby={describedBy || undefined}
+        aria-invalid={isError ? true : undefined}
+      />
+      {isError && (
+        <div id={errorID} className={errorClassName}>
+          {errors[field.name]}
+        </div>
+      )}
     </div>
   )
-}
-
-FormSimpleField.propTypes = {
-  field: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    value: PropTypes.any
-  }).isRequired,
-  className: PropTypes.string,
-  inputClassName: PropTypes.string,
-  errorClassName: PropTypes.string,
-  form: PropTypes.shape({
-    touched: PropTypes.object,
-    errors: PropTypes.object
-  }).isRequired
 }
 
 export default FormSimpleField
