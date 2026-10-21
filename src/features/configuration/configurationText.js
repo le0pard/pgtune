@@ -54,6 +54,22 @@ export const groupWarnings = (warnings) =>
     warnings: warnings.filter((warning) => warning.level === group.level)
   })).filter((group) => group.warnings.length > 0)
 
+// segment tokens, used to highlight configuration
+export const TOKEN_COMMENT = 'comment'
+export const TOKEN_KEYWORD = 'keyword'
+export const TOKEN_NAME = 'name'
+export const TOKEN_VALUE = 'value'
+
+// configuration line is an array of segments: { text, token }, segment without token is plain text
+const commentLine = (text) => [{ text, token: TOKEN_COMMENT }]
+
+const segmentsLength = (segments) =>
+  segments.reduce((length, segment) => length + segment.text.length, 0)
+
+// joins lines of segments to text
+export const linesText = (lines) =>
+  lines.map((line) => line.map((segment) => segment.text).join('')).join('\n')
+
 // note at the end of setting line
 const settingNote = (key, restartRequiredSettings) => {
   if (restartRequiredSettings.includes(key)) {
@@ -65,8 +81,8 @@ const settingNote = (key, restartRequiredSettings) => {
   return null
 }
 
-// provided parameters as comments
-export const hardwareText = (hardware, { isAlterSystem = false } = {}) =>
+// provided parameters as comment lines
+export const hardwareLines = (hardware, { isAlterSystem = false } = {}) =>
   [
     ['DB Version', hardware.dbVersion],
     ['OS Type', OS_TYPE_LABELS[hardware.osType]],
@@ -81,37 +97,53 @@ export const hardwareText = (hardware, { isAlterSystem = false } = {}) =>
     ['Total Data Size', DB_SIZE_LABELS[hardware.dbSize]]
   ]
     .filter((item) => !!item[1])
-    .map((item) => `${commentPrefix(isAlterSystem)} ${item[0]}: ${item[1]}`)
-    .join('\n')
+    .map((item) => commentLine(`${commentPrefix(isAlterSystem)} ${item[0]}: ${item[1]}`))
+
+export const hardwareText = (hardware, options) => linesText(hardwareLines(hardware, options))
 
 // setting lines with notes aligned in one column
-export const settingsText = (
+export const settingLines = (
   settings,
   { isAlterSystem = false, restartRequiredSettings = [] } = {}
 ) => {
   const lines = settings.map((setting) => {
     const value = formatSettingValue(setting)
     return {
-      line: isAlterSystem
-        ? `ALTER SYSTEM SET ${setting.key} = '${value}';`
-        : `${setting.key} = ${value}`,
+      segments: isAlterSystem
+        ? [
+            { text: 'ALTER SYSTEM SET', token: TOKEN_KEYWORD },
+            { text: ' ' },
+            { text: setting.key, token: TOKEN_NAME },
+            { text: ' = ' },
+            { text: `'${value}'`, token: TOKEN_VALUE },
+            { text: ';' }
+          ]
+        : [
+            { text: setting.key, token: TOKEN_NAME },
+            { text: ' = ' },
+            { text: value, token: TOKEN_VALUE }
+          ],
       note: settingNote(setting.key, restartRequiredSettings)
     }
   })
 
-  const lineWidth = Math.max(...lines.map((item) => item.line.length))
+  const lineWidth = Math.max(...lines.map((item) => segmentsLength(item.segments)))
 
-  return lines
-    .map((item) =>
-      item.note
-        ? `${item.line.padEnd(lineWidth)} ${commentPrefix(isAlterSystem)} ${item.note}`
-        : item.line
-    )
-    .join('\n')
+  return lines.map(({ segments, note }) =>
+    note
+      ? [
+          ...segments,
+          { text: ' '.repeat(lineWidth - segmentsLength(segments) + 1) },
+          { text: `${commentPrefix(isAlterSystem)} ${note}`, token: TOKEN_COMMENT }
+        ]
+      : segments
+  )
 }
 
-// warnings as comments, grouped by level
-export const warningsText = (warnings, { isAlterSystem = false } = {}) =>
+export const settingsText = (settings, options) => linesText(settingLines(settings, options))
+
+// warnings as comment lines, grouped by level
+export const warningLines = (warnings, { isAlterSystem = false } = {}) =>
   groupWarnings(warnings)
     .map((group) => [
       group.commentTitle,
@@ -126,11 +158,13 @@ export const warningsText = (warnings, { isAlterSystem = false } = {}) =>
       []
     )
     .map((line) =>
-      line ? `${commentPrefix(isAlterSystem)} ${line}` : commentPrefix(isAlterSystem)
+      commentLine(line ? `${commentPrefix(isAlterSystem)} ${line}` : commentPrefix(isAlterSystem))
     )
-    .join('\n')
 
-// text - shown configuration, copyText - copied configuration (with warnings, if included)
+export const warningsText = (warnings, options) => linesText(warningLines(warnings, options))
+
+// lines - shown configuration as segments (for highlighting), text - shown configuration,
+// copyText - copied configuration (with warnings, if included)
 export const configurationText = ({
   hardware,
   settings,
@@ -139,16 +173,17 @@ export const configurationText = ({
   isAlterSystem = false,
   includeWarnings = true
 }) => {
-  const text = [
-    hardwareText(hardware, { isAlterSystem }),
-    '',
-    settingsText(settings, { isAlterSystem, restartRequiredSettings })
-  ].join('\n')
+  const lines = [
+    ...hardwareLines(hardware, { isAlterSystem }),
+    [],
+    ...settingLines(settings, { isAlterSystem, restartRequiredSettings })
+  ]
+  const text = linesText(lines)
 
   const copyText =
     includeWarnings && warnings.length > 0
       ? [warningsText(warnings, { isAlterSystem }), '', text].join('\n')
       : text
 
-  return { text, copyText }
+  return { lines, text, copyText }
 }

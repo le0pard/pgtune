@@ -1,14 +1,9 @@
 import { Fragment, useCallback, useRef } from 'react'
 import classnames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
-import hljs from 'highlight.js/lib/core'
-import iniLang from 'highlight.js/lib/languages/ini'
-import sqlLang from 'highlight.js/lib/languages/sql'
-import solarizedLight from './solarized-light'
-import solarizedDark from './solarized-dark'
 import { settingDescription, settingDocsUrl } from './settingsDocs'
 import CopyButton from '@common/components/copyButton'
-import { APP_THEMES_LIGHT, TAB_CONFIG, TAB_ALTER_SYSTEM } from '@features/settings/constants'
+import { TAB_CONFIG, TAB_ALTER_SYSTEM } from '@features/settings/constants'
 import {
   selectDBVersion,
   selectHardwareConfiguration,
@@ -16,61 +11,63 @@ import {
   selectWarningInfoMessages,
   selectRestartRequiredSettings
 } from '@features/configuration/configurationSlice'
-import { configurationText, groupWarnings } from '@features/configuration/configurationText'
+import {
+  configurationText,
+  groupWarnings,
+  TOKEN_NAME
+} from '@features/configuration/configurationText'
 import {
   openConfigTab,
   toggleIncludeWarnings,
   selectTabSettings,
-  selectThemeSettings,
   selectIncludeWarningsSettings
 } from '@features/settings/settingsSlice'
 
 import './configuration-view.css'
-
-hljs.registerLanguage('ini', iniLang)
-hljs.registerLanguage('sql', sqlLang)
 
 const CONFIGURATION_TABS = [
   { id: TAB_CONFIG, label: 'postgresql.conf' },
   { id: TAB_ALTER_SYSTEM, label: 'ALTER SYSTEM' }
 ]
 
-const renderCodeInlineCss = (codeHighlightStyle) => {
-  return Object.keys(codeHighlightStyle).map((className) => {
-    const content = codeHighlightStyle[className]
-    const body = Object.keys(content)
-      .map((key) => `${key}: ${content[key]};`)
-      .join('')
-
-    return `.${className} { ${body} }`
-  })
-}
-
-const escapeHtml = (text) =>
-  text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-
-// Setting names (lowercase words with underscores) never appear in highlight.js
-// markup itself, so they can be safely wrapped by links to documentation
-const linkSettingNames = (html, settingKeys, dbVersion) => {
-  if (settingKeys.length === 0) {
-    return html
+// highlighted segment, setting name links to PostgreSQL documentation
+const renderSegment = (segment, index, dbVersion) => {
+  if (!segment.token) {
+    return segment.text
   }
-  const settingNamesRegex = new RegExp(`\\b(${settingKeys.join('|')})\\b`, 'g')
-  return html.replace(settingNamesRegex, (key) => {
-    const docsUrl = settingDocsUrl(key, dbVersion)
-    if (!docsUrl) {
-      return key
-    }
-    return `<a class="configuration-view-setting" href="${docsUrl}" title="${escapeHtml(
-      settingDescription(key)
-    )}" target="_blank" rel="noopener noreferrer">${key}</a>`
-  })
+
+  const className = `configuration-code__${segment.token}`
+  const docsUrl = segment.token === TOKEN_NAME ? settingDocsUrl(segment.text, dbVersion) : null
+
+  if (docsUrl) {
+    return (
+      <a
+        key={index}
+        className={className}
+        href={docsUrl}
+        title={settingDescription(segment.text)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {segment.text}
+      </a>
+    )
+  }
+
+  return (
+    <span key={index} className={className}>
+      {segment.text}
+    </span>
+  )
 }
 
-const renderHightlightedCode = (code, isAlterSystem, settingKeys, dbVersion) => {
-  const html = hljs.highlight(code, { language: isAlterSystem ? 'sql' : 'ini' }).value
-  return linkSettingNames(html, settingKeys, dbVersion)
-}
+const renderLines = (lines, dbVersion) =>
+  lines.map((line, lineIndex) => (
+    <Fragment key={lineIndex}>
+      {lineIndex > 0 && '\n'}
+      {line.map((segment, segmentIndex) => renderSegment(segment, segmentIndex, dbVersion))}
+    </Fragment>
+  ))
 
 const ConfigurationView = () => {
   const dispatch = useDispatch()
@@ -86,8 +83,6 @@ const ConfigurationView = () => {
   const tabState = useSelector(selectTabSettings)
   // include warnings in copied configuration
   const includeWarnings = useSelector(selectIncludeWarningsSettings)
-  // app theme
-  const theme = useSelector(selectThemeSettings)
   // tab click state
   const handleClickTab = useCallback((tab) => dispatch(openConfigTab(tab)), [dispatch])
   const tabRefs = useRef({})
@@ -186,7 +181,7 @@ const ConfigurationView = () => {
   }
 
   const renderConfigResult = () => {
-    const { text, copyText } = configurationText({
+    const { lines, copyText } = configurationText({
       hardware,
       settings,
       warnings: warningInfoMessagesVal,
@@ -194,7 +189,6 @@ const ConfigurationView = () => {
       isAlterSystem,
       includeWarnings
     })
-    const settingKeys = settings.map((setting) => setting.key)
 
     return (
       <Fragment>
@@ -220,12 +214,7 @@ const ConfigurationView = () => {
             aria-label="Generated configuration"
             tabIndex={0}
           >
-            <code
-              style={{ whiteSpace: 'pre' }}
-              dangerouslySetInnerHTML={{
-                __html: renderHightlightedCode(text, isAlterSystem, settingKeys, dbVersion)
-              }}
-            />
+            <code style={{ whiteSpace: 'pre' }}>{renderLines(lines, dbVersion)}</code>
           </pre>
         </div>
         {warningGroups.length > 0 && (
@@ -260,8 +249,6 @@ const ConfigurationView = () => {
     )
   }
 
-  const codeHighlightStyle = APP_THEMES_LIGHT === theme ? solarizedLight : solarizedDark
-
   return (
     <div>
       {renderTabs()}
@@ -272,7 +259,6 @@ const ConfigurationView = () => {
       >
         {renderConfigResult()}
       </div>
-      <style>{renderCodeInlineCss(codeHighlightStyle)}</style>
     </div>
   )
 }

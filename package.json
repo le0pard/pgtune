@@ -24,7 +24,6 @@
     "classnames": "^2.5.1",
     "formik": "^2.4.9",
     "globals": "^17.13.0",
-    "highlight.js": "^11.12.0",
     "normalize.css": "^8.0.1",
     "oxfmt": "^0.73.0",
     "oxlint": "^1.88.0",

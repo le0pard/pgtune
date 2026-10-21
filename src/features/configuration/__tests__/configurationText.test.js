@@ -3,8 +3,10 @@ import {
   formatSettingValue,
   groupWarnings,
   hardwareText,
+  settingLines,
   settingsText,
   warningsText,
+  linesText,
   configurationText
 } from '../configurationText'
 import {
@@ -289,5 +291,68 @@ describe('configurationText', () => {
         "ALTER SYSTEM SET max_wal_size = '8GB';                 -- needs free disk space"
       ].join('\n')
     )
+  })
+})
+
+describe('settingLines', () => {
+  const settings = [
+    { key: 'max_connections', value: 200 },
+    { key: 'work_mem', value: 25600, isMemory: true }
+  ]
+
+  it('splits postgresql.conf lines to highlighted segments', () => {
+    expect(settingLines(settings, { restartRequiredSettings: ['max_connections'] })).toEqual([
+      [
+        { text: 'max_connections', token: 'name' },
+        { text: ' = ' },
+        { text: '200', token: 'value' },
+        { text: ' ' },
+        { text: '# restart required', token: 'comment' }
+      ],
+      [{ text: 'work_mem', token: 'name' }, { text: ' = ' }, { text: '25MB', token: 'value' }]
+    ])
+  })
+
+  it('splits ALTER SYSTEM commands to highlighted segments', () => {
+    expect(settingLines([settings[1]], { isAlterSystem: true })).toEqual([
+      [
+        { text: 'ALTER SYSTEM SET', token: 'keyword' },
+        { text: ' ' },
+        { text: 'work_mem', token: 'name' },
+        { text: ' = ' },
+        { text: "'25MB'", token: 'value' },
+        { text: ';' }
+      ]
+    ])
+  })
+
+  it('pads notes to one column', () => {
+    const lines = settingLines(settings, { restartRequiredSettings: ['work_mem'] })
+    expect(linesText(lines)).toEqual(
+      ['max_connections = 200', 'work_mem = 25MB       # restart required'].join('\n')
+    )
+  })
+})
+
+describe('configurationText lines', () => {
+  it('joins to shown text in both formats', () => {
+    for (const isAlterSystem of [false, true]) {
+      const { lines, text } = configurationText({
+        hardware: HARDWARE,
+        settings: [
+          { key: 'max_connections', value: 200 },
+          { key: 'max_wal_size', value: 4194304, isMemory: true }
+        ],
+        warnings: [MEMORY_WARNING],
+        restartRequiredSettings: ['max_connections'],
+        isAlterSystem
+      })
+      expect(linesText(lines)).toEqual(text)
+      // header comments, blank line and settings
+      expect(lines[0]).toEqual([
+        { text: `${isAlterSystem ? '--' : '#'} DB Version: 18`, token: 'comment' }
+      ])
+      expect(lines).toContainEqual([])
+    }
   })
 })

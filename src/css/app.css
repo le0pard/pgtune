@@ -21,6 +21,11 @@
   --headingColor: #859900;
   --dangerColor: #dc322f;
   --infoColor: #268bd2;
+  /* generated configuration: Solarized hues, darker for 4.5:1 contrast on light background */
+  --codeCommentColor: #586e75;
+  --codeKeywordColor: #677400;
+  --codeNameColor: #8a6a00;
+  --codeValueColor: #207a73;
 }
 
 :root.dark {
@@ -35,6 +40,11 @@
   --inputBorder: #586e75;
   --inputColorPlaceholder: #839496;
   --buttonHover: #021014;
+  /* generated configuration: Solarized colors, comments lighter for 4.5:1 contrast */
+  --codeCommentColor: #839496;
+  --codeKeywordColor: #859900;
+  --codeNameColor: #b58900;
+  --codeValueColor: #2aa198;
 }
 
 :root {

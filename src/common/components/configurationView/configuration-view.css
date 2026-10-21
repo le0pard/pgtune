@@ -140,13 +140,31 @@
   background-color: var(--buttonHover);
 }
 
-.configuration-view-setting {
-  color: inherit;
+/* generated configuration highlighting, colors are defined per theme in app.css */
+.configuration-code__comment {
+  color: var(--codeCommentColor);
+  font-style: italic;
+}
+
+.configuration-code__keyword {
+  color: var(--codeKeywordColor);
+}
+
+.configuration-code__name {
+  color: var(--codeNameColor);
+}
+
+.configuration-code__value {
+  color: var(--codeValueColor);
+}
+
+/* setting names link to documentation */
+a.configuration-code__name {
   text-decoration: none;
 }
 
-.configuration-view-setting:hover {
-  color: inherit;
+a.configuration-code__name:hover {
+  color: var(--codeNameColor);
   text-decoration: underline dotted;
 }
 

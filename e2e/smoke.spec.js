@@ -48,6 +48,48 @@ test.describe('configuration', () => {
   })
 })
 
+test.describe('highlighting', () => {
+  for (const colorScheme of ['light', 'dark']) {
+    test(`meets WCAG AA contrast in ${colorScheme} theme`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme })
+      await page.goto(CONFIGURATION_URL)
+
+      for (const tab of ['postgresql.conf', 'ALTER SYSTEM']) {
+        await page.getByRole('tab', { name: tab }).click()
+
+        const contrasts = await generatedConfiguration(page).evaluate((code) => {
+          const rgb = (color) =>
+            color
+              .match(/\d+(\.\d+)?/g)
+              .slice(0, 3)
+              .map(Number)
+          const luminance = (color) => {
+            const [r, g, b] = rgb(color)
+              .map((value) => value / 255)
+              .map((value) => (value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4))
+            return 0.2126 * r + 0.7152 * g + 0.0722 * b
+          }
+          const ratio = (a, b) => {
+            const [light, dark] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+            return (light + 0.05) / (dark + 0.05)
+          }
+          const background = getComputedStyle(code).backgroundColor
+
+          return [...code.querySelectorAll('[class^="configuration-code__"]')].map((token) => ({
+            token: token.className,
+            ratio: ratio(getComputedStyle(token).color, background)
+          }))
+        })
+
+        expect(contrasts.length).toBeGreaterThan(0)
+        for (const { token, ratio } of contrasts) {
+          expect(ratio, `${tab} ${token}`).toBeGreaterThanOrEqual(4.5)
+        }
+      }
+    })
+  }
+})
+
 test.describe('copy', () => {
   test.use({ permissions: ['clipboard-read', 'clipboard-write'] })
 
