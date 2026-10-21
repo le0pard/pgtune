@@ -1,13 +1,24 @@
 import { useEffect, useMemo } from 'react'
+import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router'
 import classnames from 'classnames'
 import { isEmpty } from 'lodash-es'
-import { Formik, Field, Form } from 'formik'
+import { Formik, Field, Form, useFormikContext } from 'formik'
 import FormField from '@common/components/form/field'
 import FormDropdown from '@common/components/form/dropdown'
 import TotalMemoryInput from './totalMemoryInput'
 import { submitConfiguration } from '@app/actions/configurator'
+import {
+  normalizeConfiguration,
+  selectMaxConnections
+} from '@features/configuration/configurationSlice'
+import {
+  OS_TYPE_LABELS,
+  DB_TYPE_LABELS,
+  HARD_DRIVE_LABELS,
+  DB_SIZE_LABELS
+} from '@features/configuration/labels'
 import { validationSchema } from './validation'
 import {
   DEFAULT_DB_VERSION,
@@ -48,83 +59,74 @@ const FORM_DEFAULTS = {
 
 const FORM_FIELDS = Object.keys(FORM_DEFAULTS)
 
+// delay before configuration is generated again after form changes
+const AUTO_GENERATE_DELAY = 400
+
 const dbVersionOptions = () =>
   DB_VERSIONS.map((version) => ({
     label: String(version),
     value: version
   }))
 
-const osTypeOptions = () => [
-  {
-    label: 'Linux',
-    value: OS_LINUX
-  },
-  {
-    label: 'OS X',
-    value: OS_MAC
-  },
-  {
-    label: 'Windows',
-    value: OS_WINDOWS
-  }
-]
+const labelOptions = (labels, values) =>
+  values.map((value) => ({
+    label: labels[value],
+    value
+  }))
 
-const dbTypeOptions = () => [
-  {
-    label: 'Web application',
-    value: DB_TYPE_WEB
-  },
-  {
-    label: 'Online transaction processing system',
-    value: DB_TYPE_OLTP
-  },
-  {
-    label: 'Data warehouse',
-    value: DB_TYPE_DW
-  },
-  {
-    label: 'Desktop application',
-    value: DB_TYPE_DESKTOP
-  },
-  {
-    label: 'Mixed type of application',
-    value: DB_TYPE_MIXED
-  }
-]
+const osTypeOptions = () => labelOptions(OS_TYPE_LABELS, [OS_LINUX, OS_MAC, OS_WINDOWS])
 
-const hdTypeOptions = () => [
-  {
-    label: 'NVMe storage',
-    value: HARD_DRIVE_NVME
-  },
-  {
-    label: 'SSD storage',
-    value: HARD_DRIVE_SSD
-  },
-  {
-    label: 'Network (SAN) storage',
-    value: HARD_DRIVE_SAN
-  },
-  {
-    label: 'HDD storage',
-    value: HARD_DRIVE_HDD
-  }
-]
+const dbTypeOptions = () =>
+  labelOptions(DB_TYPE_LABELS, [
+    DB_TYPE_WEB,
+    DB_TYPE_OLTP,
+    DB_TYPE_DW,
+    DB_TYPE_DESKTOP,
+    DB_TYPE_MIXED
+  ])
 
-const dbSizeOptions = () => [
-  {
-    label: 'Less than RAM',
-    value: DB_SIZE_LESS_RAM
-  },
-  {
-    label: '1x - 3x RAM',
-    value: DB_SIZE_MID_RAM
-  },
-  {
-    label: 'More than 3x RAM',
-    value: DB_SIZE_GREATER_RAM
+const hdTypeOptions = () =>
+  labelOptions(HARD_DRIVE_LABELS, [HARD_DRIVE_NVME, HARD_DRIVE_SSD, HARD_DRIVE_SAN, HARD_DRIVE_HDD])
+
+const dbSizeOptions = () =>
+  labelOptions(DB_SIZE_LABELS, [DB_SIZE_LESS_RAM, DB_SIZE_MID_RAM, DB_SIZE_GREATER_RAM])
+
+// shows max_connections, which will be used, if number of connections is empty
+const connectionsPlaceholder = (values) => {
+  const valuesWithoutConnections = { ...values, connectionNum: '' }
+  if (!validationSchema.isValidSync(valuesWithoutConnections)) {
+    return 'Number of Connections (optional)'
   }
-]
+  const assumedConnections = selectMaxConnections({
+    configuration: normalizeConfiguration(valuesWithoutConnections)
+  })
+  return `Optional, ${assumedConnections} if empty`
+}
+
+// generates configuration again, when form values are changed and valid
+const AutoGenerate = ({ searchParams, setSearchParams }) => {
+  const { values } = useFormikContext()
+
+  useEffect(() => {
+    if (!validationSchema.isValidSync(values)) {
+      return
+    }
+    const params = new URLSearchParams(values)
+    if (params.toString() === searchParams.toString()) {
+      return
+    }
+    // replace, so typing does not create browser history entries
+    const timer = setTimeout(() => setSearchParams(params, { replace: true }), AUTO_GENERATE_DELAY)
+    return () => clearTimeout(timer)
+  }, [values, searchParams, setSearchParams])
+
+  return null
+}
+
+AutoGenerate.propTypes = {
+  searchParams: PropTypes.instanceOf(URLSearchParams).isRequired,
+  setSearchParams: PropTypes.func.isRequired
+}
 
 const filterFormParams = (params = {}) => {
   const paramKeys = Object.keys(params)
@@ -176,8 +178,9 @@ const ConfigurationForm = () => {
       initialValues={formParams}
       validationSchema={validationSchema}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, values }) => (
         <Form>
+          <AutoGenerate searchParams={searchParams} setSearchParams={setSearchParams} />
           <Field
             name="dbVersion"
             component={FormDropdown}
@@ -190,16 +193,38 @@ const ConfigurationForm = () => {
             component={FormDropdown}
             label="OS Type"
             options={osTypeOptions()}
-            tooltip="Operation system of the PostgreSQL server host"
+            tooltip="Operating system of the PostgreSQL server host"
           />
           <Field
             name="dbType"
             component={FormDropdown}
             label="DB Type"
             options={dbTypeOptions()}
-            tooltip="For what type of application is PostgreSQL used"
+            tooltip={
+              <span>
+                For what type of application is PostgreSQL used:
+                <br />
+                Web: mostly simple queries, DB smaller than RAM
+                <br />
+                OLTP: many small writes, some complex reads
+                <br />
+                Data warehouse: bulk loads, large reporting queries
+                <br />
+                Desktop: not a dedicated database, e.g. workstation
+                <br />
+                Mixed: both data warehouse and OLTP queries
+              </span>
+            }
           />
-          <TotalMemoryInput tooltip="How much memory can PostgreSQL use" />
+          <TotalMemoryInput
+            tooltip={
+              <span>
+                How much memory can PostgreSQL use
+                <br />
+                For containers use the container memory limit
+              </span>
+            }
+          />
           <Field
             name="cpuNum"
             type="number"
@@ -218,6 +243,8 @@ const ConfigurationForm = () => {
                 Number of CPUs, which PostgreSQL can use
                 <br />
                 CPUs = threads per core * cores per socket * sockets
+                <br />
+                If empty, parallel query settings are not changed
               </span>
             }
           />
@@ -232,9 +259,15 @@ const ConfigurationForm = () => {
             max={MAX_CONNECTIONS_VALUE}
             step={1}
             pattern="[0-9]{1,6}"
-            placeholder="Number of Connections (optional)"
+            placeholder={connectionsPlaceholder(values)}
             label="Number of Connections"
-            tooltip="Maximum number of PostgreSQL client connections"
+            tooltip={
+              <span>
+                Maximum number of PostgreSQL client connections
+                <br />
+                If empty, assumed by DB type and memory (min 100)
+              </span>
+            }
           />
           <Field
             name="hdType"

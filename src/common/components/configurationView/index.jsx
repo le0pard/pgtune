@@ -6,8 +6,20 @@ import iniLang from 'highlight.js/lib/languages/ini'
 import sqlLang from 'highlight.js/lib/languages/sql'
 import solarizedLight from './solarized-light'
 import solarizedDark from './solarized-dark'
+import { settingDescription, settingDocsUrl } from './settingsDocs'
 import CopyButton from '@common/components/copyButton'
 import { APP_THEMES_LIGHT, TAB_CONFIG, TAB_ALTER_SYSTEM } from '@features/settings/constants'
+import {
+  WARNING_LEVEL_STARTUP,
+  WARNING_LEVEL_MEMORY,
+  WARNING_LEVEL_NOTE
+} from '@features/configuration/constants'
+import {
+  OS_TYPE_LABELS,
+  DB_TYPE_LABELS,
+  HARD_DRIVE_LABELS,
+  DB_SIZE_LABELS
+} from '@features/configuration/labels'
 import {
   selectDBVersion,
   selectOSType,
@@ -43,8 +55,10 @@ import {
 } from '@features/configuration/configurationSlice'
 import {
   openConfigTab,
+  toggleIncludeWarnings,
   selectTabSettings,
-  selectThemeSettings
+  selectThemeSettings,
+  selectIncludeWarningsSettings
 } from '@features/settings/settingsSlice'
 
 import './configuration-view.css'
@@ -56,6 +70,25 @@ const KB_UNIT_MAP = {
   KB_PER_MB: 1024,
   KB_PER_GB: 1048576
 }
+
+// warnings are grouped and shown in this order
+const WARNING_GROUPS = [
+  {
+    level: WARNING_LEVEL_STARTUP,
+    title: 'May prevent startup',
+    commentTitle: 'WARNING (may prevent startup)'
+  },
+  {
+    level: WARNING_LEVEL_MEMORY,
+    title: 'Memory risk',
+    commentTitle: 'WARNING (memory risk)'
+  },
+  {
+    level: WARNING_LEVEL_NOTE,
+    title: 'Note',
+    commentTitle: 'NOTE'
+  }
+]
 
 // This uses larger units only if there's no loss of resolution in displaying
 // with that value. Therefore, if using this to output newly assigned
@@ -96,8 +129,30 @@ const renderCodeInlineCss = (codeHighlightStyle) => {
   })
 }
 
-const renderHightlightedCode = (code, isAlterSystem) => {
-  return hljs.highlight(code, { language: isAlterSystem ? 'sql' : 'ini' }).value
+const escapeHtml = (text) =>
+  text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+// Setting names (lowercase words with underscores) never appear in highlight.js
+// markup itself, so they can be safely wrapped by links to documentation
+const linkSettingNames = (html, settingKeys, dbVersion) => {
+  if (settingKeys.length === 0) {
+    return html
+  }
+  const settingNamesRegex = new RegExp(`\\b(${settingKeys.join('|')})\\b`, 'g')
+  return html.replace(settingNamesRegex, (key) => {
+    const docsUrl = settingDocsUrl(key, dbVersion)
+    if (!docsUrl) {
+      return key
+    }
+    return `<a class="configuration-view-setting" href="${docsUrl}" title="${escapeHtml(
+      settingDescription(key)
+    )}" target="_blank" rel="noopener noreferrer">${key}</a>`
+  })
+}
+
+const renderHightlightedCode = (code, isAlterSystem, settingKeys, dbVersion) => {
+  const html = hljs.highlight(code, { language: isAlterSystem ? 'sql' : 'ini' }).value
+  return linkSettingNames(html, settingKeys, dbVersion)
 }
 
 const ConfigurationView = () => {
@@ -139,27 +194,52 @@ const ConfigurationView = () => {
   const warningInfoMessagesVal = useSelector(selectWarningInfoMessages)
   // tab state
   const tabState = useSelector(selectTabSettings)
+  // include warnings in copied configuration
+  const includeWarnings = useSelector(selectIncludeWarningsSettings)
   // app theme
   const theme = useSelector(selectThemeSettings)
   // tab click state
   const handleClickTab = useCallback((tab) => dispatch(openConfigTab(tab)), [dispatch])
+  const handleToggleIncludeWarnings = useCallback(
+    () => dispatch(toggleIncludeWarnings()),
+    [dispatch]
+  )
 
   const isAlterSystem = TAB_ALTER_SYSTEM === tabState
   const commentPrefix = isAlterSystem ? '--' : '#'
 
+  const warningGroups = WARNING_GROUPS.map((group) => ({
+    ...group,
+    warnings: warningInfoMessagesVal.filter((warning) => warning.level === group.level)
+  })).filter((group) => group.warnings.length > 0)
+
   const warningInfo = () =>
-    warningInfoMessagesVal.map((item) => `${commentPrefix} ${item}`).join('\n')
+    warningGroups
+      .map((group) => [
+        group.commentTitle,
+        ...group.warnings.flatMap((warning, index) => [
+          ...(index > 0 ? [''] : []),
+          ...warning.text,
+          ...(warning.code ? [warning.code] : [])
+        ])
+      ])
+      .reduce(
+        (lines, groupLines) => (lines.length > 0 ? [...lines, '', ...groupLines] : groupLines),
+        []
+      )
+      .map((line) => (line ? `${commentPrefix} ${line}` : commentPrefix))
+      .join('\n')
 
   const hardwareConfiguration = () =>
     [
       ['DB Version', dbVersion],
-      ['OS Type', osType],
-      ['DB Type', dbType],
+      ['OS Type', OS_TYPE_LABELS[osType]],
+      ['DB Type', DB_TYPE_LABELS[dbType]],
       ['Total Memory (RAM)', `${totalMemory} ${totalMemoryUnit}`],
       ['CPUs num', cpuNum],
       ['Connections num', connectionNum || `${maxConnectionsVal} (not provided, assumed)`],
-      ['Data Storage', hdType],
-      ['Total Data Size', dbSize]
+      ['Data Storage', HARD_DRIVE_LABELS[hdType]],
+      ['Total Data Size', DB_SIZE_LABELS[dbSize]]
     ]
       .filter((item) => !!item[1])
       .map((item) => `${commentPrefix} ${item[0]}: ${item[1]}`)
@@ -179,13 +259,13 @@ const ConfigurationView = () => {
       return 'restart required'
     }
     if (key === 'max_wal_size') {
-      return 'needs at least this much free disk space for WAL'
+      return 'needs free disk space'
     }
     return null
   }
 
-  const postgresqlConfig = () => {
-    const configData = [
+  const postgresqlSettings = () =>
+    [
       ['max_connections', maxConnectionsVal],
       ['shared_buffers', formatValue(sharedBuffersVal)],
       ['effective_cache_size', formatValue(effectiveCacheSizeVal)],
@@ -207,15 +287,15 @@ const ConfigurationView = () => {
       .concat(getCheckpointSegments())
       .concat(getParallelSettings())
       .concat(getWalLevel())
-
-    const settings = configData
       .filter((item) => !!item[1])
-      .map((item) => ({
-        line: isAlterSystem
-          ? `ALTER SYSTEM SET ${item[0]} = '${item[1]}';`
-          : `${item[0]} = ${item[1]}`,
-        note: settingNote(item[0])
-      }))
+
+  const postgresqlConfig = (settingsData) => {
+    const settings = settingsData.map((item) => ({
+      line: isAlterSystem
+        ? `ALTER SYSTEM SET ${item[0]} = '${item[1]}';`
+        : `${item[0]} = ${item[1]}`,
+      note: settingNote(item[0])
+    }))
 
     // align notes in one column
     const lineWidth = Math.max(...settings.map((item) => item.line.length))
@@ -225,15 +305,6 @@ const ConfigurationView = () => {
         item.note ? `${item.line.padEnd(lineWidth)} ${commentPrefix} ${item.note}` : item.line
       )
       .join('\n')
-  }
-
-  const generateConfig = () => {
-    let config = [hardwareConfiguration(), '', postgresqlConfig()]
-
-    if (warningInfoMessagesVal.length > 0) {
-      config = [warningInfo(), '', ...config]
-    }
-    return config.join('\n')
   }
 
   const renderTabs = () => {
@@ -259,8 +330,46 @@ const ConfigurationView = () => {
     )
   }
 
+  const renderWarnings = () => {
+    if (warningGroups.length === 0) {
+      return null
+    }
+
+    return (
+      <div className="configuration-view-warnings">
+        {warningGroups.map((group) => (
+          <div
+            key={group.level}
+            className={classnames(
+              'configuration-view-warning',
+              `configuration-view-warning--${group.level}`
+            )}
+          >
+            <div className="configuration-view-warning__title">{group.title}</div>
+            {group.warnings.map((warning, index) => (
+              <div key={index} className="configuration-view-warning__item">
+                <span>{warning.text.join(' ')}</span>
+                {warning.code && (
+                  <code className="configuration-view-warning__code">{warning.code}</code>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    )
+  }
+
   const renderConfigResult = () => {
-    const generatedConfigRes = generateConfig()
+    const settingsData = postgresqlSettings()
+    const settingKeys = settingsData.map((item) => item[0])
+    const generatedConfigRes = [hardwareConfiguration(), '', postgresqlConfig(settingsData)].join(
+      '\n'
+    )
+    const copiedConfigRes =
+      includeWarnings && warningGroups.length > 0
+        ? [warningInfo(), '', generatedConfigRes].join('\n')
+        : generatedConfigRes
 
     return (
       <Fragment>
@@ -274,29 +383,57 @@ const ConfigurationView = () => {
           </p>
         ) : (
           <p>
-            Add/modify this settings in <strong>postgresql.conf</strong> and restart database
+            Add/modify these settings in <strong>postgresql.conf</strong> and restart the database
           </p>
         )}
-        <p>
-          Apply the same settings on replicas: <strong>max_connections</strong> and{' '}
-          <strong>max_worker_processes</strong> on a standby must be the same or higher than on the
-          primary
-        </p>
-        <pre style={{ display: 'block', overflowX: 'auto', padding: '0.5rem' }}>
-          <code
-            style={{ whiteSpace: 'pre' }}
-            dangerouslySetInnerHTML={{
-              __html: renderHightlightedCode(generatedConfigRes, isAlterSystem)
-            }}
+        {renderWarnings()}
+        <div className="configuration-view-code">
+          <CopyButton
+            className="configuration-view-copy-top-button"
+            text={copiedConfigRes}
+            label="Copy"
           />
-        </pre>
+          <pre style={{ display: 'block', overflowX: 'auto', padding: '0.5rem' }}>
+            <code
+              style={{ whiteSpace: 'pre' }}
+              dangerouslySetInnerHTML={{
+                __html: renderHightlightedCode(
+                  generatedConfigRes,
+                  isAlterSystem,
+                  settingKeys,
+                  dbVersion
+                )
+              }}
+            />
+          </pre>
+        </div>
+        {warningGroups.length > 0 && (
+          <label className="configuration-view-include-warnings">
+            <input
+              type="checkbox"
+              checked={includeWarnings}
+              onChange={handleToggleIncludeWarnings}
+            />{' '}
+            Include warnings as comments when copying
+          </label>
+        )}
         <div className="configuration-view-copy-wrapper">
           <CopyButton
             className="configuration-view-copy-button"
-            text={generatedConfigRes}
+            text={copiedConfigRes}
             label="Copy configuration"
           />
         </div>
+        <ul className="configuration-view-footnotes">
+          <li>
+            Apply the same settings on replicas: <strong>max_connections</strong> and{' '}
+            <strong>max_worker_processes</strong> on a standby must be the same or higher than on
+            the primary
+          </li>
+          <li>
+            Hover a setting name to see what it does, click it to open PostgreSQL documentation
+          </li>
+        </ul>
       </Fragment>
     )
   }

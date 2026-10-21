@@ -25,6 +25,7 @@
   background-color: #b58900;
   border: 1px solid var(--inputBorder);
   white-space: nowrap;
+  text-align: left;
 }
 .tooltip-block__visible {
   transform: translateY(0) translateX(-50%);

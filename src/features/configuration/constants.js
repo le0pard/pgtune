@@ -24,6 +24,10 @@ export const HARD_DRIVE_NVME = 'nvme'
 export const DB_SIZE_LESS_RAM = 'less_ram'
 export const DB_SIZE_MID_RAM = 'mid_ram'
 export const DB_SIZE_GREATER_RAM = 'greater_ram'
+// warning levels
+export const WARNING_LEVEL_STARTUP = 'startup'
+export const WARNING_LEVEL_MEMORY = 'memory'
+export const WARNING_LEVEL_NOTE = 'note'
 // maximum value for integer fields
 export const MAX_NUMERIC_VALUE = 999999
 // PostgreSQL allows 262143 server processes in total (max_connections + autovacuum

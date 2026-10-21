@@ -43,7 +43,7 @@ const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors 
 
 FormDropdown.propTypes = {
   label: PropTypes.string.isRequired,
-  tooltip: PropTypes.string.isRequired,
+  tooltip: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.string]).isRequired,
   field: PropTypes.shape({
     name: PropTypes.string.isRequired,
     value: PropTypes.any

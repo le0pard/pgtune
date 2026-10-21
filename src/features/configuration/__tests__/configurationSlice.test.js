@@ -20,7 +20,8 @@ import {
   selectIoWorkers,
   selectIoMethod,
   selectRestartRequiredSettings,
-  selectWarningInfoMessages
+  selectWarningInfoMessages,
+  normalizeConfiguration
 } from '../configurationSlice'
 
 describe('selectIsConfigured', () => {
@@ -953,14 +954,19 @@ describe('selectWarningInfoMessages', () => {
         }
       })
     ).toEqual([
-      'WARNING',
-      'this tool not being optimal',
-      'for low memory systems',
-      '',
-      'max_connections = 100 is too high for this amount of RAM:',
-      'work_mem is raised to 4MB minimum, so under load',
-      'PostgreSQL can run out of memory',
-      'Lower max_connections or use a connection pooler (e.g. PgBouncer)'
+      {
+        level: 'note',
+        text: ['This tool is not optimal for low memory systems']
+      },
+      {
+        level: 'memory',
+        text: [
+          'max_connections = 100 is too high for this amount of RAM:',
+          'work_mem is raised to the 4MB minimum, so under load',
+          'PostgreSQL can run out of memory. Lower max_connections',
+          'or use a connection pooler (e.g. PgBouncer)'
+        ]
+      }
     ])
   })
 
@@ -976,13 +982,19 @@ describe('selectWarningInfoMessages', () => {
         }
       })
     ).toEqual([
-      'WARNING',
-      'this tool not being optimal',
-      'for very high memory systems',
-      '',
-      'shared_buffers is large: reserve Linux huge pages (vm.nr_hugepages)',
-      'to reduce memory used by page tables of each connection',
-      'See "Linux Huge Pages" in PostgreSQL documentation to calculate it'
+      {
+        level: 'note',
+        text: ['This tool is not optimal for very high memory systems']
+      },
+      {
+        level: 'note',
+        text: [
+          'shared_buffers is large: reserve Linux huge pages',
+          '(vm.nr_hugepages) to reduce memory used by page tables',
+          'of each connection. See "Linux Huge Pages" in PostgreSQL',
+          'documentation to calculate the number of huge pages'
+        ]
+      }
     ])
   })
 
@@ -999,12 +1011,39 @@ describe('selectWarningInfoMessages', () => {
         }
       })
     ).toEqual([
-      'WARNING',
-      'max_connections = 2000 is too high for this amount of RAM:',
-      'work_mem is raised to 4MB minimum, so under load',
-      'PostgreSQL can run out of memory',
-      'Lower max_connections or use a connection pooler (e.g. PgBouncer)'
+      {
+        level: 'memory',
+        text: [
+          'max_connections = 2000 is too high for this amount of RAM:',
+          'work_mem is raised to the 4MB minimum, so under load',
+          'PostgreSQL can run out of memory. Lower max_connections',
+          'or use a connection pooler (e.g. PgBouncer)'
+        ]
+      }
     ])
+  })
+
+  it('returns huge pages warning with calculation command on PostgreSQL 15+', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 16,
+          totalMemoryUnit: 'GB',
+          dbVersion: 15,
+          osType: 'linux',
+          dbType: 'web'
+        }
+      })
+    ).toContainEqual({
+      level: 'note',
+      text: [
+        'shared_buffers is large: reserve Linux huge pages',
+        '(vm.nr_hugepages) to reduce memory used by page tables',
+        'of each connection. Required number of huge pages',
+        '(with these settings, while the server is stopped):'
+      ],
+      code: 'postgres -D $PGDATA -C shared_memory_size_in_huge_pages'
+    })
   })
 
   it('returns huge pages warning for Windows', () => {
@@ -1019,9 +1058,13 @@ describe('selectWarningInfoMessages', () => {
         }
       })
     ).toEqual([
-      'WARNING',
-      'shared_buffers is large: grant the "Lock pages in memory" right',
-      'to the PostgreSQL service account to use huge pages'
+      {
+        level: 'note',
+        text: [
+          'shared_buffers is large: grant the "Lock pages in memory"',
+          'right to the PostgreSQL service account to use huge pages'
+        ]
+      }
     ])
   })
 
@@ -1039,7 +1082,7 @@ describe('selectWarningInfoMessages', () => {
     ).toEqual([])
   })
 
-  it('returns warning for minimal wal_level on desktop', () => {
+  it('returns startup warning for minimal wal_level on desktop', () => {
     expect(
       selectWarningInfoMessages({
         configuration: {
@@ -1051,14 +1094,19 @@ describe('selectWarningInfoMessages', () => {
         }
       })
     ).toEqual([
-      'WARNING',
-      'wal_level = minimal: PostgreSQL will not start if archive_mode = on',
-      'or if replication slots exist. Replication, pg_basebackup',
-      'and point-in-time recovery are not possible'
+      {
+        level: 'startup',
+        text: [
+          'wal_level = minimal: PostgreSQL will not start if',
+          'archive_mode = on or if replication slots exist.',
+          'Replication, pg_basebackup and point-in-time recovery',
+          'are not possible'
+        ]
+      }
     ])
   })
 
-  it('returns compilation warning for lz4 wal_compression', () => {
+  it('returns startup warning for lz4 wal_compression', () => {
     expect(
       selectWarningInfoMessages({
         configuration: {
@@ -1070,14 +1118,18 @@ describe('selectWarningInfoMessages', () => {
         }
       })
     ).toEqual([
-      'WARNING',
-      'wal_compression = lz4 requires PostgreSQL',
-      'to be compiled with --with-lz4',
-      "Check: SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';"
+      {
+        level: 'startup',
+        text: [
+          'wal_compression = lz4 requires PostgreSQL compiled',
+          'with --with-lz4. Check build support:'
+        ],
+        code: "SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';"
+      }
     ])
   })
 
-  it('returns compilation warning for io_uring io_method', () => {
+  it('returns startup warning for io_uring io_method', () => {
     expect(
       selectWarningInfoMessages({
         configuration: {
@@ -1089,16 +1141,24 @@ describe('selectWarningInfoMessages', () => {
         }
       })
     ).toEqual([
-      'WARNING',
-      'wal_compression = lz4 requires PostgreSQL',
-      'to be compiled with --with-lz4',
-      "Check: SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';",
-      '',
-      'io_method = io_uring requires PostgreSQL',
-      'to be compiled with --with-liburing',
-      'and io_uring allowed by the kernel (kernel.io_uring_disabled sysctl)',
-      'and by containers (Docker default seccomp profile blocks it)',
-      "Check: SELECT enumvals FROM pg_settings WHERE name = 'io_method';"
+      {
+        level: 'startup',
+        text: [
+          'wal_compression = lz4 requires PostgreSQL compiled',
+          'with --with-lz4. Check build support:'
+        ],
+        code: "SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';"
+      },
+      {
+        level: 'startup',
+        text: [
+          'io_method = io_uring requires PostgreSQL compiled',
+          'with --with-liburing, and io_uring allowed by the kernel',
+          '(kernel.io_uring_disabled sysctl) and by containers',
+          '(Docker default seccomp profile blocks it). Check build support:'
+        ],
+        code: "SELECT enumvals FROM pg_settings WHERE name = 'io_method';"
+      }
     ])
   })
 
@@ -1122,27 +1182,51 @@ describe('selectWarningInfoMessages', () => {
         configuration: {
           totalMemory: 64,
           totalMemoryUnit: 'GB',
-          dbVersion: 15,
-          osType: 'linux',
+          dbVersion: 14,
+          osType: 'mac',
           dbType: 'dw',
           hdType: 'nvme',
           dbSize: 'mid_ram'
         }
       })
     ).toEqual([
-      'WARNING',
-      'shared_buffers is large: reserve Linux huge pages (vm.nr_hugepages)',
-      'to reduce memory used by page tables of each connection',
-      'Required number (with these settings, while server is stopped):',
-      'postgres -D $PGDATA -C shared_memory_size_in_huge_pages',
-      '',
-      'wal_compression = lz4 requires PostgreSQL',
-      'to be compiled with --with-lz4',
-      "Check: SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';",
-      '',
-      'Cost parameters for Data Warehouses on NVMe drives are left at defaults',
-      'to avoid catastrophic index scan selections',
-      'Monitor query planner behavior and adjust random_page_cost if necessary'
+      {
+        level: 'note',
+        text: [
+          'Cost parameters for Data Warehouses on NVMe drives',
+          'are left at defaults to avoid catastrophic index scan',
+          'selections. Monitor query planner behavior and adjust',
+          'random_page_cost if necessary'
+        ]
+      }
     ])
+  })
+})
+
+describe('normalizeConfiguration', () => {
+  it('converts form values to configuration state', () => {
+    expect(
+      normalizeConfiguration({
+        dbVersion: '18',
+        osType: 'linux',
+        dbType: 'web',
+        totalMemory: '16',
+        totalMemoryUnit: 'GB',
+        cpuNum: '',
+        connectionNum: '300',
+        hdType: 'ssd',
+        dbSize: 'mid_ram'
+      })
+    ).toEqual({
+      dbVersion: 18,
+      osType: 'linux',
+      dbType: 'web',
+      totalMemory: 16,
+      totalMemoryUnit: 'GB',
+      cpuNum: null,
+      connectionNum: 300,
+      hdType: 'ssd',
+      dbSize: 'mid_ram'
+    })
   })
 })

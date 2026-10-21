@@ -37,7 +37,8 @@ import {
   DB_SIZE_LESS_RAM,
   DB_SIZE_MID_RAM,
   DB_SIZE_GREATER_RAM,
-  MAX_CONNECTIONS_VALUE
+  MAX_CONNECTIONS_VALUE,
+  WARNING_LEVEL_MEMORY
 } from '../constants'
 
 // PostgreSQL limits from source code
@@ -171,7 +172,7 @@ const checkConfiguration = (configuration) => {
   const parallelWorkers = parallelSettings['max_parallel_workers'] || 8
   const workMemBudget = (totalMemoryKb - sharedBuffers) * 1.3
   const workMemUsage = (maxConnections + parallelWorkers) * workMem * 3
-  const hasWorkMemWarning = warnings.some((line) => line.startsWith('max_connections = '))
+  const hasWorkMemWarning = warnings.some((warning) => warning.level === WARNING_LEVEL_MEMORY)
   check(
     workMemUsage <= workMemBudget || hasWorkMemWarning,
     `work_mem = ${workMem}kB does not fit in memory without warning`

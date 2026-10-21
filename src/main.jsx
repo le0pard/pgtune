@@ -25,7 +25,8 @@ const preloadedState = () => {
 
   return {
     settings: {
-      theme: theme || APP_THEMES_LIGHT
+      theme: theme || APP_THEMES_LIGHT,
+      includeWarnings: LocalStorage.getItem('includeWarnings') !== false
     }
   }
 }

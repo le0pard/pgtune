@@ -17,7 +17,10 @@ import {
   HARD_DRIVE_NVME,
   DB_SIZE_LESS_RAM,
   DB_SIZE_MID_RAM,
-  DB_SIZE_GREATER_RAM
+  DB_SIZE_GREATER_RAM,
+  WARNING_LEVEL_STARTUP,
+  WARNING_LEVEL_MEMORY,
+  WARNING_LEVEL_NOTE
 } from './constants'
 
 const SIZE_UNIT_MAP = {
@@ -84,23 +87,24 @@ const configurationSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(submitConfiguration, (_state, { payload }) => {
-      return {
-        dbVersion: parseFloat(payload.dbVersion),
-        osType: payload.osType,
-        dbType: payload.dbType,
-        totalMemory: parseInt(payload.totalMemory, 10),
-        totalMemoryUnit: payload.totalMemoryUnit,
-        cpuNum: payload.cpuNum ? parseInt(payload.cpuNum, 10) : null,
-        connectionNum: payload.connectionNum ? parseInt(payload.connectionNum, 10) : null,
-        hdType: payload.hdType,
-        dbSize: payload.dbSize
-      }
-    })
+    builder.addCase(submitConfiguration, (_state, { payload }) => normalizeConfiguration(payload))
   }
 })
 
 export const { resetConfiguration } = configurationSlice.actions
+
+// converts form values (strings) to configuration state
+export const normalizeConfiguration = (values) => ({
+  dbVersion: parseFloat(values.dbVersion),
+  osType: values.osType,
+  dbType: values.dbType,
+  totalMemory: parseInt(values.totalMemory, 10),
+  totalMemoryUnit: values.totalMemoryUnit,
+  cpuNum: values.cpuNum ? parseInt(values.cpuNum, 10) : null,
+  connectionNum: values.connectionNum ? parseInt(values.connectionNum, 10) : null,
+  hdType: values.hdType,
+  dbSize: values.dbSize
+})
 
 // selectors
 
@@ -616,75 +620,102 @@ export const selectWarningInfoMessages = createSelector(
     walCompression,
     ioMethod
   ) => {
+    // each warning has level, text lines and optional command (code)
     let warnings = []
-
-    const addWarning = (...lines) => {
-      if (warnings.length > 0) warnings.push('')
-
-      warnings.push(...lines)
-    }
 
     // Memory warnings
     if (totalMemory < 1 * SIZE_UNIT_MAP['GB']) {
-      addWarning('this tool not being optimal', 'for low memory systems')
+      warnings.push({
+        level: WARNING_LEVEL_NOTE,
+        text: ['This tool is not optimal for low memory systems']
+      })
     } else if (totalMemory > 100 * SIZE_UNIT_MAP['GB']) {
-      addWarning('this tool not being optimal', 'for very high memory systems')
+      warnings.push({
+        level: WARNING_LEVEL_NOTE,
+        text: ['This tool is not optimal for very high memory systems']
+      })
     }
 
     if (workMemBudget < MIN_WORK_MEM) {
-      addWarning(
-        `max_connections = ${maxConnections} is too high for this amount of RAM:`,
-        'work_mem is raised to 4MB minimum, so under load',
-        'PostgreSQL can run out of memory',
-        'Lower max_connections or use a connection pooler (e.g. PgBouncer)'
-      )
+      warnings.push({
+        level: WARNING_LEVEL_MEMORY,
+        text: [
+          `max_connections = ${maxConnections} is too high for this amount of RAM:`,
+          'work_mem is raised to the 4MB minimum, so under load',
+          'PostgreSQL can run out of memory. Lower max_connections',
+          'or use a connection pooler (e.g. PgBouncer)'
+        ]
+      })
     }
 
     if (isHugePagesRecommended) {
       if (osType === OS_WINDOWS) {
-        addWarning(
-          'shared_buffers is large: grant the "Lock pages in memory" right',
-          'to the PostgreSQL service account to use huge pages'
-        )
+        warnings.push({
+          level: WARNING_LEVEL_NOTE,
+          text: [
+            'shared_buffers is large: grant the "Lock pages in memory"',
+            'right to the PostgreSQL service account to use huge pages'
+          ]
+        })
+      } else if (dbVersion >= 15) {
+        warnings.push({
+          level: WARNING_LEVEL_NOTE,
+          text: [
+            'shared_buffers is large: reserve Linux huge pages',
+            '(vm.nr_hugepages) to reduce memory used by page tables',
+            'of each connection. Required number of huge pages',
+            '(with these settings, while the server is stopped):'
+          ],
+          code: 'postgres -D $PGDATA -C shared_memory_size_in_huge_pages'
+        })
       } else {
-        addWarning(
-          'shared_buffers is large: reserve Linux huge pages (vm.nr_hugepages)',
-          'to reduce memory used by page tables of each connection',
-          ...(dbVersion >= 15
-            ? [
-                'Required number (with these settings, while server is stopped):',
-                'postgres -D $PGDATA -C shared_memory_size_in_huge_pages'
-              ]
-            : ['See "Linux Huge Pages" in PostgreSQL documentation to calculate it'])
-        )
+        warnings.push({
+          level: WARNING_LEVEL_NOTE,
+          text: [
+            'shared_buffers is large: reserve Linux huge pages',
+            '(vm.nr_hugepages) to reduce memory used by page tables',
+            'of each connection. See "Linux Huge Pages" in PostgreSQL',
+            'documentation to calculate the number of huge pages'
+          ]
+        })
       }
     }
 
     if (walLevel.some((item) => item.key === 'wal_level' && item.value === 'minimal')) {
-      addWarning(
-        'wal_level = minimal: PostgreSQL will not start if archive_mode = on',
-        'or if replication slots exist. Replication, pg_basebackup',
-        'and point-in-time recovery are not possible'
-      )
+      warnings.push({
+        level: WARNING_LEVEL_STARTUP,
+        text: [
+          'wal_level = minimal: PostgreSQL will not start if',
+          'archive_mode = on or if replication slots exist.',
+          'Replication, pg_basebackup and point-in-time recovery',
+          'are not possible'
+        ]
+      })
     }
 
     // Advanced features compilation warnings
     if (walCompression === 'lz4') {
-      addWarning(
-        'wal_compression = lz4 requires PostgreSQL',
-        'to be compiled with --with-lz4',
-        "Check: SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';"
-      )
+      warnings.push({
+        level: WARNING_LEVEL_STARTUP,
+        text: [
+          'wal_compression = lz4 requires PostgreSQL compiled',
+          'with --with-lz4. Check build support:'
+        ],
+        code: "SELECT enumvals FROM pg_settings WHERE name = 'wal_compression';"
+      })
     }
 
     if (ioMethod === 'io_uring') {
-      addWarning(
-        'io_method = io_uring requires PostgreSQL',
-        'to be compiled with --with-liburing',
-        'and io_uring allowed by the kernel (kernel.io_uring_disabled sysctl)',
-        'and by containers (Docker default seccomp profile blocks it)',
-        "Check: SELECT enumvals FROM pg_settings WHERE name = 'io_method';"
-      )
+      warnings.push({
+        level: WARNING_LEVEL_STARTUP,
+        text: [
+          'io_method = io_uring requires PostgreSQL compiled',
+          'with --with-liburing, and io_uring allowed by the kernel',
+          '(kernel.io_uring_disabled sysctl) and by containers',
+          '(Docker default seccomp profile blocks it). Check build support:'
+        ],
+        code: "SELECT enumvals FROM pg_settings WHERE name = 'io_method';"
+      })
     }
 
     // I/O Cost Warning for Analytical DBs
@@ -695,14 +726,18 @@ export const selectWarningInfoMessages = createSelector(
         [HARD_DRIVE_SAN]: 'SAN storage'
       }[hdType]
 
-      addWarning(
-        `Cost parameters for Data Warehouses on ${driveName} are left at defaults`,
-        'to avoid catastrophic index scan selections',
-        'Monitor query planner behavior and adjust random_page_cost if necessary'
-      )
+      warnings.push({
+        level: WARNING_LEVEL_NOTE,
+        text: [
+          `Cost parameters for Data Warehouses on ${driveName}`,
+          'are left at defaults to avoid catastrophic index scan',
+          'selections. Monitor query planner behavior and adjust',
+          'random_page_cost if necessary'
+        ]
+      })
     }
 
-    return warnings.length > 0 ? ['WARNING', ...warnings] : []
+    return warnings
   }
 )
 

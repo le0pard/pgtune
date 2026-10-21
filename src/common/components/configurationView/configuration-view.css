@@ -64,3 +64,101 @@
 .configuration-view-copy-button:active {
   transform: scale(0.98);
 }
+
+.configuration-view-warnings {
+  display: flex;
+  flex-flow: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+}
+
+.configuration-view-warning {
+  background-color: var(--bgColor);
+  border: 1px solid var(--commentColor);
+  border-left: 4px solid var(--commentColor);
+  padding: 0.4rem 0.6rem;
+}
+
+.configuration-view-warning--startup {
+  border-left-color: #dc322f;
+}
+
+.configuration-view-warning--memory {
+  border-left-color: #cb4b16;
+}
+
+.configuration-view-warning--note {
+  border-left-color: #268bd2;
+}
+
+.configuration-view-warning__title {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.configuration-view-warning--startup .configuration-view-warning__title {
+  color: #dc322f;
+}
+
+.configuration-view-warning--memory .configuration-view-warning__title {
+  color: #cb4b16;
+}
+
+.configuration-view-warning--note .configuration-view-warning__title {
+  color: #268bd2;
+}
+
+.configuration-view-warning__item + .configuration-view-warning__item {
+  margin-top: 0.4rem;
+}
+
+.configuration-view-warning__code {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--emphColor);
+  overflow-wrap: anywhere;
+}
+
+.configuration-view-code {
+  position: relative;
+}
+
+.configuration-view-copy-top-button {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  background-color: var(--headsColor);
+  border: 1px solid var(--commentColor);
+  color: var(--baseColor);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+}
+
+.configuration-view-copy-top-button:hover {
+  background-color: var(--buttonHover);
+}
+
+.configuration-view-setting {
+  color: inherit;
+  text-decoration: none;
+}
+
+.configuration-view-setting:hover {
+  color: inherit;
+  text-decoration: underline dotted;
+}
+
+.configuration-view-include-warnings {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.configuration-view-footnotes {
+  margin: 0.8rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.7rem;
+}

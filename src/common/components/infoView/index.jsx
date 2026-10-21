@@ -3,8 +3,8 @@ import './info-view.css'
 const InfoView = () => (
   <div>
     <p>
-      You need provide basic information about your hardware configuration, where is working
-      PostgreSQL database. Results will be calculated after clicking &quot;Generate&quot; button
+      Provide basic information about the hardware, where PostgreSQL database is running. The
+      configuration is generated as soon as required fields are filled in
     </p>
     <p className="info-view-db-type__description">
       More information about &quot;DB Type&quot; setting:
