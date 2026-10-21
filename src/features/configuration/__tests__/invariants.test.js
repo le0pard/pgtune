@@ -264,7 +264,8 @@ const checkConfiguration = (configuration) => {
 }
 
 describe('configuration invariants', () => {
-  it('generates valid and safe settings for all input combinations', () => {
+  // checks hundreds of thousands of combinations, which takes more than default 5s on CI runners
+  it('generates valid and safe settings for all input combinations', { timeout: 60_000 }, () => {
     const failures = []
     let count = 0
 
