@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import vituum from 'vituum'
 import liquid from '@vituum/vite-plugin-liquid'
-import react from '@vitejs/plugin-react'
+import preact from '@preact/preset-vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,7 +21,8 @@ export default defineConfig({
     liquid({
       root: './src'
     }),
-    react(),
+    // react aliases are defined in resolve.alias
+    preact({ reactAliasesEnabled: false }),
     VitePWA({
       injectRegister: null,
       strategies: 'injectManifest',
@@ -81,13 +82,18 @@ export default defineConfig({
     }
   },
   resolve: {
-    alias: {
-      '@root': resolve(import.meta.dirname, 'src'),
-      '@app': resolve(import.meta.dirname, 'src/app'),
-      '@css': resolve(import.meta.dirname, 'src/css'),
-      '@common': resolve(import.meta.dirname, 'src/common'),
-      '@features': resolve(import.meta.dirname, 'src/features'),
-      '@hooks': resolve(import.meta.dirname, 'src/hooks')
-    }
+    alias: [
+      { find: '@root', replacement: resolve(import.meta.dirname, 'src') },
+      { find: '@app', replacement: resolve(import.meta.dirname, 'src/app') },
+      { find: '@css', replacement: resolve(import.meta.dirname, 'src/css') },
+      { find: '@common', replacement: resolve(import.meta.dirname, 'src/common') },
+      { find: '@features', replacement: resolve(import.meta.dirname, 'src/features') },
+      { find: '@hooks', replacement: resolve(import.meta.dirname, 'src/hooks') },
+      // app and react libraries (react-router, react-redux, formik) use Preact
+      { find: /^react$/, replacement: resolve(import.meta.dirname, 'src/reactCompat.js') },
+      { find: /^react\/jsx-runtime$/, replacement: 'preact/jsx-runtime' },
+      { find: /^react-dom$/, replacement: 'preact/compat' },
+      { find: /^react-dom\/(.*)$/, replacement: 'preact/compat/$1' }
+    ]
   }
 })

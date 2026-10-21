@@ -1,25 +1,21 @@
-import { useEffect, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
+import { useCallback, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router'
 import classnames from 'classnames'
 import { Formik, Field, Form, useFormikContext } from 'formik'
 import FormField from '@common/components/form/field'
 import FormDropdown from '@common/components/form/dropdown'
 import TotalMemoryInput from './totalMemoryInput'
-import { submitConfiguration } from '@app/actions/configurator'
-import {
-  normalizeConfiguration,
-  selectMaxConnections
-} from '@features/configuration/configurationSlice'
+import { selectMaxConnections } from '@features/configuration/configurationSelectors'
+import { normalizeConfiguration } from '@features/configuration/configurationParams'
+import { useConfiguration } from '@features/configuration/useConfiguration'
 import {
   OS_TYPE_LABELS,
   DB_TYPE_LABELS,
   HARD_DRIVE_LABELS,
   DB_SIZE_LABELS
 } from '@features/configuration/labels'
-import { validationSchema } from './validation'
+import { validationSchema } from '@features/configuration/validation'
 import {
-  DEFAULT_DB_VERSION,
   DB_VERSIONS,
   OS_LINUX,
   OS_MAC,
@@ -35,25 +31,10 @@ import {
   HARD_DRIVE_NVME,
   DB_SIZE_LESS_RAM,
   DB_SIZE_MID_RAM,
-  DB_SIZE_GREATER_RAM,
-  SIZE_UNIT_GB
+  DB_SIZE_GREATER_RAM
 } from '@features/configuration/constants'
 
 import './configuration-form.css'
-
-const FORM_DEFAULTS = {
-  dbVersion: DEFAULT_DB_VERSION,
-  osType: OS_LINUX,
-  dbType: DB_TYPE_WEB,
-  cpuNum: '',
-  totalMemory: '',
-  totalMemoryUnit: SIZE_UNIT_GB,
-  connectionNum: '',
-  hdType: HARD_DRIVE_SSD,
-  dbSize: DB_SIZE_MID_RAM
-}
-
-const FORM_FIELDS = Object.keys(FORM_DEFAULTS)
 
 // delay before configuration is generated again after form changes
 const AUTO_GENERATE_DELAY = 400
@@ -100,17 +81,29 @@ const connectionsPlaceholder = (values) => {
 }
 
 /**
- * @typedef {object} AutoGenerateProps
+ * @typedef {object} UrlSyncProps
  * @property {URLSearchParams} searchParams current url params
- * @property {import('react-router').SetURLSearchParams} setSearchParams
+ * @property {object} formParams form values from current url params
+ * @property {{ current: string }} writtenParams params, which form wrote to url last time
+ * @property {(params: URLSearchParams, options?: { replace?: boolean }) => void} writeParams
  */
 
 /**
- * Generates configuration again, when form values are changed and valid
- * @param {AutoGenerateProps} props
+ * Keeps form and url in sync: valid form values are written to url (configuration is
+ * generated again), url changed outside of the form (browser back or forward, links)
+ * is shown in the form
+ * @param {UrlSyncProps} props
  */
-const AutoGenerate = ({ searchParams, setSearchParams }) => {
-  const { values } = useFormikContext()
+const UrlSync = ({ searchParams, formParams, writtenParams, writeParams }) => {
+  const { values, setValues } = useFormikContext()
+
+  // url was changed outside of the form, so form shows its values
+  useEffect(() => {
+    if (searchParams.toString() !== writtenParams.current) {
+      writtenParams.current = searchParams.toString()
+      setValues(formParams)
+    }
+  }, [searchParams, formParams, writtenParams, setValues])
 
   useEffect(() => {
     if (!validationSchema.isValidSync(values)) {
@@ -121,56 +114,32 @@ const AutoGenerate = ({ searchParams, setSearchParams }) => {
       return
     }
     // replace, so typing does not create browser history entries
-    const timer = setTimeout(() => setSearchParams(params, { replace: true }), AUTO_GENERATE_DELAY)
+    const timer = setTimeout(() => writeParams(params, { replace: true }), AUTO_GENERATE_DELAY)
     return () => clearTimeout(timer)
-  }, [values, searchParams, setSearchParams])
+  }, [values, searchParams, writeParams])
 
   return null
 }
 
-const filterFormParams = (params = {}) => {
-  const paramKeys = Object.keys(params)
-  return FORM_FIELDS.reduce((arr, key) => {
-    if (paramKeys.includes(key)) {
-      arr[key] = params[key]
-    }
-    return arr
-  }, {})
-}
-
 const ConfigurationForm = () => {
-  const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
+  // form values from url params
+  const { values: formParams } = useConfiguration()
+  // to recognize url changes made by the form itself
+  const writtenParams = useRef(searchParams.toString())
+
+  const writeParams = useCallback(
+    (params, options) => {
+      writtenParams.current = params.toString()
+      setSearchParams(params, options)
+    },
+    [setSearchParams]
+  )
 
   const handleGenerateConfig = (values, { setSubmitting }) => {
-    setSearchParams(new URLSearchParams(values))
+    writeParams(new URLSearchParams(values))
     setSubmitting(false)
   }
-
-  const urlParams = useMemo(() => {
-    return filterFormParams(Object.fromEntries(searchParams.entries()))
-  }, [searchParams])
-
-  const formParams = useMemo(() => {
-    if (Object.keys(urlParams).length === 0) {
-      return FORM_DEFAULTS
-    }
-
-    let vParams = urlParams
-
-    try {
-      validationSchema.validateSync(vParams)
-    } catch (e) {
-      console.warn('Url params error', e)
-      vParams = {} // back to default
-    }
-
-    return Object.assign({}, FORM_DEFAULTS, vParams)
-  }, [urlParams])
-
-  useEffect(() => {
-    dispatch(submitConfiguration(formParams))
-  }, [dispatch, formParams])
 
   return (
     <Formik
@@ -180,7 +149,12 @@ const ConfigurationForm = () => {
     >
       {({ isSubmitting, values }) => (
         <Form>
-          <AutoGenerate searchParams={searchParams} setSearchParams={setSearchParams} />
+          <UrlSync
+            searchParams={searchParams}
+            formParams={formParams}
+            writtenParams={writtenParams}
+            writeParams={writeParams}
+          />
           <Field
             name="dbVersion"
             component={FormDropdown}

@@ -1,6 +1,4 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectIsConfigured, resetConfiguration } from '@features/configuration/configurationSlice'
+import { useConfiguration } from '@features/configuration/useConfiguration'
 import InfoView from '@common/components/infoView'
 import ConfigurationForm from '@common/components/configurationForm'
 import ConfigurationView from '@common/components/configurationView'
@@ -8,12 +6,7 @@ import ConfigurationView from '@common/components/configurationView'
 import './configurator.css'
 
 const Configurator = () => {
-  const dispatch = useDispatch()
-  const isConfigured = useSelector(selectIsConfigured)
-
-  useEffect(() => {
-    return () => dispatch(resetConfiguration())
-  }, [dispatch])
+  const { isConfigured } = useConfiguration()
 
   return (
     <div className="configurator">

@@ -1,11 +1,11 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 import { listenerMiddleware } from '@app/listenerMiddleware'
-import { submitConfiguration } from '@app/actions/configurator'
 import { LocalStorage } from '@common/utils/localStorage'
 
 import { APP_THEMES_LIGHT, APP_THEMES_DARK, TAB_CONFIG } from './constants'
 
-const initialState = {
+// exported to fill preloaded state, which replaces initial state of the slice
+export const initialState = {
   tabState: TAB_CONFIG,
   theme: APP_THEMES_LIGHT,
   includeWarnings: true
@@ -24,11 +24,6 @@ const settingsSlice = createSlice({
     toggleIncludeWarnings: (state) => {
       state.includeWarnings = state.includeWarnings === false
     }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(submitConfiguration, (state) => {
-      state.tabState = TAB_CONFIG
-    })
   }
 })
 

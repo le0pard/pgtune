@@ -1,5 +1,4 @@
 import {
-  selectIsConfigured,
   selectMaxConnections,
   selectSharedBuffers,
   selectEffectiveCacheSize,
@@ -20,28 +19,8 @@ import {
   selectIoWorkers,
   selectIoMethod,
   selectRestartRequiredSettings,
-  selectWarningInfoMessages,
-  normalizeConfiguration
-} from '../configurationSlice'
-
-describe('selectIsConfigured', () => {
-  it('nothing set', () => {
-    expect(
-      selectIsConfigured({
-        configuration: {}
-      })
-    ).toEqual(false)
-  })
-  it('set totalMemory', () => {
-    expect(
-      selectIsConfigured({
-        configuration: {
-          totalMemory: 100
-        }
-      })
-    ).toEqual(true)
-  })
-})
+  selectWarningInfoMessages
+} from '../configurationSelectors'
 
 describe('selectMaxConnections', () => {
   it('web app', () => {
@@ -1200,33 +1179,5 @@ describe('selectWarningInfoMessages', () => {
         ]
       }
     ])
-  })
-})
-
-describe('normalizeConfiguration', () => {
-  it('converts form values to configuration state', () => {
-    expect(
-      normalizeConfiguration({
-        dbVersion: '18',
-        osType: 'linux',
-        dbType: 'web',
-        totalMemory: '16',
-        totalMemoryUnit: 'GB',
-        cpuNum: '',
-        connectionNum: '300',
-        hdType: 'ssd',
-        dbSize: 'mid_ram'
-      })
-    ).toEqual({
-      dbVersion: 18,
-      osType: 'linux',
-      dbType: 'web',
-      totalMemory: 16,
-      totalMemoryUnit: 'GB',
-      cpuNum: null,
-      connectionNum: 300,
-      hdType: 'ssd',
-      dbSize: 'mid_ram'
-    })
   })
 })

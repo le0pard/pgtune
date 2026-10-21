@@ -20,6 +20,19 @@ test.describe('configuration', () => {
     expect(await page.evaluate(() => window.history.length)).toEqual(historyLength)
   })
 
+  test('is restored by browser back, as url is its only source', async ({ page }) => {
+    await page.goto(CONFIGURATION_URL)
+    await page.getByRole('button', { name: 'Generate' }).click()
+    await page.locator('#TotalMemoryId').fill('64')
+    await page.getByRole('button', { name: 'Generate' }).click()
+    await expect(generatedConfiguration(page)).toContainText('shared_buffers = 16GB')
+
+    await page.goBack()
+
+    await expect(page.locator('#TotalMemoryId')).toHaveValue('21')
+    await expect(generatedConfiguration(page)).toContainText('shared_buffers = 5376MB')
+  })
+
   test('keeps last valid configuration, while input is invalid', async ({ page }) => {
     await page.goto(CONFIGURATION_URL)
     const connections = page.getByLabel('Number of Connections')
@@ -34,8 +47,13 @@ test.describe('configuration', () => {
 
   test('switches format with keyboard', async ({ page }) => {
     await page.goto(CONFIGURATION_URL)
+    const configTab = page.getByRole('tab', { name: 'postgresql.conf' })
 
-    await page.getByRole('tab', { name: 'postgresql.conf' }).focus()
+    // first tab is selected and reachable by keyboard
+    await expect(configTab).toHaveAttribute('aria-selected', 'true')
+    await expect(configTab).toHaveAttribute('tabindex', '0')
+
+    await configTab.focus()
     await page.keyboard.press('ArrowRight')
 
     await expect(page.getByRole('tab', { name: 'ALTER SYSTEM' })).toHaveAttribute(
@@ -147,6 +165,25 @@ test.describe('help text', () => {
     await expect(page.getByLabel('Number of CPUs')).toHaveAccessibleDescription(
       /Number of CPUs, which PostgreSQL can use/
     )
+  })
+})
+
+test.describe('theme', () => {
+  test('switches and is remembered after reload', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'light' })
+    await page.goto('/')
+    const html = page.locator('html')
+    const toggle = page.locator('#theme-toggle')
+
+    await page.locator('.toggle-wrapper').click()
+
+    await expect(html).toHaveClass('dark')
+    await expect(toggle).toBeChecked()
+
+    await page.reload()
+
+    await expect(html).toHaveClass('dark')
+    await expect(toggle).toBeChecked()
   })
 })
 

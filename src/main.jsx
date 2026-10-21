@@ -8,6 +8,7 @@ import { initServiceWorker } from '@features/sw/swWindow'
 import { LocalStorage } from '@common/utils/localStorage'
 import { onDomReady } from '@common/utils/onDomReady'
 import { APP_THEMES_LIGHT, APP_THEMES_DARK } from '@features/settings/constants'
+import { initialState as settingsInitialState } from '@features/settings/settingsSlice'
 import App from './App.jsx'
 
 const preloadedState = () => {
@@ -25,6 +26,7 @@ const preloadedState = () => {
 
   return {
     settings: {
+      ...settingsInitialState,
       theme: theme || APP_THEMES_LIGHT,
       includeWarnings: LocalStorage.getItem('includeWarnings') !== false
     }

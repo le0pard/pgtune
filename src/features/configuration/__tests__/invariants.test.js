@@ -19,7 +19,7 @@ import {
   selectIoWorkers,
   selectWalLevel,
   selectWarningInfoMessages
-} from '../configurationSlice'
+} from '../configurationSelectors'
 import {
   DB_VERSIONS,
   OS_LINUX,

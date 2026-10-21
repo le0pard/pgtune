@@ -1,7 +1,6 @@
 import { configureStore, createDynamicMiddleware } from '@reduxjs/toolkit'
 
 import { listenerMiddleware } from './listenerMiddleware'
-import configurationReducer from '@features/configuration/configurationSlice'
 import settingsReducer from '@features/settings/settingsSlice'
 import swReducer from '@features/sw/swSlice'
 
@@ -13,7 +12,6 @@ export const configureAppStore = (preloadedState = {}) => {
   const store = configureStore({
     preloadedState,
     reducer: {
-      configuration: configurationReducer,
       settings: settingsReducer,
       sw: swReducer
     },

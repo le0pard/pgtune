@@ -9,13 +9,13 @@ import {
   linesText,
   configurationText
 } from '../configurationText'
+import { normalizeConfiguration } from '../configurationParams'
 import {
-  normalizeConfiguration,
   selectHardwareConfiguration,
   selectSettings,
   selectWarningInfoMessages,
   selectRestartRequiredSettings
-} from '../configurationSlice'
+} from '../configurationSelectors'
 
 const HARDWARE = {
   dbVersion: 18,

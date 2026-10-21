@@ -1,7 +1,5 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit'
-import { submitConfiguration } from '@app/actions/configurator'
+import { createSelector } from '@reduxjs/toolkit'
 import {
-  DEFAULT_DB_VERSION,
   OS_LINUX,
   OS_WINDOWS,
   OS_MAC,
@@ -10,13 +8,11 @@ import {
   DB_TYPE_DW,
   DB_TYPE_DESKTOP,
   DB_TYPE_MIXED,
-  SIZE_UNIT_GB,
   HARD_DRIVE_SSD,
   HARD_DRIVE_HDD,
   HARD_DRIVE_SAN,
   HARD_DRIVE_NVME,
   DB_SIZE_LESS_RAM,
-  DB_SIZE_MID_RAM,
   DB_SIZE_GREATER_RAM,
   WARNING_LEVEL_STARTUP,
   WARNING_LEVEL_MEMORY,
@@ -62,51 +58,8 @@ const roundDownToMb = (valueKb) =>
   Math.floor(valueKb / (SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])) *
   (SIZE_UNIT_MAP['MB'] / SIZE_UNIT_MAP['KB'])
 
-// redux
-
-const initialState = {
-  dbVersion: DEFAULT_DB_VERSION,
-  osType: OS_LINUX,
-  dbType: DB_TYPE_WEB,
-  totalMemory: null,
-  totalMemoryUnit: SIZE_UNIT_GB,
-  cpuNum: null,
-  connectionNum: null,
-  hdType: HARD_DRIVE_SSD,
-  dbSize: DB_SIZE_MID_RAM
-}
-
-const configurationSlice = createSlice({
-  name: 'configuration',
-  initialState,
-  reducers: {
-    resetConfiguration: () => {
-      return {
-        ...initialState
-      }
-    }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(submitConfiguration, (_state, { payload }) => normalizeConfiguration(payload))
-  }
-})
-
-export const { resetConfiguration } = configurationSlice.actions
-
-// converts form values (strings) to configuration state
-export const normalizeConfiguration = (values) => ({
-  dbVersion: parseFloat(values.dbVersion),
-  osType: values.osType,
-  dbType: values.dbType,
-  totalMemory: parseInt(values.totalMemory, 10),
-  totalMemoryUnit: values.totalMemoryUnit,
-  cpuNum: values.cpuNum ? parseInt(values.cpuNum, 10) : null,
-  connectionNum: values.connectionNum ? parseInt(values.connectionNum, 10) : null,
-  hdType: values.hdType,
-  dbSize: values.dbSize
-})
-
-// selectors
+// selectors take { configuration } object, configuration is parsed from url params
+// (see configurationParams.js)
 
 const selectConfiguration = (state) => state.configuration
 
@@ -133,11 +86,6 @@ const selectTotalMemoryInKb = createSelector(
 const selectDbDefaultValues = createSelector(
   [selectDBVersion],
   (dbVersion) => DEFAULT_DB_SETTINGS[dbVersion] || DEFAULT_DB_SETTINGS.default
-)
-
-export const selectIsConfigured = createSelector(
-  [selectTotalMemory],
-  (totalMemory) => !!totalMemory
 )
 
 export const selectRestartRequiredSettings = createSelector([selectDBVersion], (dbVersion) =>
@@ -819,6 +767,3 @@ export const selectSettings = createSelector(
       ...walLevel
     ].filter((setting) => setting.value !== null && setting.value !== undefined)
 )
-
-// Export the slice reducer as the default export
-export default configurationSlice.reducer

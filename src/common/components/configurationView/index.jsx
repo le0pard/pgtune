@@ -10,7 +10,8 @@ import {
   selectSettings,
   selectWarningInfoMessages,
   selectRestartRequiredSettings
-} from '@features/configuration/configurationSlice'
+} from '@features/configuration/configurationSelectors'
+import { useConfiguration } from '@features/configuration/useConfiguration'
 import {
   configurationText,
   groupWarnings,
@@ -72,13 +73,16 @@ const renderLines = (lines, dbVersion) =>
 const ConfigurationView = () => {
   const dispatch = useDispatch()
 
-  const dbVersion = useSelector(selectDBVersion)
+  // configuration from url params, selectors are memoized by its values
+  const { configuration } = useConfiguration()
+  const configurationState = { configuration }
+  const dbVersion = selectDBVersion(configurationState)
   // provided parameters and generated settings
-  const hardware = useSelector(selectHardwareConfiguration)
-  const settings = useSelector(selectSettings)
-  const restartRequiredSettings = useSelector(selectRestartRequiredSettings)
+  const hardware = selectHardwareConfiguration(configurationState)
+  const settings = selectSettings(configurationState)
+  const restartRequiredSettings = selectRestartRequiredSettings(configurationState)
   // warnings
-  const warningInfoMessagesVal = useSelector(selectWarningInfoMessages)
+  const warningInfoMessagesVal = selectWarningInfoMessages(configurationState)
   // tab state
   const tabState = useSelector(selectTabSettings)
   // include warnings in copied configuration

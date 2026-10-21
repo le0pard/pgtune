@@ -21,7 +21,7 @@ import {
   DB_SIZE_LESS_RAM,
   DB_SIZE_MID_RAM,
   DB_SIZE_GREATER_RAM
-} from '@features/configuration/constants'
+} from './constants'
 
 const MIN_MB_MEMORY = 512
 
