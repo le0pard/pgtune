@@ -11,7 +11,7 @@ const Configurator = () => {
   return (
     <div className="configurator">
       <div className="configurator-form-wrapper">
-        <h4 className="configurator-form-subtitle">Parameters of your system</h4>
+        <h2 className="configurator-form-subtitle">Parameters of your system</h2>
         <ConfigurationForm />
       </div>
       <div className="configurator-result-wrapper">

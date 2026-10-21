@@ -5,7 +5,7 @@
 .configuration-form-btn {
   background-color: var(--headsColor);
   border: 1px solid var(--commentColor);
-  color: var(--baseColor);
+  color: var(--emphColor);
   display: flex;
   flex: 1;
   height: 2.6rem;

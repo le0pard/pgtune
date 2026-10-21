@@ -2,9 +2,20 @@
   padding: 0.5rem;
 }
 
+/* logo is the page heading, it keeps layout of the image without heading styles */
+.about-page-title {
+  margin: 0;
+  font-size: inherit;
+}
+
 .about-page-logo {
   width: 100%;
   aspect-ratio: 2/1;
+}
+
+.about-page h2 {
+  font-size: 1.8rem;
+  margin: 1em 0;
 }
 
 .about-page-list li {

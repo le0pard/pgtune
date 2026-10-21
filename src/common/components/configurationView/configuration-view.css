@@ -12,7 +12,7 @@
   margin-top: 1rem;
   border: 0;
   background: transparent;
-  color: var(--baseColor);
+  color: var(--emphColor);
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
@@ -39,7 +39,7 @@
 .configuration-view-copy-button {
   background-color: var(--headsColor);
   border: 1px solid var(--commentColor);
-  color: var(--baseColor);
+  color: var(--emphColor);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -139,7 +139,7 @@
   right: 0.4rem;
   background-color: var(--headsColor);
   border: 1px solid var(--commentColor);
-  color: var(--baseColor);
+  color: var(--emphColor);
   font-size: 0.7rem;
   padding: 0.2rem 0.6rem;
   cursor: pointer;

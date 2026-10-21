@@ -18,6 +18,7 @@
 
 .configurator-form-subtitle {
   color: var(--accentColor);
+  font-size: 1.4rem;
   text-align: center;
   margin: 0.2rem 0;
 }

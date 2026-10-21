@@ -1,10 +1,15 @@
 @import 'normalize.css';
 
+/*
+ * Solarized colors. Text colors keep Solarized hues, with shades adjusted per theme
+ * for WCAG AA contrast (4.5:1 for text, 3:1 for large text and UI). Base text passes
+ * on page background (bgColor), emphasized text also on panels (headsColor)
+ */
 :root {
-  --baseColor: #657b83;
+  --baseColor: #5e737a;
   --bgColor: #fdf6e3;
   --headsColor: #eee8d5;
-  --emphColor: #586e75;
+  --emphColor: #556a71;
   --commentColor: #93a1a1;
   --inputBg: #fefcf6;
   --inputBgDisabled: #93a1a1;
@@ -12,15 +17,15 @@
   --inputBorder: #93a1a1;
   --inputColorPlaceholder: #839496;
   --buttonHover: #fdfcf9;
-  /* accent colors, same for light and dark themes */
-  --accentColor: #b58900;
-  --accentHoverColor: #cb4b16;
+  /* accent colors: Solarized yellow, orange, green, red and blue, darker on light background */
+  --accentColor: #826200;
+  --accentHoverColor: #b24213;
   --accentShadowColor: rgba(181, 137, 0, 0.15);
   --accentStrongShadowColor: rgba(181, 137, 0, 0.35);
-  --onAccentColor: #002b36;
-  --headingColor: #859900;
-  --dangerColor: #dc322f;
-  --infoColor: #268bd2;
+  --onAccentColor: #fdf6e3;
+  --headingColor: #819400;
+  --dangerColor: #d72724;
+  --infoColor: #2074af;
   /* generated configuration: Solarized hues, darker for 4.5:1 contrast on light background */
   --codeCommentColor: #586e75;
   --codeKeywordColor: #677400;
@@ -40,6 +45,13 @@
   --inputBorder: #586e75;
   --inputColorPlaceholder: #839496;
   --buttonHover: #021014;
+  /* accent colors: lighter on dark background (green is Solarized as is) */
+  --accentColor: #c29300;
+  --accentHoverColor: #ec7b4c;
+  --onAccentColor: #002b36;
+  --headingColor: #859900;
+  --dangerColor: #e56866;
+  --infoColor: #3295da;
   /* generated configuration: Solarized colors, comments lighter for 4.5:1 contrast */
   --codeCommentColor: #839496;
   --codeKeywordColor: #859900;

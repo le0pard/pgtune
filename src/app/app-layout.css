@@ -33,6 +33,7 @@
 
 .app__navigation__item--active {
   background-color: var(--headsColor);
+  color: var(--emphColor);
 }
 
 .app__navigation__big-item {
