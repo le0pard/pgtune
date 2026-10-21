@@ -1048,6 +1048,32 @@ describe('selectWarningInfoMessages', () => {
     ])
   })
 
+  it('names parallel workers in work_mem warning, when number of CPUs raised them', () => {
+    expect(
+      selectWarningInfoMessages({
+        configuration: {
+          totalMemory: 12,
+          totalMemoryUnit: 'GB',
+          dbVersion: 14,
+          osType: 'linux',
+          dbType: 'mixed',
+          cpuNum: 2221 // 1024 parallel workers (PostgreSQL limit)
+        }
+      }).filter((warning) => warning.level === 'memory')
+    ).toEqual([
+      {
+        level: 'memory',
+        text: [
+          'max_connections = 100 and max_parallel_workers = 1024',
+          '(from number of CPUs) are too high for this amount of RAM:',
+          'work_mem is raised to the 4MB minimum, so under load',
+          'PostgreSQL can run out of memory. Lower max_parallel_workers,',
+          'max_connections or use a connection pooler (e.g. PgBouncer)'
+        ]
+      }
+    ])
+  })
+
   it('returns huge pages warning with calculation command on PostgreSQL 15+', () => {
     expect(
       selectWarningInfoMessages({

@@ -580,6 +580,8 @@ export const selectWarningInfoMessages = createSelector(
     selectHDType,
     selectDBSize,
     selectMaxConnections,
+    selectParallelWorkersForWorkMem,
+    selectDbDefaultValues,
     selectWorkMemBudget,
     selectIsHugePagesRecommended,
     selectWalLevel,
@@ -594,6 +596,8 @@ export const selectWarningInfoMessages = createSelector(
     hdType,
     dbSize,
     maxConnections,
+    parallelWorkers,
+    dbDefaultValues,
     workMemBudget,
     isHugePagesRecommended,
     walLevel,
@@ -617,14 +621,25 @@ export const selectWarningInfoMessages = createSelector(
     }
 
     if (workMemBudget < MIN_WORK_MEM) {
+      // work_mem budget is shared by connections and parallel workers (see selectWorkMemBudget),
+      // so parallel workers are named too, when number of CPUs raised them above default
       warnings.push({
         level: WARNING_LEVEL_MEMORY,
-        text: [
-          `max_connections = ${maxConnections} is too high for this amount of RAM:`,
-          'work_mem is raised to the 4MB minimum, so under load',
-          'PostgreSQL can run out of memory. Lower max_connections',
-          'or use a connection pooler (e.g. PgBouncer)'
-        ]
+        text:
+          parallelWorkers > dbDefaultValues['max_parallel_workers']
+            ? [
+                `max_connections = ${maxConnections} and max_parallel_workers = ${parallelWorkers}`,
+                '(from number of CPUs) are too high for this amount of RAM:',
+                'work_mem is raised to the 4MB minimum, so under load',
+                'PostgreSQL can run out of memory. Lower max_parallel_workers,',
+                'max_connections or use a connection pooler (e.g. PgBouncer)'
+              ]
+            : [
+                `max_connections = ${maxConnections} is too high for this amount of RAM:`,
+                'work_mem is raised to the 4MB minimum, so under load',
+                'PostgreSQL can run out of memory. Lower max_connections',
+                'or use a connection pooler (e.g. PgBouncer)'
+              ]
       })
     }
 
