@@ -28,7 +28,7 @@
     "normalize.css": "^8.0.1",
     "oxfmt": "^0.73.0",
     "oxlint": "^1.88.0",
-    "postcss": "^8.5.30",
+    "postcss": "^8.5.31",
     "postcss-import": "^17.0.1",
     "postcss-load-config": "^6.0.1",
     "postcss-preset-env": "^11.6.1",
