@@ -163,7 +163,9 @@ test.describe('help text', () => {
 
     await expect(button).toHaveAttribute('aria-expanded', 'true')
     await expect(helpText).toBeVisible()
-    await expect(helpText).toContainText('Data warehouse: bulk loads, large reporting queries')
+    await expect(helpText).toContainText(
+      'Data warehouse: few long analytical queries over large amounts of data, bulk data loads'
+    )
 
     await page.keyboard.press('Escape')
 

@@ -44,3 +44,28 @@ export const DB_SIZE_LABELS = {
   [DB_SIZE_MID_RAM]: '1x - 3x RAM',
   [DB_SIZE_GREATER_RAM]: 'More than 3x RAM'
 }
+
+// DB types are described by workload only, database size is a separate parameter.
+// Summary starts with lowercase, as it follows type name in help text
+export const DB_TYPE_DESCRIPTIONS = {
+  [DB_TYPE_WEB]: {
+    summary: 'many short, simple queries, mostly reads',
+    examples: 'websites, APIs, SaaS backends'
+  },
+  [DB_TYPE_OLTP]: {
+    summary: 'many concurrent short transactions with frequent writes',
+    examples: 'payments, orders, bookings, inventory'
+  },
+  [DB_TYPE_DW]: {
+    summary: 'few long analytical queries over large amounts of data, bulk data loads',
+    examples: 'reporting, analytics, business intelligence'
+  },
+  [DB_TYPE_DESKTOP]: {
+    summary: 'PostgreSQL shares the computer with other programs and uses little memory',
+    examples: 'developer workstation, local or test database, desktop application'
+  },
+  [DB_TYPE_MIXED]: {
+    summary: 'both short transactions and heavy analytical queries',
+    examples: 'application, which also runs reports on the same database'
+  }
+}

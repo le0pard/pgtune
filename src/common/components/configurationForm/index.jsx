@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { Fragment, useCallback, useEffect, useRef } from 'react'
 import { useSearchParams } from '@hooks/useSearchParams'
 import classnames from 'classnames'
 import { Formik, Field, Form, useFormikContext } from 'formik'
@@ -11,6 +11,7 @@ import { useConfiguration } from '@features/configuration/useConfiguration'
 import {
   OS_TYPE_LABELS,
   DB_TYPE_LABELS,
+  DB_TYPE_DESCRIPTIONS,
   HARD_DRIVE_LABELS,
   DB_SIZE_LABELS
 } from '@features/configuration/labels'
@@ -172,17 +173,13 @@ const ConfigurationForm = () => {
             options={dbTypeOptions()}
             tooltip={
               <span>
-                For what type of application is PostgreSQL used:
-                <br />
-                Web: mostly simple queries, DB smaller than RAM
-                <br />
-                OLTP: many small writes, some complex reads
-                <br />
-                Data warehouse: bulk loads, large reporting queries
-                <br />
-                Desktop: not a dedicated database, e.g. workstation
-                <br />
-                Mixed: both data warehouse and OLTP queries
+                Choose the type closest to the main workload of the database:
+                {Object.entries(DB_TYPE_LABELS).map(([dbType, label]) => (
+                  <Fragment key={dbType}>
+                    <br />
+                    {label}: {DB_TYPE_DESCRIPTIONS[dbType].summary}
+                  </Fragment>
+                ))}
               </span>
             }
           />

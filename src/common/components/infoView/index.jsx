@@ -1,3 +1,5 @@
+import DbTypes from '@common/components/dbTypes'
+
 import './info-view.css'
 
 const InfoView = () => (
@@ -6,51 +8,12 @@ const InfoView = () => (
       Provide basic information about the hardware, where PostgreSQL database is running. The
       configuration is generated as soon as required fields are filled in
     </p>
-    <p className="info-view-db-type__description">
-      More information about &quot;DB Type&quot; setting:
+    <h4 className="info-view__title">Choosing &quot;DB Type&quot;</h4>
+    <p className="info-view__hint">
+      Choose the type closest to the main workload of the database. Database size is set separately
+      in &quot;Total Data Size&quot;
     </p>
-    <ul className="info-view-db-type__list">
-      <li>
-        <div className="info-view-db-type__header">Web Application (web)</div>
-        <ul>
-          <li>Typically CPU-bound</li>
-          <li>DB much smaller than RAM</li>
-          <li>90% or more simple queries</li>
-        </ul>
-      </li>
-      <li>
-        <div className="info-view-db-type__header">Online Transaction Processing (oltp)</div>
-        <ul>
-          <li>Typically CPU- or I/O-bound</li>
-          <li>DB slightly larger than RAM to 1TB</li>
-          <li>20-40% small data write queries</li>
-          <li>Some long transactions and complex read queries</li>
-        </ul>
-      </li>
-      <li>
-        <div className="info-view-db-type__header">Data Warehouse (dw)</div>
-        <ul>
-          <li>Typically I/O- or RAM-bound</li>
-          <li>Large bulk loads of data</li>
-          <li>Large complex reporting queries</li>
-          <li>Also called &quot;Decision Support&quot; or &quot;Business Intelligence&quot;</li>
-        </ul>
-      </li>
-      <li>
-        <div className="info-view-db-type__header">Desktop application</div>
-        <ul>
-          <li>Not a dedicated database</li>
-          <li>A general workstation, perhaps for a developer</li>
-        </ul>
-      </li>
-      <li>
-        <div className="info-view-db-type__header">Mixed type of application</div>
-        <ul>
-          <li>Mixed DW and OLTP characteristics</li>
-          <li>A wide mixture of queries</li>
-        </ul>
-      </li>
-    </ul>
+    <DbTypes />
   </div>
 )
 
