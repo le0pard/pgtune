@@ -209,6 +209,42 @@ test.describe('theme', () => {
     await expect(html).toHaveClass('dark')
     await expect(toggle).toBeChecked()
   })
+
+  test('follows system preference, until it is switched', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' })
+    await page.goto('/')
+
+    await expect(page.locator('html')).toHaveClass('dark')
+    await expect(page.locator('#theme-toggle')).toBeChecked()
+    // theme is not saved, so it changes with system preference
+    expect(await page.evaluate(() => window.localStorage.getItem('theme'))).toEqual(null)
+  })
+})
+
+test.describe('settings', () => {
+  test('include warnings choice is remembered after reload', async ({ page }) => {
+    await page.goto(CONFIGURATION_URL)
+    const includeWarnings = page.getByLabel('Include warnings as comments when copying')
+
+    await includeWarnings.uncheck()
+    await page.reload()
+
+    await expect(includeWarnings).not.toBeChecked()
+  })
+
+  test('selected tab is kept after navigation', async ({ page }) => {
+    await page.goto(CONFIGURATION_URL)
+    await page.getByRole('tab', { name: 'ALTER SYSTEM' }).click()
+
+    await page.getByRole('link', { name: 'How it works' }).click()
+    await expect(page.getByText('Before applying the configuration')).toBeVisible()
+    await page.goBack()
+
+    await expect(page.getByRole('tab', { name: 'ALTER SYSTEM' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    )
+  })
 })
 
 test.describe('mobile', () => {

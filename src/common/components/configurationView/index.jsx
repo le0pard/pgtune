@@ -1,6 +1,5 @@
-import { Fragment, useCallback, useRef } from 'react'
+import { Fragment, useRef } from 'react'
 import classnames from 'classnames'
-import { useDispatch, useSelector } from 'react-redux'
 import { settingDescription, settingDocsUrl } from './settingsDocs'
 import CopyButton from '@common/components/copyButton'
 import { TAB_CONFIG, TAB_ALTER_SYSTEM } from '@features/settings/constants'
@@ -17,12 +16,7 @@ import {
   groupWarnings,
   TOKEN_NAME
 } from '@features/configuration/configurationText'
-import {
-  openConfigTab,
-  toggleIncludeWarnings,
-  selectTabSettings,
-  selectIncludeWarningsSettings
-} from '@features/settings/settingsSlice'
+import { useSettings } from '@features/settings/settingsContext'
 
 import './configuration-view.css'
 
@@ -71,8 +65,6 @@ const renderLines = (lines, dbVersion) =>
   ))
 
 const ConfigurationView = () => {
-  const dispatch = useDispatch()
-
   // configuration from url params, selectors are memoized by its values
   const { configuration } = useConfiguration()
   const configurationState = { configuration }
@@ -83,17 +75,9 @@ const ConfigurationView = () => {
   const restartRequiredSettings = selectRestartRequiredSettings(configurationState)
   // warnings
   const warningInfoMessagesVal = selectWarningInfoMessages(configurationState)
-  // tab state
-  const tabState = useSelector(selectTabSettings)
-  // include warnings in copied configuration
-  const includeWarnings = useSelector(selectIncludeWarningsSettings)
-  // tab click state
-  const handleClickTab = useCallback((tab) => dispatch(openConfigTab(tab)), [dispatch])
+  // selected tab and include warnings in copied configuration
+  const { tabState, includeWarnings, openConfigTab, toggleIncludeWarnings } = useSettings()
   const tabRefs = useRef({})
-  const handleToggleIncludeWarnings = useCallback(
-    () => dispatch(toggleIncludeWarnings()),
-    [dispatch]
-  )
 
   const isAlterSystem = TAB_ALTER_SYSTEM === tabState
 
@@ -115,7 +99,7 @@ const ConfigurationView = () => {
 
     e.preventDefault()
     const nextTab = CONFIGURATION_TABS[nextIndex].id
-    handleClickTab(nextTab)
+    openConfigTab(nextTab)
     tabRefs.current[nextTab]?.focus()
   }
 
@@ -143,7 +127,7 @@ const ConfigurationView = () => {
               className={classnames('configuration-view-tab', {
                 'configuration-view-tab--active': isSelected
               })}
-              onClick={() => handleClickTab(tab.id)}
+              onClick={() => openConfigTab(tab.id)}
               onKeyDown={handleTabKeyDown}
             >
               {tab.label}
@@ -239,7 +223,7 @@ const ConfigurationView = () => {
               type="checkbox"
               className="configuration-view-include-warnings__input"
               checked={includeWarnings}
-              onChange={handleToggleIncludeWarnings}
+              onChange={toggleIncludeWarnings}
             />
             <span>Include warnings as comments when copying</span>
           </label>

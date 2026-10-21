@@ -1,4 +1,4 @@
-import { createSelector } from '@reduxjs/toolkit'
+import { createSelector } from 'reselect'
 import {
   OS_LINUX,
   OS_WINDOWS,

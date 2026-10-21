@@ -1,6 +1,5 @@
 import { useLayoutEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { toggleTheme, selectThemeSettings } from '@features/settings/settingsSlice'
+import { useSettings } from '@features/settings/settingsContext'
 import classnames from 'classnames'
 import { APP_THEMES_LIGHT, APP_THEMES_DARK } from '@features/settings/constants'
 
@@ -13,8 +12,7 @@ const THEME_COLORS = {
 }
 
 const ThemeSwitcher = () => {
-  const dispatch = useDispatch()
-  const theme = useSelector(selectThemeSettings)
+  const { theme, toggleTheme } = useSettings()
 
   // initial theme is applied by inline script in html, before first paint;
   // layout effect applies theme in the same frame, as the toggle changes
@@ -23,10 +21,6 @@ const ThemeSwitcher = () => {
     document.documentElement.classList.add(theme)
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLORS[theme])
   }, [theme])
-
-  const handleToggleTheme = () => {
-    dispatch(toggleTheme())
-  }
 
   const isDarkThemeActive = theme === APP_THEMES_DARK
 
@@ -70,7 +64,7 @@ const ThemeSwitcher = () => {
           name="theme-toggle"
           type="checkbox"
           checked={isDarkThemeActive}
-          onChange={handleToggleTheme}
+          onChange={toggleTheme}
         />
       </div>
     </label>

@@ -1,13 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { updating, selectIsNewVersionAvailableSw } from '@features/sw/swSlice'
+import { useServiceWorkerUpdate } from '@features/sw/useServiceWorkerUpdate'
 
 import './app-update.css'
 
 const AppUpdate = () => {
-  const dispatch = useDispatch()
-  const isNewVersionAvailable = useSelector(selectIsNewVersionAvailableSw)
-
-  const reloadPage = () => dispatch(updating())
+  const { isNewVersionAvailable, update } = useServiceWorkerUpdate()
 
   if (!isNewVersionAvailable) {
     return null
@@ -17,7 +13,7 @@ const AppUpdate = () => {
     <div className="app-update">
       <h4 className="app-update__title">New version of application is available.</h4>
       <div className="app-update__button-wrapper">
-        <button className="app-update__button" onClick={reloadPage}>
+        <button className="app-update__button" onClick={update}>
           Update application
         </button>
       </div>

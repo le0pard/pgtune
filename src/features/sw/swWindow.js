@@ -1,5 +1,4 @@
 import { Workbox, messageSW } from 'workbox-window'
-import { readyToUpdated } from './swSlice'
 
 let wb = null
 let wbRegistration = null
@@ -14,15 +13,17 @@ export const skipWaitingMessageAndReload = () => {
   }
 }
 
-export const initServiceWorker = (store) => {
+/**
+ * Registers service worker
+ * @param {() => void} onNewVersion called, when new version is installed and waiting to be activated
+ */
+export const initServiceWorker = (onNewVersion) => {
   // service worker is built only for production (check with "yarn build && yarn preview")
   if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     wb = new Workbox('/sw.js')
 
-    const showUpdatedInfo = () => store.dispatch(readyToUpdated())
-
-    wb.addEventListener('waiting', showUpdatedInfo)
-    wb.addEventListener('externalwaiting', showUpdatedInfo)
+    wb.addEventListener('waiting', onNewVersion)
+    wb.addEventListener('externalwaiting', onNewVersion)
 
     // Register the service worker after event listeners have been added.
     wb.register().then((r) => {

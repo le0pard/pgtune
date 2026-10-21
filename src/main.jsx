@@ -2,50 +2,17 @@ import '@css/app.css'
 
 import { StrictMode } from 'react'
 import { render } from 'preact'
-import { Provider } from 'react-redux'
-import { configureAppStore } from '@app/store'
-import { initServiceWorker } from '@features/sw/swWindow'
-import { LocalStorage } from '@common/utils/localStorage'
 import { onDomReady } from '@common/utils/onDomReady'
-import { APP_THEMES_LIGHT, APP_THEMES_DARK } from '@features/settings/constants'
-import { initialState as settingsInitialState } from '@features/settings/settingsSlice'
 import App from './App.jsx'
-
-const preloadedState = () => {
-  if (!window) {
-    return {}
-  }
-
-  let theme = LocalStorage.getItem('theme')
-
-  if (!theme) {
-    if (window.matchMedia('(prefers-color-scheme: dark)')?.matches) {
-      theme = APP_THEMES_DARK
-    }
-  }
-
-  return {
-    settings: {
-      ...settingsInitialState,
-      theme: theme || APP_THEMES_LIGHT,
-      includeWarnings: LocalStorage.getItem('includeWarnings') !== false
-    }
-  }
-}
 
 const start = () => {
   const rootElement = document.getElementById('root')
-  const store = configureAppStore(preloadedState())
-
-  initServiceWorker(store)
 
   // Preact render (not hydrate) reuses prerendered html and updates it to current state
   // (url params, theme, etc.). React compatible createRoot().render() would remove it first
   render(
     <StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <App />
     </StrictMode>,
     rootElement
   )

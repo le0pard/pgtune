@@ -1,6 +1,4 @@
 import { renderToString } from 'preact-render-to-string'
-import { Provider } from 'react-redux'
-import { configureAppStore } from '@app/store'
 import App from './App.jsx'
 
 // Renders page html at build time (see prerender plugin in vite.config.js).
@@ -10,11 +8,7 @@ export const render = (url) => {
   globalThis.location = new URL(url, 'http://localhost')
 
   try {
-    return renderToString(
-      <Provider store={configureAppStore()}>
-        <App />
-      </Provider>
-    )
+    return renderToString(<App />)
   } finally {
     globalThis.location = previousLocation
   }

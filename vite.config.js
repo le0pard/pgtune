@@ -88,7 +88,7 @@ export default defineConfig({
     liquid({
       root: './src'
     }),
-    // also aliases react and react-dom to preact/compat (for react-redux and formik)
+    // also aliases react and react-dom to preact/compat (for formik and react hooks imports)
     preact(),
     prerender(),
     VitePWA({
