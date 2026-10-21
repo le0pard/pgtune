@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useSearchParams } from 'react-router'
+import { useSearchParams } from '@hooks/useSearchParams'
 import { configurationFromParams } from './configurationParams'
 
 // configuration from url params, which are the only source of it

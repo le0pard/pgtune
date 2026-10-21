@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { useSearchParams } from 'react-router'
+import { useSearchParams } from '@hooks/useSearchParams'
 import classnames from 'classnames'
 import { Formik, Field, Form, useFormikContext } from 'formik'
 import FormField from '@common/components/form/field'

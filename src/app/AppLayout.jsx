@@ -2,14 +2,17 @@ import GithubCorner from '@common/components/githubCorner'
 import AppUpdate from '@common/components/appUpdate'
 import ThemeSwitcher from '@common/components/themeSwitcher'
 import classnames from 'classnames'
-import { matchPath } from 'react-router'
-import { Link, useLocation, Outlet } from 'react-router'
+import { useLocation } from 'preact-iso/router'
 
 import './app-layout.css'
 
-const AppLayout = () => {
+/**
+ * Page layout with navigation, links are handled by preact-iso LocationProvider
+ * @param {{ children: import('react').ReactNode }} props
+ */
+const AppLayout = ({ children }) => {
   const location = useLocation()
-  const isActive = (path) => matchPath(path, location.pathname)
+  const isActive = (path) => location.path === path
 
   return (
     <div className="app">
@@ -26,9 +29,9 @@ const AppLayout = () => {
                 Home
               </div>
             ) : (
-              <Link className="app__navigation__link" to="/">
+              <a className="app__navigation__link" href="/">
                 Home
-              </Link>
+              </a>
             )}
           </div>
           <div
@@ -41,9 +44,9 @@ const AppLayout = () => {
                 How it works
               </div>
             ) : (
-              <Link className="app__navigation__link" to="/about">
+              <a className="app__navigation__link" href="/about">
                 How it works
-              </Link>
+              </a>
             )}
           </div>
           <div className="app__navigation__item">
@@ -53,7 +56,7 @@ const AppLayout = () => {
 
         <AppUpdate />
 
-        <Outlet />
+        {children}
       </main>
     </div>
   )

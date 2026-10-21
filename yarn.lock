@@ -2672,13 +2672,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/route-pattern@npm:^0.22.1":
-  version: 0.22.1
-  resolution: "@remix-run/route-pattern@npm:0.22.1"
-  checksum: 10/fed750fab46bf5cc541c333bb248f9c56a59dd1e06a64f5496b2122d89a7eefd7f59d6cdc7939f132fc65f0b8027020777f29c9e54dbe28b0234994e582073bb
-  languageName: node
-  linkType: hard
-
 "@rolldown/binding-android-arm-eabi@npm:1.2.14":
   version: 1.2.14
   resolution: "@rolldown/binding-android-arm-eabi@npm:1.2.14"
@@ -3786,13 +3779,6 @@ __metadata:
   version: 2.0.0
   resolution: "convert-source-map@npm:2.0.0"
   checksum: 10/c987be3ec061348cdb3c2bfb924bec86dea1eacad10550a85ca23edb0fe3556c3a61c7399114f3331ccb3499d7fd0285ab24566e5745929412983494c3926e15
-  languageName: node
-  linkType: hard
-
-"cookie-es@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "cookie-es@npm:3.1.1"
-  checksum: 10/e40083c42d0e3a4b3caa271775858f8e6cdd31f24b9c445ff08d7a8f4dc01069fc82012bdf1602d5a03fa1d75aba51a3dd33cd8a5db639db2ed17bcfd650f4bc
   languageName: node
   linkType: hard
 
@@ -5967,8 +5953,8 @@ __metadata:
     postcss-load-config: "npm:^6.0.1"
     postcss-preset-env: "npm:^11.6.1"
     preact: "npm:^11.0.1"
+    preact-iso: "npm:^2.12.2"
     react-redux: "npm:^9.3.0"
-    react-router: "npm:^8.4.0"
     redux-logger: "npm:^3.0.6"
     terser: "npm:^5.51.2"
     vite: "npm:^8.3.4"
@@ -6505,6 +6491,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact-iso@npm:^2.12.2":
+  version: 2.12.2
+  resolution: "preact-iso@npm:2.12.2"
+  peerDependencies:
+    preact: ">=10 || >= 11.0.0-0"
+    preact-render-to-string: ">=6.4.0"
+  checksum: 10/da3971c88db04f6304bfbe4adedf32a1c032674e47bed5a9280ecf37c812ae48770e2cd436fcb3ffc36d4be3c7fbbad7a49b50b5a4dfb298e6286c201858c5e9
+  languageName: node
+  linkType: hard
+
 "preact@npm:^11.0.1":
   version: 11.0.1
   resolution: "preact@npm:11.0.1"
@@ -6592,22 +6588,6 @@ __metadata:
     redux:
       optional: true
   checksum: 10/3384e98e382ddb2f2a8f35bc7145fabd60f2fb0ccd999df5587bd926de9590f52cd3a29c4a01fe191d710a9c8f9d7293efff8d5fc32debc84de25c911b70fc45
-  languageName: node
-  linkType: hard
-
-"react-router@npm:^8.4.0":
-  version: 8.4.0
-  resolution: "react-router@npm:8.4.0"
-  dependencies:
-    "@remix-run/route-pattern": "npm:^0.22.1"
-    cookie-es: "npm:^3.1.1"
-  peerDependencies:
-    react: ">=19.2.7"
-    react-dom: ">=19.2.7"
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-  checksum: 10/1a20f8d991b54e959d1deaf865fc9d701f289026d3aa1160b5292b4f03a3697ddc43971408e3df926cb4f240f7d266ab3c1157113b59610899c474a98244c610
   languageName: node
   linkType: hard
 

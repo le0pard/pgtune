@@ -21,8 +21,8 @@ export default defineConfig({
     liquid({
       root: './src'
     }),
-    // react aliases are defined in resolve.alias
-    preact({ reactAliasesEnabled: false }),
+    // also aliases react and react-dom to preact/compat (for react-redux and formik)
+    preact(),
     VitePWA({
       injectRegister: null,
       strategies: 'injectManifest',
@@ -88,12 +88,7 @@ export default defineConfig({
       { find: '@css', replacement: resolve(import.meta.dirname, 'src/css') },
       { find: '@common', replacement: resolve(import.meta.dirname, 'src/common') },
       { find: '@features', replacement: resolve(import.meta.dirname, 'src/features') },
-      { find: '@hooks', replacement: resolve(import.meta.dirname, 'src/hooks') },
-      // app and react libraries (react-router, react-redux, formik) use Preact
-      { find: /^react$/, replacement: resolve(import.meta.dirname, 'src/reactCompat.js') },
-      { find: /^react\/jsx-runtime$/, replacement: 'preact/jsx-runtime' },
-      { find: /^react-dom$/, replacement: 'preact/compat' },
-      { find: /^react-dom\/(.*)$/, replacement: 'preact/compat/$1' }
+      { find: '@hooks', replacement: resolve(import.meta.dirname, 'src/hooks') }
     ]
   }
 })
