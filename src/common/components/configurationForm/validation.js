@@ -31,6 +31,19 @@ const HARD_DRIVE_TYPES = [HARD_DRIVE_HDD, HARD_DRIVE_SSD, HARD_DRIVE_SAN, HARD_D
 
 const DB_SIZES = [DB_SIZE_LESS_RAM, DB_SIZE_MID_RAM, DB_SIZE_GREATER_RAM]
 
+// numeric fields are text inputs, so only digits are allowed (values like "1e3" or "16GB"
+// would be cast by Yup differently, than parsed by configuration)
+const onlyDigits = (schema) =>
+  schema.test('only-digits', 'Must be an integer', function () {
+    const { originalValue } = this
+    return (
+      originalValue === undefined ||
+      originalValue === null ||
+      originalValue === '' ||
+      /^\d+$/.test(String(originalValue).trim())
+    )
+  })
+
 export const validationSchema = Yup.object().shape({
   dbVersion: Yup.number().required('Required').oneOf(DB_VERSIONS, 'Unsupported database version'),
   osType: Yup.string().required('Required').oneOf([OS_LINUX, OS_WINDOWS, OS_MAC], 'Unsupported OS'),
@@ -38,7 +51,7 @@ export const validationSchema = Yup.object().shape({
   totalMemoryUnit: Yup.string()
     .required('Required')
     .oneOf([SIZE_UNIT_MB, SIZE_UNIT_GB, SIZE_UNIT_TB], 'Unsupported unit'),
-  totalMemory: Yup.number()
+  totalMemory: onlyDigits(Yup.number().typeError('Must be an integer'))
     .required('Required')
     .integer('Must be an integer')
     .when('totalMemoryUnit', (totalMemoryUnit, schema) => {
@@ -50,14 +63,14 @@ export const validationSchema = Yup.object().shape({
     .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`),
   hdType: Yup.string().required('Required').oneOf(HARD_DRIVE_TYPES, 'Unsupported hard drive'),
   dbSize: Yup.string().required('Required').oneOf(DB_SIZES, 'Unsupported db size'),
-  cpuNum: Yup.number()
+  cpuNum: onlyDigits(Yup.number())
     .transform((value) => (isNaN(value) ? null : value))
     .nullable()
     .notRequired()
     .integer('Must be an integer')
     .min(1, 'Must be greater than zero')
     .max(MAX_NUMERIC_VALUE, `Must be less than or equal to ${MAX_NUMERIC_VALUE}`),
-  connectionNum: Yup.number()
+  connectionNum: onlyDigits(Yup.number())
     .transform((value) => (isNaN(value) ? null : value))
     .nullable()
     .notRequired()

@@ -14,15 +14,17 @@ const AppLayout = () => {
   return (
     <div className="app">
       <GithubCorner />
-      <main className="app__main" role="main">
-        <nav className="app__navigation" role="navigation">
+      <main className="app__main">
+        <nav className="app__navigation" aria-label="Main">
           <div
             className={classnames('app__navigation__item', {
               'app__navigation__item--active': isActive('/')
             })}
           >
             {isActive('/') ? (
-              <div className="app__navigation__active-item">Home</div>
+              <div className="app__navigation__active-item" aria-current="page">
+                Home
+              </div>
             ) : (
               <Link className="app__navigation__link" to="/">
                 Home
@@ -35,7 +37,9 @@ const AppLayout = () => {
             })}
           >
             {isActive('/about') ? (
-              <div className="app__navigation__active-item">How it works</div>
+              <div className="app__navigation__active-item" aria-current="page">
+                How it works
+              </div>
             ) : (
               <Link className="app__navigation__link" to="/about">
                 How it works

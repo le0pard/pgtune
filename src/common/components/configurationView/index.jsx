@@ -1,4 +1,4 @@
-import { Fragment, useCallback } from 'react'
+import { Fragment, useCallback, useRef } from 'react'
 import classnames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import hljs from 'highlight.js/lib/core'
@@ -70,6 +70,11 @@ const KB_UNIT_MAP = {
   KB_PER_MB: 1024,
   KB_PER_GB: 1048576
 }
+
+const CONFIGURATION_TABS = [
+  { id: TAB_CONFIG, label: 'postgresql.conf' },
+  { id: TAB_ALTER_SYSTEM, label: 'ALTER SYSTEM' }
+]
 
 // warnings are grouped and shown in this order
 const WARNING_GROUPS = [
@@ -200,6 +205,7 @@ const ConfigurationView = () => {
   const theme = useSelector(selectThemeSettings)
   // tab click state
   const handleClickTab = useCallback((tab) => dispatch(openConfigTab(tab)), [dispatch])
+  const tabRefs = useRef({})
   const handleToggleIncludeWarnings = useCallback(
     () => dispatch(toggleIncludeWarnings()),
     [dispatch]
@@ -307,25 +313,57 @@ const ConfigurationView = () => {
       .join('\n')
   }
 
+  // arrow keys, Home and End move between tabs (WAI-ARIA tabs pattern)
+  const handleTabKeyDown = (e) => {
+    const currentIndex = CONFIGURATION_TABS.findIndex((tab) => tab.id === tabState)
+    const nextIndex = {
+      ArrowRight: (currentIndex + 1) % CONFIGURATION_TABS.length,
+      ArrowLeft: (currentIndex - 1 + CONFIGURATION_TABS.length) % CONFIGURATION_TABS.length,
+      Home: 0,
+      End: CONFIGURATION_TABS.length - 1
+    }[e.key]
+
+    if (nextIndex === undefined) {
+      return
+    }
+
+    e.preventDefault()
+    const nextTab = CONFIGURATION_TABS[nextIndex].id
+    handleClickTab(nextTab)
+    tabRefs.current[nextTab]?.focus()
+  }
+
   const renderTabs = () => {
     return (
-      <div className="configuration-view-tabs-wrapper">
-        <button
-          className={classnames('configuration-view-tab', {
-            'configuration-view-tab--active': TAB_CONFIG === tabState
-          })}
-          onClick={() => handleClickTab(TAB_CONFIG)}
-        >
-          postgresql.conf
-        </button>
-        <button
-          className={classnames('configuration-view-tab', {
-            'configuration-view-tab--active': TAB_ALTER_SYSTEM === tabState
-          })}
-          onClick={() => handleClickTab(TAB_ALTER_SYSTEM)}
-        >
-          ALTER SYSTEM
-        </button>
+      <div
+        className="configuration-view-tabs-wrapper"
+        role="tablist"
+        aria-label="Configuration format"
+      >
+        {CONFIGURATION_TABS.map((tab) => {
+          const isSelected = tab.id === tabState
+          return (
+            <button
+              key={tab.id}
+              ref={(element) => {
+                tabRefs.current[tab.id] = element
+              }}
+              id={`configurationTab-${tab.id}`}
+              type="button"
+              role="tab"
+              aria-selected={isSelected}
+              aria-controls="configurationTabPanel"
+              tabIndex={isSelected ? 0 : -1}
+              className={classnames('configuration-view-tab', {
+                'configuration-view-tab--active': isSelected
+              })}
+              onClick={() => handleClickTab(tab.id)}
+              onKeyDown={handleTabKeyDown}
+            >
+              {tab.label}
+            </button>
+          )
+        })}
       </div>
     )
   }
@@ -393,7 +431,12 @@ const ConfigurationView = () => {
             text={copiedConfigRes}
             label="Copy"
           />
-          <pre style={{ display: 'block', overflowX: 'auto', padding: '0.5rem' }}>
+          <pre
+            style={{ display: 'block', overflowX: 'auto', padding: '0.5rem' }}
+            role="region"
+            aria-label="Generated configuration"
+            tabIndex={0}
+          >
             <code
               style={{ whiteSpace: 'pre' }}
               dangerouslySetInnerHTML={{
@@ -444,7 +487,13 @@ const ConfigurationView = () => {
   return (
     <div>
       {renderTabs()}
-      {renderConfigResult()}
+      <div
+        id="configurationTabPanel"
+        role="tabpanel"
+        aria-labelledby={`configurationTab-${tabState}`}
+      >
+        {renderConfigResult()}
+      </div>
       <style>{renderCodeInlineCss(codeHighlightStyle)}</style>
     </div>
   )

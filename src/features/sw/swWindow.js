@@ -15,7 +15,8 @@ export const skipWaitingMessageAndReload = () => {
 }
 
 export const initServiceWorker = (store) => {
-  if ('serviceWorker' in navigator) {
+  // service worker is built only for production (check with "yarn build && yarn preview")
+  if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     wb = new Workbox('/sw.js')
 
     const showUpdatedInfo = () => store.dispatch(readyToUpdated())

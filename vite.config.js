@@ -41,10 +41,6 @@ export default defineConfig({
       injectManifest: {
         globPatterns: ['**/*.{css,js,html,png,svg,ico}']
       },
-      devOptions: {
-        enabled: true,
-        type: 'module'
-      },
       manifest: {
         name: 'PGTune',
         short_name: 'PGTune',

@@ -6,6 +6,7 @@ import './dropdown.css'
 const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors }, ...rest }) => {
   const dropdownID = `${field.name}Id`
   const isError = touched[field.name] && errors[field.name]
+  const errorID = `${dropdownID}Error`
 
   return (
     <div className="form-dropdown">
@@ -18,7 +19,10 @@ const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors 
           {...field}
           {...rest}
           className="form-dropdown-wrapper__select"
-          aria-describedby={`tooltip${dropdownID}Content`}
+          aria-describedby={[`tooltip${dropdownID}Content`, isError && errorID]
+            .filter(Boolean)
+            .join(' ')}
+          aria-invalid={isError ? true : undefined}
           id={dropdownID}
         >
           {options.map((option, index) => {
@@ -29,7 +33,11 @@ const FormDropdown = ({ label, tooltip, options, field, form: { touched, errors 
             )
           })}
         </select>
-        {isError && <div className="form-dropdown-error">{errors[field.name]}</div>}
+        {isError && (
+          <div id={errorID} className="form-dropdown-error">
+            {errors[field.name]}
+          </div>
+        )}
       </div>
     </div>
   )

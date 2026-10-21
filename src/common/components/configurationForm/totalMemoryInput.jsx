@@ -3,12 +3,7 @@ import { Field } from 'formik'
 import Tooltip from '@common/components/form/tooltip'
 import FormSimpleField from '@common/components/form/simpleField'
 import FormSimpleDropdown from '@common/components/form/simpleDropdown'
-import {
-  SIZE_UNIT_MB,
-  SIZE_UNIT_GB,
-  SIZE_UNIT_TB,
-  MAX_NUMERIC_VALUE
-} from '@features/configuration/constants'
+import { SIZE_UNIT_MB, SIZE_UNIT_GB, SIZE_UNIT_TB } from '@features/configuration/constants'
 
 import './total-memory-input.css'
 
@@ -38,7 +33,8 @@ const TotalMemoryInput = ({ tooltip }) => {
       <Tooltip id={`tooltip${inputID}`} label="what is this?" text={tooltip} />
       <Field
         name="totalMemory"
-        type="number"
+        type="text"
+        inputMode="numeric"
         className="total-memory-amount"
         inputClassName="total-memory-amount__input"
         errorClassName="total-memory-amount__error"
@@ -50,10 +46,7 @@ const TotalMemoryInput = ({ tooltip }) => {
         autoCorrect="off"
         autoCapitalize="none"
         required="required"
-        min={1}
-        max={MAX_NUMERIC_VALUE}
-        step={1}
-        pattern="[0-9]{1,6}"
+        pattern="[0-9]*"
         placeholder="Memory size (RAM, required)"
       />
       <Field

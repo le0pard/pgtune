@@ -6,6 +6,7 @@ import './field.css'
 const FormField = ({ label, tooltip, field, form: { touched, errors }, ...rest }) => {
   const inputID = `${field.name}Id`
   const isError = touched[field.name] && errors[field.name]
+  const errorID = `${inputID}Error`
 
   return (
     <div className="form-field">
@@ -19,10 +20,17 @@ const FormField = ({ label, tooltip, field, form: { touched, errors }, ...rest }
           {...rest}
           className="form-field-wrapper__input"
           aria-label={label}
-          aria-describedby={`tooltip${inputID}Content`}
+          aria-describedby={[`tooltip${inputID}Content`, isError && errorID]
+            .filter(Boolean)
+            .join(' ')}
+          aria-invalid={isError ? true : undefined}
           id={inputID}
         />
-        {isError && <div className="form-field-error">{errors[field.name]}</div>}
+        {isError && (
+          <div id={errorID} className="form-field-error">
+            {errors[field.name]}
+          </div>
+        )}
       </div>
     </div>
   )

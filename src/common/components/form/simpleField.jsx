@@ -11,11 +11,23 @@ const FormSimpleField = ({
   ...rest
 }) => {
   const isError = touched[field.name] && errors[field.name]
+  const errorID = `${field.name}Error`
+  const describedBy = [rest['aria-describedby'], isError && errorID].filter(Boolean).join(' ')
 
   return (
     <div className={className}>
-      <input {...field} {...rest} className={inputClassName} />
-      {isError && <div className={errorClassName}>{errors[field.name]}</div>}
+      <input
+        {...field}
+        {...rest}
+        className={inputClassName}
+        aria-describedby={describedBy || undefined}
+        aria-invalid={isError ? true : undefined}
+      />
+      {isError && (
+        <div id={errorID} className={errorClassName}>
+          {errors[field.name]}
+        </div>
+      )}
     </div>
   )
 }

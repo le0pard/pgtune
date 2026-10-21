@@ -19,7 +19,6 @@
     "@vitejs/plugin-react": "^6.1.2",
     "@vituum/vite-plugin-liquid": "^2.0.2",
     "classnames": "^2.5.1",
-    "clipboard": "^2.0.11",
     "formik": "^2.4.9",
     "globals": "^17.13.0",
     "highlight.js": "^11.12.0",

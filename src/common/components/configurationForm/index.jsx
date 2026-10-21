@@ -37,9 +37,7 @@ import {
   DB_SIZE_LESS_RAM,
   DB_SIZE_MID_RAM,
   DB_SIZE_GREATER_RAM,
-  SIZE_UNIT_GB,
-  MAX_NUMERIC_VALUE,
-  MAX_CONNECTIONS_VALUE
+  SIZE_UNIT_GB
 } from '@features/configuration/constants'
 
 import './configuration-form.css'
@@ -226,15 +224,13 @@ const ConfigurationForm = () => {
           />
           <Field
             name="cpuNum"
-            type="number"
+            type="text"
+            inputMode="numeric"
             component={FormField}
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="none"
-            min={1}
-            max={MAX_NUMERIC_VALUE}
-            step={1}
-            pattern="[0-9]{1,6}"
+            pattern="[0-9]*"
             placeholder="Number of CPUs (optional)"
             label="Number of CPUs"
             tooltip={
@@ -249,15 +245,13 @@ const ConfigurationForm = () => {
           />
           <Field
             name="connectionNum"
-            type="number"
+            type="text"
+            inputMode="numeric"
             component={FormField}
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="none"
-            min={20}
-            max={MAX_CONNECTIONS_VALUE}
-            step={1}
-            pattern="[0-9]{1,6}"
+            pattern="[0-9]*"
             placeholder={connectionsPlaceholder(values)}
             label="Number of Connections"
             tooltip={
