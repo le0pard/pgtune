@@ -18,8 +18,7 @@ const AboutPage = () => (
     <h3>Principles</h3>
     <ul className="about-page-list">
       <li>
-        Do no harm: generated settings should not make your database worse than PostgreSQL defaults,
-        unless provided parameters justify it
+        Do no harm: PostgreSQL defaults are changed only where your hardware and workload justify it
       </li>
       <li>
         Settings, which can prevent PostgreSQL from starting on some builds or systems, are

@@ -22,12 +22,15 @@
         // localStorage can be unavailable, light theme is used
       }
       // page is prerendered without url params, so configuration from url params is shown
-      // after javascript renders it (shown anyway after timeout, if javascript fails)
-      if (window.location.search.length > 1) {
+      // after javascript renders it (main.jsx). Load event fires after the script ran or failed,
+      // so page is shown anyway (in next task, as main.jsx can start in a task too, see onDomReady)
+      if (/[?&]totalMemory=/.test(window.location.search)) {
         document.documentElement.classList.add('render-pending')
-        setTimeout(function () {
-          document.documentElement.classList.remove('render-pending')
-        }, 3000)
+        window.addEventListener('load', function () {
+          setTimeout(function () {
+            document.documentElement.classList.remove('render-pending')
+          }, 0)
+        })
       }
     </script>
     <link type="text/plain" rel="author" href="/humans.txt" />

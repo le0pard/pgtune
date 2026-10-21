@@ -132,6 +132,18 @@ h6 {
   font-size: 1.15rem;
 }
 
+/* avoid single word on the last line of text (browsers without support wrap it as before) */
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
+/* short labels are split into lines of similar length */
+dt {
+  text-wrap: balance;
+}
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   appearance: none;

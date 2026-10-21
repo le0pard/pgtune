@@ -57,6 +57,16 @@ test.describe('configuration', () => {
     await expect(generatedConfiguration(page)).toContainText('shared_buffers = 5376MB')
   })
 
+  test('lists warnings of each group separately', async ({ page }) => {
+    await page.goto(CONFIGURATION_URL)
+
+    const startupWarnings = page.getByRole('list', { name: 'May prevent startup' })
+    await expect(startupWarnings.getByRole('listitem')).toHaveCount(2)
+    await expect(startupWarnings.getByRole('listitem').nth(1)).toContainText(
+      'io_method = io_uring requires'
+    )
+  })
+
   test('switches format with keyboard', async ({ page }) => {
     await page.goto(CONFIGURATION_URL)
     const configTab = page.getByRole('tab', { name: 'postgresql.conf' })
@@ -238,6 +248,36 @@ test.describe('prerender', () => {
       await expect(page.getByRole('heading', { name: 'Parameters of your system' })).toBeVisible()
       await expect(page.getByLabel('Number of CPUs')).toBeVisible()
       await expect(page.getByText('SaaS backends')).toBeVisible()
+    })
+  })
+
+  test.describe('before javascript runs', () => {
+    // main script request is held, until test fails it
+    const holdMainScript = async (page) => {
+      const request = Promise.withResolvers()
+      await page.route('**/assets/main-*.js', request.resolve)
+      return { fail: async () => (await request.promise).abort() }
+    }
+
+    test('hides page with configuration link, until script runs or fails', async ({ page }) => {
+      const script = await holdMainScript(page)
+      const html = page.locator('html')
+
+      await page.goto(CONFIGURATION_URL, { waitUntil: 'domcontentloaded' })
+      await expect(html).toHaveClass(/render-pending/)
+
+      await script.fail()
+
+      await expect(html).not.toHaveClass(/render-pending/)
+      await expect(page.getByLabel('Number of CPUs')).toBeVisible()
+    })
+
+    test('does not hide page with other url params', async ({ page }) => {
+      await holdMainScript(page)
+
+      await page.goto('/?utm_source=newsletter', { waitUntil: 'domcontentloaded' })
+
+      await expect(page.locator('html')).not.toHaveClass(/render-pending/)
     })
   })
 

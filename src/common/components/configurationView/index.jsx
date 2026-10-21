@@ -169,15 +169,27 @@ const ConfigurationView = () => {
               `configuration-view-warning--${group.level}`
             )}
           >
-            <div className="configuration-view-warning__title">{group.title}</div>
-            {group.warnings.map((warning, index) => (
-              <div key={index} className="configuration-view-warning__item">
-                <span>{warning.text.join(' ')}</span>
-                {warning.code && (
-                  <code className="configuration-view-warning__code">{warning.code}</code>
-                )}
-              </div>
-            ))}
+            <div
+              id={`configuration-warnings-${group.level}`}
+              className="configuration-view-warning__title"
+            >
+              {group.title}
+            </div>
+            {/* role keeps list semantics in Safari, which drops them for list-style: none */}
+            <ul
+              role="list"
+              className="configuration-view-warning__items"
+              aria-labelledby={`configuration-warnings-${group.level}`}
+            >
+              {group.warnings.map((warning, index) => (
+                <li key={index} className="configuration-view-warning__item">
+                  <span>{warning.text.join(' ')}</span>
+                  {warning.code && (
+                    <code className="configuration-view-warning__code">{warning.code}</code>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
