@@ -655,6 +655,23 @@ describe('selectWorkMem', () => {
     ).toEqual(4096) // Floors to 4MB in kB
   })
 
+  it('does not boost work_mem above 4MB, when even 4MB does not fit in memory', () => {
+    expect(
+      selectWorkMem({
+        configuration: {
+          totalMemory: 16,
+          totalMemoryUnit: 'GB',
+          dbType: 'web',
+          osType: 'linux',
+          dbVersion: 19,
+          connectionNum: 1000,
+          cpuNum: 64,
+          dbSize: 'less_ram' // 30% boost of ~3.85MB budget would give 5MB
+        }
+      })
+    ).toEqual(4096)
+  })
+
   it('caps work_mem at 2GB minus 1MB for Windows servers on PostgreSQL 17 or older', () => {
     expect(
       selectWorkMem({

@@ -147,6 +147,22 @@ export default defineConfig({
     include: ['src/**/__tests__/**/*.test.{js,jsx}'],
     env: {
       TZ: 'UTC' // normalize timezone for tests
+    },
+    // "yarn test:coverage", report is in coverage/index.html. Components are covered
+    // by smoke tests (e2e), calculation logic must stay covered by unit tests
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.{js,jsx}'],
+      exclude: ['src/**/__tests__/**'],
+      reporter: ['text', 'html'],
+      thresholds: {
+        'src/features/configuration/**': {
+          statements: 95,
+          branches: 95,
+          functions: 95,
+          lines: 95
+        }
+      }
     }
   },
   resolve: {

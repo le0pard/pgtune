@@ -14,12 +14,14 @@
     "format": "oxfmt src e2e postcss.config.js vite.config.js playwright.config.js",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@playwright/test": "^1.64.1",
     "@preact/preset-vite": "^2.10.6",
+    "@vitest/coverage-v8": "^5.0.5",
     "@vituum/vite-plugin-liquid": "^2.0.2",
     "classnames": "^2.5.1",
     "formik": "^2.4.9",

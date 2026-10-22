@@ -33,7 +33,7 @@ jobs:
         run: yarn run lint
 
       - name: Check tests
-        run: yarn run test
+        run: yarn run test:coverage
 
   e2e:
     name: Smoke tests

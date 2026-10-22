@@ -9,13 +9,7 @@ import {
   linesText,
   configurationText
 } from '../configurationText'
-import { normalizeConfiguration } from '../configurationParams'
-import {
-  selectHardwareConfiguration,
-  selectSettings,
-  selectWarningInfoMessages,
-  selectRestartRequiredSettings
-} from '../configurationSelectors'
+import { generateConfiguration as generate } from './generateConfiguration'
 
 const HARDWARE = {
   dbVersion: 18,
@@ -39,18 +33,6 @@ const MEMORY_WARNING = { level: 'memory', text: ['memory warning'] }
 const NOTE_WARNING = { level: 'note', text: ['note warning'] }
 
 // configuration text for form values, built with the same selectors as the view
-const generate = (values, { isAlterSystem = false, includeWarnings = true } = {}) => {
-  const state = { configuration: normalizeConfiguration(values) }
-  return configurationText({
-    hardware: selectHardwareConfiguration(state),
-    settings: selectSettings(state),
-    warnings: selectWarningInfoMessages(state),
-    restartRequiredSettings: selectRestartRequiredSettings(state),
-    isAlterSystem,
-    includeWarnings
-  })
-}
-
 describe('formatMemory', () => {
   it('uses the largest unit without loss of resolution', () => {
     expect(formatMemory(4194304)).toEqual('4GB')

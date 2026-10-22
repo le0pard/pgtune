@@ -385,6 +385,12 @@ const selectWorkMemBudget = createSelector(
 export const selectWorkMem = createSelector(
   [selectWorkMemBudget, selectDBType, selectOSType, selectDBVersion, selectDBSize],
   (workMemValue, dbType, osType, dbVersion, dbSize) => {
+    // Even the minimum does not fit in memory (user is warned, see selectWarningInfoMessages),
+    // so work_mem is not boosted above it
+    if (workMemValue < MIN_WORK_MEM) {
+      return MIN_WORK_MEM
+    }
+
     let workMemResult = {
       [DB_TYPE_WEB]: Math.floor(workMemValue),
       [DB_TYPE_OLTP]: Math.floor(workMemValue),

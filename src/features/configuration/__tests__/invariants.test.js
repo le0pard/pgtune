@@ -22,8 +22,11 @@ import {
   selectIoMethod,
   selectIoWorkers,
   selectWalLevel,
-  selectWarningInfoMessages
+  selectWarningInfoMessages,
+  selectSettings
 } from '../configurationSelectors'
+import { formatSettingValue } from '../configurationText'
+import { settingDescription } from '@common/components/configurationView/settingsDocs'
 import {
   DB_VERSIONS,
   OS_LINUX,
@@ -42,7 +45,9 @@ import {
   DB_SIZE_MID_RAM,
   DB_SIZE_GREATER_RAM,
   MAX_CONNECTIONS_VALUE,
-  WARNING_LEVEL_MEMORY
+  WARNING_LEVEL_STARTUP,
+  WARNING_LEVEL_MEMORY,
+  WARNING_LEVEL_NOTE
 } from '../constants'
 
 // PostgreSQL limits from source code
@@ -198,6 +203,68 @@ const checkConfiguration = (configuration) => {
     workMemUsage <= workMemBudget || hasWorkMemWarning,
     `work_mem = ${workMem}kB does not fit in memory without warning`
   )
+
+  // warnings tell the truth about generated configuration
+  const settings = Object.fromEntries(
+    selectSettings(state).map((setting) => [setting.key, formatSettingValue(setting)])
+  )
+  const warningText = (level) =>
+    warnings
+      .filter((warning) => warning.level === level)
+      .map((warning) => warning.text.join(' '))
+      .join('\n')
+
+  // quoted settings (name = value), which pgtune generates, have generated values
+  // (other settings, like archive_mode in wal_level warning, are only mentioned)
+  const quotedSettings = warnings
+    .flatMap((warning) => warning.text)
+    .join(' ')
+    .matchAll(/\b([a-z_]+) = ([^\s:,]+)/g)
+  for (const [, key, value] of quotedSettings) {
+    if (settingDescription(key) !== null) {
+      check(settings[key] === value, `warning quotes ${key} = ${value}, generated ${settings[key]}`)
+    }
+  }
+
+  // memory warning names its cause: connections, which do not fit even with default
+  // parallel workers, or parallel workers, raised by number of CPUs
+  const memoryWarning = warningText(WARNING_LEVEL_MEMORY)
+  if (memoryWarning) {
+    const connectionsBudget = (totalMemoryKb - sharedBuffers) / ((maxConnections + 8) * 3)
+    check(
+      memoryWarning.includes('max_parallel_workers')
+        ? parallelWorkers > 8
+        : connectionsBudget < MIN_WORK_MEM,
+      'memory warning does not name its cause'
+    )
+    check(workMem === MIN_WORK_MEM, `memory warning, but work_mem = ${workMem}kB is not minimum`)
+  }
+
+  // settings, which may prevent startup, have warning, and warning is only for them
+  const startupWarning = warningText(WARNING_LEVEL_STARTUP)
+  for (const [key, value] of [
+    ['wal_level', 'minimal'],
+    ['wal_compression', 'lz4'],
+    ['io_method', 'io_uring']
+  ]) {
+    check(
+      startupWarning.includes(`${key} = ${value}`) === (settings[key] === value),
+      `${key} = ${value} and its startup warning do not match`
+    )
+  }
+
+  // note about cost parameters claims, that they are left at defaults
+  if (warningText(WARNING_LEVEL_NOTE).includes('Cost parameters')) {
+    check(
+      settings['random_page_cost'] === undefined || settings['random_page_cost'] === '4',
+      `cost parameters note, but random_page_cost = ${settings['random_page_cost']}`
+    )
+  }
+
+  // every generated setting has description and link to documentation in the view
+  Object.keys(settings).forEach((key) => {
+    check(settingDescription(key) !== null, `${key} has no documentation`)
+  })
 
   // parallel workers
   if (Object.keys(parallelSettings).length > 0) {
