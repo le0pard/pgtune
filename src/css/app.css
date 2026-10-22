@@ -16,7 +16,8 @@
   --inputColor: #073642;
   /* form field borders: 3:1 contrast with field and page background */
   --inputBorder: #7f8f8f;
-  --inputColorPlaceholder: #839496;
+  /* placeholder tells assumed values: Solarized base01 (base1 in dark), 4.5:1 on field */
+  --inputColorPlaceholder: #586e75;
   --buttonHover: #fdfcf9;
   /* accent colors: Solarized yellow, orange, green, red and blue, darker on light background */
   --accentColor: #826200;
@@ -44,7 +45,7 @@
   --inputBgDisabled: #586e75;
   --inputColor: #eee8d5;
   --inputBorder: #668088;
-  --inputColorPlaceholder: #839496;
+  --inputColorPlaceholder: #93a1a1;
   --buttonHover: #021014;
   /* accent colors: lighter on dark background (green is Solarized as is) */
   --accentColor: #c29300;
