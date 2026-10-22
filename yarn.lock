@@ -4544,13 +4544,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.13.0":
-  version: 17.13.0
-  resolution: "globals@npm:17.13.0"
-  checksum: 10/f723714cfb07bcf3163d44661d63b2a6076d93fd2f3724622b22084c62bcbbdb3ea3c601ec39635f1430d5cdf60bbf6fd7e458f12b5381ed422ed355c699537b
-  languageName: node
-  linkType: hard
-
 "globalthis@npm:^1.0.4":
   version: 1.0.4
   resolution: "globalthis@npm:1.0.4"
@@ -5351,13 +5344,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lilconfig@npm:^3.1.1":
-  version: 3.1.3
-  resolution: "lilconfig@npm:3.1.3"
-  checksum: 10/b932ce1af94985f0efbe8896e57b1f814a48c8dbd7fc0ef8469785c6303ed29d0090af3ccad7e36b626bfca3a4dc56cc262697e9a8dd867623cf09a39d54e4c3
-  languageName: node
-  linkType: hard
-
 "liquidjs@npm:^10.25":
   version: 10.30.0
   resolution: "liquidjs@npm:10.30.0"
@@ -5961,13 +5947,11 @@ __metadata:
     "@vituum/vite-plugin-liquid": "npm:^2.0.2"
     classnames: "npm:^2.5.1"
     formik: "npm:^2.4.9"
-    globals: "npm:^17.13.0"
     normalize.css: "npm:^8.0.1"
     oxfmt: "npm:^0.73.0"
     oxlint: "npm:^1.88.0"
     postcss: "npm:^8.5.31"
     postcss-import: "npm:^17.0.1"
-    postcss-load-config: "npm:^6.0.1"
     postcss-preset-env: "npm:^11.6.1"
     preact: "npm:^11.0.1"
     preact-iso: "npm:^2.12.2"
@@ -5981,7 +5965,6 @@ __metadata:
     vituum: "npm:^2.0.2"
     workbox-core: "npm:^7.4.1"
     workbox-precaching: "npm:^7.4.1"
-    workbox-webpack-plugin: "npm:^7.4.1"
     workbox-window: "npm:^7.4.1"
   languageName: unknown
   linkType: soft
@@ -6263,29 +6246,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-load-config@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "postcss-load-config@npm:6.0.1"
-  dependencies:
-    lilconfig: "npm:^3.1.1"
-  peerDependencies:
-    jiti: ">=1.21.0"
-    postcss: ">=8.0.9"
-    tsx: ^4.8.1
-    yaml: ^2.4.2
-  peerDependenciesMeta:
-    jiti:
-      optional: true
-    postcss:
-      optional: true
-    tsx:
-      optional: true
-    yaml:
-      optional: true
-  checksum: 10/1691cfc94948a9373d4f7b3b7a8500cfaf8cb2dcc2107c14f90f2a711a9892a362b0866894ac5bb723455fa685a15116d9ed3252188689c4502b137c19d6bdc4
-  languageName: node
-  linkType: hard
-
 "postcss-logical@npm:^9.0.2":
   version: 9.0.2
   resolution: "postcss-logical@npm:9.0.2"
@@ -6539,7 +6499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-bytes@npm:^5.3.0, pretty-bytes@npm:^5.4.1":
+"pretty-bytes@npm:^5.3.0":
   version: 5.6.0
   resolution: "pretty-bytes@npm:5.6.0"
   checksum: 10/9c082500d1e93434b5b291bd651662936b8bd6204ec9fa17d563116a192d6d86b98f6d328526b4e8d783c07d5499e2614a807520249692da9ec81564b2f439cd
@@ -7156,13 +7116,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-list-map@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "source-list-map@npm:2.0.1"
-  checksum: 10/3918ffba5fe8447bc816800026fe707aab233d9d05a3487225d880e23b7e37ed455b4e1b844e05644f6ecc7c9b837c0cc32da54dd37f77c993370ebcdb049246
-  languageName: node
-  linkType: hard
-
 "source-map-js@npm:^1.2.1, source-map-js@npm:^1.2.2":
   version: 1.2.2
   resolution: "source-map-js@npm:1.2.2"
@@ -7180,7 +7133,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map@npm:^0.6.0, source-map@npm:~0.6.1":
+"source-map@npm:^0.6.0":
   version: 0.6.1
   resolution: "source-map@npm:0.6.1"
   checksum: 10/59ef7462f1c29d502b3057e822cdbdae0b0e565302c4dd1a95e11e793d8d9d62006cdc10e0fd99163ca33ff2071360cf50ee13f90440806e7ed57d81cba2f7ff
@@ -7941,16 +7894,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-sources@npm:^1.4.3":
-  version: 1.4.3
-  resolution: "webpack-sources@npm:1.4.3"
-  dependencies:
-    source-list-map: "npm:^2.0.0"
-    source-map: "npm:~0.6.1"
-  checksum: 10/6237c5d1ba639a5d67bd1135c9bba487eadbd04c5e75a2849508013f13cb4b57387e689e0991c19a14a87085be7cc0b8dd1515422ae351f6e3f813ed100ccbb8
-  languageName: node
-  linkType: hard
-
 "whatwg-url@npm:^7.0.0":
   version: 7.1.0
   resolution: "whatwg-url@npm:7.1.0"
@@ -8073,7 +8016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"workbox-build@npm:7.4.1, workbox-build@npm:^7.4.1":
+"workbox-build@npm:^7.4.1":
   version: 7.4.1
   resolution: "workbox-build@npm:7.4.1"
   dependencies:
@@ -8231,21 +8174,6 @@ __metadata:
   version: 7.4.1
   resolution: "workbox-sw@npm:7.4.1"
   checksum: 10/86fad480511c88492f0c2400e789348b21a62ef26e14af2de1fc7df59951c04e719c989cbf7ece9859fd1f8cfbdf9e870e21206edad6309ba0180ea4fb12c3b2
-  languageName: node
-  linkType: hard
-
-"workbox-webpack-plugin@npm:^7.4.1":
-  version: 7.4.1
-  resolution: "workbox-webpack-plugin@npm:7.4.1"
-  dependencies:
-    fast-json-stable-stringify: "npm:^2.1.0"
-    pretty-bytes: "npm:^5.4.1"
-    upath: "npm:^1.2.0"
-    webpack-sources: "npm:^1.4.3"
-    workbox-build: "npm:7.4.1"
-  peerDependencies:
-    webpack: ^4.4.0 || ^5.91.0
-  checksum: 10/c0e2cd09f62e786fa91413795f8b361887b7ef9e357c6ddbd1a8cacf9bd8bb350bf0f01732884b41dbadccb19146b38cffb4a78f474358a6ff659e95dfe75f78
   languageName: node
   linkType: hard
 

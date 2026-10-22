@@ -13,6 +13,28 @@ $ yarn # get all node.js deps
 $ yarn dev # start server on 5173 port
 ```
 
+Production build (with prerendered pages and service worker) can be checked with:
+
+```bash
+$ yarn build && yarn preview
+```
+
+### Checks
+
+```bash
+$ yarn lint # code style and lint checks (fix formatting with "yarn format")
+$ yarn test # unit tests, "yarn test:watch" to rerun them on changes
+$ yarn test:coverage # unit tests with coverage report in coverage/index.html
+$ yarn playwright install chromium # once, browser for smoke tests
+$ yarn test:e2e # smoke tests of production build in browser
+```
+
+Generated configurations for representative inputs are stored in `src/features/configuration/__tests__/__snapshots__/configurations`, so every change of calculated settings or warnings is visible in pull request. After a deliberate change, update them and review the difference:
+
+```bash
+$ yarn test -u
+```
+
 ## Contributing
 
 1. Fork it

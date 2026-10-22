@@ -25,13 +25,11 @@
     "@vituum/vite-plugin-liquid": "^2.0.2",
     "classnames": "^2.5.1",
     "formik": "^2.4.9",
-    "globals": "^17.13.0",
     "normalize.css": "^8.0.1",
     "oxfmt": "^0.73.0",
     "oxlint": "^1.88.0",
     "postcss": "^8.5.31",
     "postcss-import": "^17.0.1",
-    "postcss-load-config": "^6.0.1",
     "postcss-preset-env": "^11.6.1",
     "preact": "^11.0.1",
     "preact-iso": "^2.12.2",
@@ -45,7 +43,6 @@
     "vituum": "^2.0.2",
     "workbox-core": "^7.4.1",
     "workbox-precaching": "^7.4.1",
-    "workbox-webpack-plugin": "^7.4.1",
     "workbox-window": "^7.4.1"
   },
   "packageManager": "yarn@4.18.1"

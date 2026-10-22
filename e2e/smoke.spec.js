@@ -275,6 +275,24 @@ test.describe('prerender', () => {
     expect(about).toContain('Before applying the configuration')
   })
 
+  test('pages have own title and link preview', async ({ request }) => {
+    const about = await (await request.get('/about')).text()
+    expect(about).toContain('<title>How it works - PGTune</title>')
+    expect(about).toContain('<link rel="canonical" href="https://pgtune.leopard.in.ua/about" />')
+    expect(about).toContain('<meta property="og:title" content="How it works - PGTune" />')
+  })
+
+  test('title is updated, when page is changed without reload', async ({ page }) => {
+    await page.goto('/')
+    await expect(page).toHaveTitle(/^PGTune - calculate configuration/)
+
+    await page.getByRole('link', { name: 'How it works' }).click()
+    await expect(page).toHaveTitle('How it works - PGTune')
+
+    await page.goBack()
+    await expect(page).toHaveTitle(/^PGTune - calculate configuration/)
+  })
+
   test.describe('without javascript', () => {
     test.use({ javaScriptEnabled: false })
 

@@ -5,18 +5,19 @@ import './app-update.css'
 const AppUpdate = () => {
   const { isNewVersionAvailable, update } = useServiceWorkerUpdate()
 
-  if (!isNewVersionAvailable) {
-    return null
-  }
-
+  // status region is always rendered, so screen readers announce notice, when it appears
   return (
-    <div className="app-update">
-      <h4 className="app-update__title">New version of application is available.</h4>
-      <div className="app-update__button-wrapper">
-        <button className="app-update__button" onClick={update}>
-          Update application
-        </button>
-      </div>
+    <div role="status">
+      {isNewVersionAvailable && (
+        <div className="app-update">
+          <p className="app-update__title">New version of application is available.</p>
+          <div className="app-update__button-wrapper">
+            <button className="app-update__button" onClick={update}>
+              Update application
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

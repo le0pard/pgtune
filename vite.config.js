@@ -23,6 +23,7 @@ const PRERENDER_PAGES = [
   { url: '/about', file: 'about.html' }
 ]
 const ROOT_ELEMENT = '<div id="root"></div>'
+const HEAD_PLACEHOLDER = /<!-- page head: [^>]*-->/
 
 // Search engines and first paint get page content before javascript is loaded.
 // Runs after html files are written and before service worker precache manifest is built
@@ -52,17 +53,19 @@ const prerender = () => {
             minify: false
           }
         })
-        const { render } = await import(pathToFileURL(join(ssrOutDir, 'prerender.js')).href)
+        const { render, head } = await import(pathToFileURL(join(ssrOutDir, 'prerender.js')).href)
 
         for (const page of PRERENDER_PAGES) {
           const file = join(outDir, page.file)
           const html = await readFile(file, 'utf8')
-          if (!html.includes(ROOT_ELEMENT)) {
-            throw new Error(`${ROOT_ELEMENT} is not found in ${file}`)
+          if (!html.includes(ROOT_ELEMENT) || !HEAD_PLACEHOLDER.test(html)) {
+            throw new Error(`${ROOT_ELEMENT} or head placeholder is not found in ${file}`)
           }
           await writeFile(
             file,
-            html.replace(ROOT_ELEMENT, `<div id="root">${render(page.url)}</div>`)
+            html
+              .replace(HEAD_PLACEHOLDER, head(page.url))
+              .replace(ROOT_ELEMENT, `<div id="root">${render(page.url)}</div>`)
           )
         }
       } finally {
