@@ -81,6 +81,7 @@ const CASES = [
   {
     name: 'pg18-windows-dw-128gb-32cpu-nvme-less-ram',
     values: {
+      dbVersion: '18',
       osType: 'windows',
       dbType: 'dw',
       totalMemory: '128',
@@ -95,16 +96,24 @@ const CASES = [
   },
   {
     name: 'pg18-mac-desktop-16gb-8cpu-nvme',
-    values: { osType: 'mac', dbType: 'desktop', totalMemory: '16', cpuNum: '8', hdType: 'nvme' }
+    values: {
+      dbVersion: '18',
+      osType: 'mac',
+      dbType: 'desktop',
+      totalMemory: '16',
+      cpuNum: '8',
+      hdType: 'nvme'
+    }
   },
   {
     name: 'pg18-linux-dw-64gb-16cpu-ssd',
-    values: { dbType: 'dw', totalMemory: '64', cpuNum: '16' }
+    values: { dbVersion: '18', dbType: 'dw', totalMemory: '64', cpuNum: '16' }
   },
   // edge cases
   {
     name: 'pg18-linux-mixed-512mb-2cpu-hdd',
     values: {
+      dbVersion: '18',
       dbType: 'mixed',
       totalMemory: '512',
       totalMemoryUnit: 'MB',
@@ -114,7 +123,7 @@ const CASES = [
   },
   {
     name: 'pg18-linux-mixed-12gb-2221cpu-ssd',
-    values: { dbType: 'mixed', totalMemory: '12', cpuNum: '2221' }
+    values: { dbVersion: '18', dbType: 'mixed', totalMemory: '12', cpuNum: '2221' }
   },
   {
     name: 'pg19-linux-web-16gb-64cpu-ssd-less-ram-1000-connections',
@@ -129,6 +138,7 @@ const CASES = [
   {
     name: 'pg18-linux-web-4tb-2000cpu-nvme-260000-connections',
     values: {
+      dbVersion: '18',
       totalMemory: '4',
       totalMemoryUnit: 'TB',
       cpuNum: '2000',
@@ -139,7 +149,7 @@ const CASES = [
   // ALTER SYSTEM format
   {
     name: 'pg18-linux-web-21gb-ssd',
-    values: { totalMemory: '21' },
+    values: { dbVersion: '18', totalMemory: '21' },
     isAlterSystem: true
   }
 ]
